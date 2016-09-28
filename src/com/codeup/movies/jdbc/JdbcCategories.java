@@ -52,11 +52,12 @@ public class JdbcCategories implements Categories {
     @Override
     public List<Category> with(String... categories) {
         try {
-            QueryBuilder builder = new QueryBuilder()
-                .from("categories")
-                .whereIn("id", categories.length)
-            ;
-            PreparedStatement statement = connection.prepareStatement(builder.toSQL());
+            PreparedStatement statement = connection.prepareStatement(
+                new QueryBuilder()
+                    .from("categories")
+                    .whereIn("id", categories.length)
+                    .toSQL()
+            );
             for (int i = 0; i < categories.length; i++) {
                 statement.setInt(i + 1, parseInt(categories[i]));
             }

@@ -87,4 +87,55 @@ public class QueryBuilderTest {
         builder.from("users").whereIn("username", 2);
         assertEquals("SELECT * FROM users WHERE username IN (?, ?)", builder.toSQL());
     }
+
+    @Test
+    public void it_converts_to_sql_a_join_statement() {
+        builder.from("users u").join("roles r", "u.role_id = r.id");
+        assertEquals(
+            "SELECT * FROM users u INNER JOIN roles r ON u.role_id = r.id",
+            builder.toSQL()
+        );
+    }
+
+    @Test
+    public void it_converts_to_sql_several_join_statements() {
+        builder
+            .from("posts p")
+            .join("posts_tags pt", "pt.post_id = p.id")
+            .join("tags t", "pt.tag_id = t.id")
+        ;
+        assertEquals(
+            "SELECT * FROM posts p INNER JOIN posts_tags pt ON pt.post_id = p.id INNER JOIN tags t ON pt.tag_id = t.id",
+            builder.toSQL()
+        );
+    }
+
+    @Test
+    public void it_converts_to_sql_several_join_statements_with_a_where_clause() {
+        builder
+            .from("posts p")
+            .join("posts_tags pt", "pt.post_id = p.id")
+            .join("tags t", "pt.tag_id = t.id")
+            .where("p.id = ?")
+        ;
+        assertEquals(
+            "SELECT * FROM posts p INNER JOIN posts_tags pt ON pt.post_id = p.id INNER JOIN tags t ON pt.tag_id = t.id WHERE p.id = ?",
+            builder.toSQL()
+        );
+    }
+
+    @Test
+    public void it_converts_to_sql_several_join_statements_with_two_where_clauses() {
+        builder
+            .from("posts p")
+            .join("posts_tags pt", "pt.post_id = p.id")
+            .join("tags t", "pt.tag_id = t.id")
+            .where("p.id = ?")
+            .where("p.created_at > ?")
+        ;
+        assertEquals(
+            "SELECT * FROM posts p INNER JOIN posts_tags pt ON pt.post_id = p.id INNER JOIN tags t ON pt.tag_id = t.id WHERE p.id = ? AND p.created_at > ?",
+            builder.toSQL()
+        );
+    }
 }

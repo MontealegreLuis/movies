@@ -8,14 +8,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.codeup.db.JoinExpression.*;
+
 public class QueryBuilder implements HasSQLRepresentation {
     private List<String> select;
     private String table;
     private List<WhereExpression> whereExpressions;
+    private List<JoinExpression> joins;
 
     public QueryBuilder() {
         select = new ArrayList<>();
         whereExpressions = new ArrayList<>();
+        joins = new ArrayList<>();
     }
 
     @Override
@@ -23,9 +27,10 @@ public class QueryBuilder implements HasSQLRepresentation {
         assertFromHasBeenCalled();
 
         return String.format(
-            "SELECT %s FROM %s%s",
+            "SELECT %s FROM %s%s%s",
             selectToString(),
             table,
+            joinsToString(),
             whereToString()
         );
     }
@@ -66,6 +71,11 @@ public class QueryBuilder implements HasSQLRepresentation {
         whereExpressions.add(WhereExpression.with(expression, operator));
     }
 
+    public QueryBuilder join(String table, String on) {
+        joins.add(new JoinExpression(table, on, Type.INNER));
+        return this;
+    }
+
     private void assertFromHasBeenCalled() {
         if (table == null) {
             throw new IllegalStateException("No table to select from was specified");
@@ -89,5 +99,11 @@ public class QueryBuilder implements HasSQLRepresentation {
         }
         select.forEach(column -> columns.append(column).append(", "));
         return columns.toString().replaceAll(", $", "");
+    }
+
+    private String joinsToString() {
+        StringBuilder joinClauses = new StringBuilder().append(" ");
+        joins.forEach(join -> joinClauses.append(join.toSQL()).append(" "));
+        return joinClauses.toString().replaceAll(" $", "");
     }
 }
