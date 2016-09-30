@@ -42,7 +42,10 @@
                     </label>
                     </c:forEach>
                 </div>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-facetime-video"></span>
+                    Save
+                </button>
             </form>
         </div>
     </div>

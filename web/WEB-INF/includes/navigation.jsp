@@ -15,27 +15,29 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand">movies.com</a>
+            <a class="navbar-brand" href="/movies">
+                <span class="glyphicon glyphicon-hd-video"></span>
+                movies.com
+            </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li class="active">
-                    <a href="/movies">
-                        Movies <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-            </ul>
             <c:choose>
                 <c:when test="${user != null}">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a>Hi ${user.username()}</a></li>
                         <li>
-                            <a href="/movies/new">Add a movie</a>
+                            <a href="/movies/new">
+                                <span class="glyphicon glyphicon-facetime-video"></span>
+                                Add a movie
+                            </a>
                         </li>
                         <li>
-                            <a href="/logout">Logout</a>
+                            <a href="/logout">
+                                <span class="glyphicon glyphicon-off"></span>
+                                Logout
+                            </a>
                         </li>
                     </ul>
                 </c:when>

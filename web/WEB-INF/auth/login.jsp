@@ -44,7 +44,10 @@
                                 id="password"
                             >
                         </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-user"></span>
+                            Login
+                        </button>
                     </form>
                 </div>
             </div>
