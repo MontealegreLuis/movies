@@ -1,8 +1,8 @@
 package com.codeup.movies.setup;
 
-import com.codeup.db.IntColumn;
-import com.codeup.db.SchemaBuilder;
-import com.codeup.db.Table;
+import com.codeup.db.builders.schema.IntColumn;
+import com.codeup.db.builders.schema.SchemaBuilder;
+import com.codeup.db.builders.schema.Table;
 
 import java.sql.Connection;
 import java.sql.SQLException;

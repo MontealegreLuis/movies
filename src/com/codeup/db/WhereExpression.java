@@ -3,6 +3,8 @@
  */
 package com.codeup.db;
 
+import com.codeup.db.builders.HasSQLRepresentation;
+
 public class WhereExpression implements HasSQLRepresentation {
 
     private final String expression;

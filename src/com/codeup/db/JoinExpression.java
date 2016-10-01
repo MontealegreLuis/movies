@@ -4,6 +4,8 @@
 package com.codeup.db;
 
 
+import com.codeup.db.builders.HasSQLRepresentation;
+
 public class JoinExpression implements HasSQLRepresentation {
     private final String table;
     private final String on;

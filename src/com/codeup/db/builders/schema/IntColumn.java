@@ -1,9 +1,9 @@
 /**
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
-package com.codeup.db;
+package com.codeup.db.builders.schema;
 
-public class IntColumn extends Column{
+public class IntColumn extends Column {
     private boolean autoIncrements = false;
     private boolean unsigned = false;
 

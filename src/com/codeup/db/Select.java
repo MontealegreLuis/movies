@@ -3,6 +3,8 @@
  */
 package com.codeup.db;
 
+import com.codeup.db.builders.HasSQLRepresentation;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
