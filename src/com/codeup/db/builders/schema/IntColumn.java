@@ -39,6 +39,6 @@ public class IntColumn extends Column {
             isRequired() ? "NOT NULL" : "",
             hasDefaultValue() ? defaultValueToSQL() : "",
             isAutoIncrementing() ? "AUTO_INCREMENT" : ""
-        ).trim();
+        ).trim().replaceAll("( )+", " ");
     }
 }

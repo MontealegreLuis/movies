@@ -23,6 +23,6 @@ class StringColumn extends Column {
             length,
             isRequired() ? "NOT NULL" : "",
             hasDefaultValue() ? defaultValueToSQL() : ""
-        ).trim();
+        ).trim().replaceAll("( )+", " ");
     }
 }
