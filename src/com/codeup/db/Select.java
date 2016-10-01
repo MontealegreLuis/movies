@@ -10,47 +10,45 @@ import java.util.List;
 
 import static com.codeup.db.JoinExpression.*;
 
-public class QueryBuilder implements HasSQLRepresentation {
-    private List<String> select;
+public class Select implements HasSQLRepresentation {
+    private List<String> columns;
     private String table;
     private List<WhereExpression> whereExpressions;
     private List<JoinExpression> joins;
 
-    public QueryBuilder() {
-        select = new ArrayList<>();
+    private Select(String table) {
+        columns = new ArrayList<>();
         whereExpressions = new ArrayList<>();
         joins = new ArrayList<>();
+        this.table = table;
+    }
+
+    public static Select from(String table) {
+        return new Select(table);
     }
 
     @Override
     public String toSQL() {
-        assertFromHasBeenCalled();
-
         return String.format(
             "SELECT %s FROM %s%s%s",
-            selectToString(),
+            columnsToString(),
             table,
             joinsToString(),
             whereToString()
         );
     }
 
-    public QueryBuilder from(String table) {
-        this.table = table;
+    public Select select(String ...columns) {
+        Collections.addAll(this.columns, columns);
         return this;
     }
 
-    public QueryBuilder select(String ...columns) {
-        Collections.addAll(this.select, columns);
-        return this;
-    }
-
-    public QueryBuilder where(String expression) {
+    public Select where(String expression) {
         addWhere(expression, WhereExpression.Operator.AND);
         return this;
     }
 
-    public QueryBuilder whereIn(String column, int parametersCount) {
+    public Select whereIn(String column, int parametersCount) {
         String[] parameters = new String[parametersCount];
         Arrays.fill(parameters, "?");
         addWhere(String.format(
@@ -59,7 +57,7 @@ public class QueryBuilder implements HasSQLRepresentation {
         return this;
     }
 
-    public QueryBuilder orWhere(String expression) {
+    public Select orWhere(String expression) {
         addWhere(expression, WhereExpression.Operator.OR);
         return this;
     }
@@ -71,15 +69,9 @@ public class QueryBuilder implements HasSQLRepresentation {
         whereExpressions.add(WhereExpression.with(expression, operator));
     }
 
-    public QueryBuilder join(String table, String on) {
+    public Select join(String table, String on) {
         joins.add(new JoinExpression(table, on, Type.INNER));
         return this;
-    }
-
-    private void assertFromHasBeenCalled() {
-        if (table == null) {
-            throw new IllegalStateException("No table to select from was specified");
-        }
     }
 
     private String whereToString() {
@@ -92,12 +84,12 @@ public class QueryBuilder implements HasSQLRepresentation {
         ;
     }
 
-    private String selectToString() {
+    private String columnsToString() {
         StringBuilder columns = new StringBuilder();
-        if (select.isEmpty()) {
-            select.add("*");
+        if (this.columns.isEmpty()) {
+            this.columns.add("*");
         }
-        select.forEach(column -> columns.append(column).append(", "));
+        this.columns.forEach(column -> columns.append(column).append(", "));
         return columns.toString().replaceAll(", $", "");
     }
 

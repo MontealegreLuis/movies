@@ -3,7 +3,7 @@
  */
 package com.codeup.movies.jdbc;
 
-import com.codeup.db.QueryBuilder;
+import com.codeup.db.Select;
 import com.codeup.movies.Category;
 import com.codeup.movies.Movie;
 import com.codeup.movies.Movies;
@@ -63,7 +63,7 @@ public class JdbcMovies implements Movies {
     public Movie with(int id) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                new QueryBuilder().from("movies").where("id = ?").toSQL()
+                Select.from("movies").where("id = ?").toSQL()
             );
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -82,9 +82,9 @@ public class JdbcMovies implements Movies {
     private Movie addCategoriesTo(Movie movie) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                new QueryBuilder()
-                    .select("c.*")
+                Select
                     .from("categories c")
+                    .select("c.*")
                     .join("movies_categories mc", "mc.category_id = c.id")
                     .where("mc.movie_id = ?")
                     .toSQL()
@@ -125,7 +125,7 @@ public class JdbcMovies implements Movies {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(
-                new QueryBuilder().from("movies").toSQL()
+                Select.from("movies").toSQL()
             );
             return populateMovies(resultSet);
         } catch (SQLException e) {
@@ -137,9 +137,9 @@ public class JdbcMovies implements Movies {
     public List<Movie> inCategory(String category) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                new QueryBuilder()
-                    .select("m.*")
+                Select
                     .from("movies m")
+                    .select("m.*")
                     .join("movies_categories mc", "mc.movie_id = m.id")
                     .join("categories c", "c.id = mc.category_id")
                     .where("c.id = ?")

@@ -3,7 +3,7 @@
  */
 package com.codeup.movies.jdbc;
 
-import com.codeup.db.QueryBuilder;
+import com.codeup.db.Select;
 import com.codeup.movies.Categories;
 import com.codeup.movies.Category;
 
@@ -25,7 +25,7 @@ public class JdbcCategories implements Categories {
     public Category named(String name) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                new QueryBuilder().from("categories").where("name = ?").toSQL()
+                Select.from("categories").where("name = ?").toSQL()
             );
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
@@ -53,7 +53,7 @@ public class JdbcCategories implements Categories {
     public List<Category> with(String... categories) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                new QueryBuilder()
+                Select
                     .from("categories")
                     .whereIn("id", categories.length)
                     .toSQL()
@@ -72,7 +72,7 @@ public class JdbcCategories implements Categories {
     public List<Category> all() {
         try {
             ResultSet resultSet = connection.createStatement().executeQuery(
-                new QueryBuilder().from("categories").toSQL()
+                Select.from("categories").toSQL()
             );
             return populateCategories(resultSet);
         } catch (SQLException e) {

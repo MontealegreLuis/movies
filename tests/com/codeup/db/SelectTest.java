@@ -3,46 +3,35 @@
  */
 package com.codeup.db;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class QueryBuilderTest {
+public class SelectTest {
 
-    private QueryBuilder builder;
-
-    @Before
-    public void setUp() throws Exception {
-        builder = new QueryBuilder();
-    }
+    private Select select;
 
     @Test
     public void it_sets_default_value_for_select_clause() {
-        builder.from("users");
-        assertEquals("SELECT * FROM users", builder.toSQL());
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void it_errors_out_if_no_from_clause_is_specified() {
-        builder.toSQL();
+        select = Select.from("users");
+        assertEquals("SELECT * FROM users", select.toSQL());
     }
 
     @Test
     public void it_selects_specific_columns() {
-        builder.select("username", "password").from("users");
-        assertEquals("SELECT username, password FROM users", builder.toSQL());
+        select = Select.from("users").select("username", "password");
+        assertEquals("SELECT username, password FROM users", select.toSQL());
     }
 
     @Test
     public void it_converts_to_sql_a_single_where_expression() {
-        builder.from("users").where("username = ?");
-        assertEquals("SELECT * FROM users WHERE username = ?", builder.toSQL());
+        select = Select.from("users").where("username = ?");
+        assertEquals("SELECT * FROM users WHERE username = ?", select.toSQL());
     }
 
     @Test
     public void it_converts_to_sql_several_and_where_expressions() {
-        builder
+        select = Select
             .from("users")
             .where("username = ?")
             .where("password = ?")
@@ -50,13 +39,13 @@ public class QueryBuilderTest {
         ;
         assertEquals(
             "SELECT * FROM users WHERE username = ? AND password = ? AND name LIKE ?",
-            builder.toSQL()
+            select.toSQL()
         );
     }
 
     @Test
     public void it_converts_to_sql_several_or_where_expressions() {
-        builder
+        select = Select
             .from("users")
             .where("username = ?")
             .orWhere("password = ?")
@@ -64,13 +53,13 @@ public class QueryBuilderTest {
         ;
         assertEquals(
             "SELECT * FROM users WHERE username = ? OR password = ? OR name LIKE ?",
-            builder.toSQL()
+            select.toSQL()
         );
     }
 
     @Test
     public void it_converts_to_sql_a_combination_of_where_expressions() {
-        builder
+        select = Select
             .from("users")
             .where("username = ?")
             .orWhere("password = ?")
@@ -78,41 +67,41 @@ public class QueryBuilderTest {
         ;
         assertEquals(
             "SELECT * FROM users WHERE username = ? OR password = ? AND name LIKE ?",
-            builder.toSQL()
+            select.toSQL()
         );
     }
 
     @Test
     public void it_converts_to_sql_an_in_statement() {
-        builder.from("users").whereIn("username", 2);
-        assertEquals("SELECT * FROM users WHERE username IN (?, ?)", builder.toSQL());
+        select = Select.from("users").whereIn("username", 2);
+        assertEquals("SELECT * FROM users WHERE username IN (?, ?)", select.toSQL());
     }
 
     @Test
     public void it_converts_to_sql_a_join_statement() {
-        builder.from("users u").join("roles r", "u.role_id = r.id");
+        select = Select.from("users u").join("roles r", "u.role_id = r.id");
         assertEquals(
             "SELECT * FROM users u INNER JOIN roles r ON u.role_id = r.id",
-            builder.toSQL()
+            select.toSQL()
         );
     }
 
     @Test
     public void it_converts_to_sql_several_join_statements() {
-        builder
+        select = Select
             .from("posts p")
             .join("posts_tags pt", "pt.post_id = p.id")
             .join("tags t", "pt.tag_id = t.id")
         ;
         assertEquals(
             "SELECT * FROM posts p INNER JOIN posts_tags pt ON pt.post_id = p.id INNER JOIN tags t ON pt.tag_id = t.id",
-            builder.toSQL()
+            select.toSQL()
         );
     }
 
     @Test
     public void it_converts_to_sql_several_join_statements_with_a_where_clause() {
-        builder
+        select = Select
             .from("posts p")
             .join("posts_tags pt", "pt.post_id = p.id")
             .join("tags t", "pt.tag_id = t.id")
@@ -120,13 +109,13 @@ public class QueryBuilderTest {
         ;
         assertEquals(
             "SELECT * FROM posts p INNER JOIN posts_tags pt ON pt.post_id = p.id INNER JOIN tags t ON pt.tag_id = t.id WHERE p.id = ?",
-            builder.toSQL()
+            select.toSQL()
         );
     }
 
     @Test
     public void it_converts_to_sql_several_join_statements_with_two_where_clauses() {
-        builder
+        select = Select
             .from("posts p")
             .join("posts_tags pt", "pt.post_id = p.id")
             .join("tags t", "pt.tag_id = t.id")
@@ -135,7 +124,7 @@ public class QueryBuilderTest {
         ;
         assertEquals(
             "SELECT * FROM posts p INNER JOIN posts_tags pt ON pt.post_id = p.id INNER JOIN tags t ON pt.tag_id = t.id WHERE p.id = ? AND p.created_at > ?",
-            builder.toSQL()
+            select.toSQL()
         );
     }
 }

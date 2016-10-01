@@ -5,6 +5,7 @@ package com.codeup.auth.jdbc;
 
 import com.codeup.auth.User;
 import com.codeup.auth.Users;
+import com.codeup.db.Select;
 
 import java.sql.*;
 
@@ -34,7 +35,7 @@ public class JdbcUsers implements Users {
     public User identifiedBy(String username) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                "SELECT * FROM users WHERE username = ?"
+                Select.from("users").where("username = ?").toSQL()
             );
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
