@@ -47,19 +47,21 @@ public class Table implements HasSQLRepresentation {
         return (IntColumn) id;
     }
 
-    public ForeignKey foreign(IntColumn column) {
+    public ForeignKey foreign(Column column) {
         ForeignKey foreignKey = new ForeignKey(column);
         foreignKeys.add(foreignKey);
         return foreignKey;
     }
 
-    public PrimaryKey primary(IntColumn... columns) {
+    public PrimaryKey primary(Column... columns) {
         primaryKey = PrimaryKey.composed(columns);
         return primaryKey;
     }
 
     @Override
     public String toSQL() {
+        assertPrimaryKeyIsPresent();
+
         return String.format(
             "CREATE TABLE %s (%s %s %s) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;",
             name,
@@ -67,6 +69,12 @@ public class Table implements HasSQLRepresentation {
             primaryKey.toSQL(),
             foreignKeysSQL()
         );
+    }
+
+    private void assertPrimaryKeyIsPresent() {
+        if (primaryKey == null) {
+            throw new IllegalStateException("Cannot create table without a primary key");
+        }
     }
 
     private String foreignKeysSQL() {
