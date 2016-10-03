@@ -6,7 +6,6 @@ package com.codeup.db.builders.queries;
 import com.codeup.db.builders.HasSQLRepresentation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -60,13 +59,11 @@ public class Insert implements HasSQLRepresentation {
     private String columnsToString() {
         if (columns.size() == 0) return "";
 
-        return "(" + String.join(", ", this.columns.toArray(new String[]{})) + ")";
+        return "(" + String.join(", ", columns.toArray(new String[]{})) + ")";
     }
 
     private String valuesToString() {
-        String[] parameters = new String[valuesCount()];
-        Arrays.fill(parameters, "?");
-        return "VALUES (" + String.join(", ", parameters) + ")";
+        return "VALUES " + ParameterPlaceholders.generate(valuesCount());
     }
 
     private int valuesCount() {

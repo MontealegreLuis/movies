@@ -6,7 +6,6 @@ package com.codeup.db.builders.queries;
 import com.codeup.db.builders.HasSQLRepresentation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,10 +50,8 @@ public class Select implements HasSQLRepresentation {
     }
 
     public Select whereIn(String column, int parametersCount) {
-        String[] parameters = new String[parametersCount];
-        Arrays.fill(parameters, "?");
         addWhere(String.format(
-            "%s IN (%s)", column, String.join(", ", parameters)
+            "%s IN %s", column, ParameterPlaceholders.generate(parametersCount)
         ), null);
         return this;
     }
