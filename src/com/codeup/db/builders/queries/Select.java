@@ -1,7 +1,7 @@
 /**
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
-package com.codeup.db;
+package com.codeup.db.builders.queries;
 
 import com.codeup.db.builders.HasSQLRepresentation;
 
@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.codeup.db.JoinExpression.*;
+import static com.codeup.db.builders.queries.JoinExpression.*;
 
 public class Select implements HasSQLRepresentation {
     private List<String> columns;

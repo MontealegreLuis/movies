@@ -5,7 +5,7 @@ package com.codeup.auth.jdbc;
 
 import com.codeup.auth.User;
 import com.codeup.auth.Users;
-import com.codeup.db.Select;
+import com.codeup.db.builders.queries.Select;
 
 import java.sql.*;
 

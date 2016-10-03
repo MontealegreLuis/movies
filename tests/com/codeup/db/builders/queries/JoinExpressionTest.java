@@ -1,11 +1,11 @@
 /**
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
-package com.codeup.db;
+package com.codeup.db.builders.queries;
 
 import org.junit.Test;
 
-import static com.codeup.db.JoinExpression.*;
+import static com.codeup.db.builders.queries.JoinExpression.*;
 import static org.junit.Assert.*;
 
 public class JoinExpressionTest {

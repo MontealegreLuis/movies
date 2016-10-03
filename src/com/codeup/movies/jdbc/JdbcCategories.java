@@ -3,7 +3,7 @@
  */
 package com.codeup.movies.jdbc;
 
-import com.codeup.db.Select;
+import com.codeup.db.builders.queries.Select;
 import com.codeup.movies.Categories;
 import com.codeup.movies.Category;
 
