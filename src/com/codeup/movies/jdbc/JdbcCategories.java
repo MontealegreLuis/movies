@@ -3,6 +3,7 @@
  */
 package com.codeup.movies.jdbc;
 
+import com.codeup.db.builders.queries.Insert;
 import com.codeup.db.builders.queries.Select;
 import com.codeup.movies.Categories;
 import com.codeup.movies.Category;
@@ -39,7 +40,7 @@ public class JdbcCategories implements Categories {
     public void add(Category category) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO categories (name) VALUES (?)"
+                Insert.into("categories").columns("name").toSQL()
             );
             statement.setString(1, category.name());
             statement.executeUpdate();

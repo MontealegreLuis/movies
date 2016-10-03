@@ -3,6 +3,7 @@
  */
 package com.codeup.movies.jdbc;
 
+import com.codeup.db.builders.queries.Insert;
 import com.codeup.db.builders.queries.Select;
 import com.codeup.movies.Category;
 import com.codeup.movies.Movie;
@@ -23,7 +24,7 @@ public class JdbcMovies implements Movies {
     public void add(Movie movie) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO movies (title, rating) VALUES (?, ?)",
+                Insert.into("movies").columns("title", "rating").toSQL(),
                 Statement.RETURN_GENERATED_KEYS
             );
             statement.setString(1, movie.title());
@@ -43,7 +44,7 @@ public class JdbcMovies implements Movies {
 
     private void categorize(Movie movie) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(
-            "INSERT INTO movies_categories (movie_id, category_id) VALUES (?, ?)"
+            Insert.into("movies_categories").columns("movie_id", "category_id").toSQL()
         );
         movie.categories().forEach(category -> attach(movie, category, statement));
         statement.close();
