@@ -5,18 +5,14 @@ package com.codeup.db.builders.queries;
 
 import com.codeup.db.builders.HasSQLRepresentation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class Insert implements HasSQLRepresentation {
     private String table;
     private int valuesCount;
-    private List<String> columns;
+    private Columns columns;
 
     private Insert(String table) {
         this.table = table;
-        columns = new ArrayList<>();
+        columns = Columns.empty();
     }
 
     public static Insert into(String table) {
@@ -29,7 +25,7 @@ public class Insert implements HasSQLRepresentation {
     }
 
     public Insert columns(String... columns) {
-        Collections.addAll(this.columns, columns);
+        this.columns.add(columns);
         return this;
     }
 
@@ -59,7 +55,7 @@ public class Insert implements HasSQLRepresentation {
     private String columnsToString() {
         if (columns.size() == 0) return "";
 
-        return "(" + String.join(", ", columns.toArray(new String[]{})) + ")";
+        return "(" + columns.toSQL() + ")";
     }
 
     private String valuesToString() {

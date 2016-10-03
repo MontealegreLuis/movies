@@ -6,19 +6,18 @@ package com.codeup.db.builders.queries;
 import com.codeup.db.builders.HasSQLRepresentation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.codeup.db.builders.queries.JoinExpression.*;
 
 public class Select implements HasSQLRepresentation {
-    private List<String> columns;
+    private Columns columns;
     private String table;
     private List<WhereExpression> whereExpressions;
     private List<JoinExpression> joins;
 
     private Select(String table) {
-        columns = new ArrayList<>();
+        columns = Columns.empty();
         whereExpressions = new ArrayList<>();
         joins = new ArrayList<>();
         this.table = table;
@@ -40,7 +39,7 @@ public class Select implements HasSQLRepresentation {
     }
 
     public Select select(String ...columns) {
-        Collections.addAll(this.columns, columns);
+        this.columns.add(columns);
         return this;
     }
 
@@ -84,12 +83,10 @@ public class Select implements HasSQLRepresentation {
     }
 
     private String columnsToString() {
-        StringBuilder columns = new StringBuilder();
-        if (this.columns.isEmpty()) {
-            this.columns.add("*");
+        if (columns.isEmpty()) {
+            columns.add("*");
         }
-        this.columns.forEach(column -> columns.append(column).append(", "));
-        return columns.toString().replaceAll(", $", "");
+        return this.columns.toSQL();
     }
 
     private String joinsToString() {
