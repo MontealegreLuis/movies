@@ -24,7 +24,7 @@ public class ViewMoviesServlet extends HttpServlet {
         try {
             action = MoviesContainer.viewMovies();
         } catch (Exception e) {
-            throw new RuntimeException("Cannot initialize ViewMovies action.");
+            throw new RuntimeException(e);
         }
     }
 

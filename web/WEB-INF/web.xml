@@ -9,6 +9,12 @@
             <trim-directive-whitespaces>true</trim-directive-whitespaces>
         </jsp-property-group>
     </jsp-config>
+    <resource-ref>
+        <description>DB Connection</description>
+        <res-ref-name>jdbc/movies_db</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.codeup.auth.servlets.LoginServlet</servlet-class>

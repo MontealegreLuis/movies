@@ -8,19 +8,20 @@ import com.codeup.auth.Users;
 import com.codeup.auth.actions.AuthenticateUser;
 import com.codeup.db.di.DbContainer;
 
+import javax.naming.NamingException;
 import java.sql.SQLException;
 
 public class AuthContainer {
     private static AuthenticateUser authenticateUser;
 
-    public static AuthenticateUser authenticateUser() throws SQLException, ClassNotFoundException {
+    public static AuthenticateUser authenticateUser() throws SQLException, NamingException {
         if (authenticateUser == null) {
             authenticateUser = new AuthenticateUser(users());
         }
         return authenticateUser;
     }
 
-    private static Users users() throws SQLException, ClassNotFoundException {
+    private static Users users() throws SQLException, NamingException {
         return new JdbcUsers(DbContainer.connection());
     }
 }
