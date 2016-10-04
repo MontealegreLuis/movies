@@ -85,7 +85,7 @@ public class JdbcMovies implements Movies {
             PreparedStatement statement = connection.prepareStatement(
                 Select
                     .from("categories c")
-                    .select("c.*")
+                    .columns("c.*")
                     .join("movies_categories mc", "mc.category_id = c.id")
                     .where("mc.movie_id = ?")
                     .toSQL()
@@ -140,7 +140,7 @@ public class JdbcMovies implements Movies {
             PreparedStatement statement = connection.prepareStatement(
                 Select
                     .from("movies m")
-                    .select("m.*")
+                    .columns("m.*")
                     .join("movies_categories mc", "mc.movie_id = m.id")
                     .join("categories c", "c.id = mc.category_id")
                     .where("c.id = ?")

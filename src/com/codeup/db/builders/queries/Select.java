@@ -38,7 +38,7 @@ public class Select implements HasSQLRepresentation {
         );
     }
 
-    public Select select(String ...columns) {
+    public Select columns(String ...columns) {
         this.columns.add(columns);
         return this;
     }
