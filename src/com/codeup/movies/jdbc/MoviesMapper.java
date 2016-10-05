@@ -3,6 +3,7 @@
  */
 package com.codeup.movies.jdbc;
 
+import com.codeup.db.RowMapper;
 import com.codeup.movies.Movie;
 
 import java.sql.ResultSet;

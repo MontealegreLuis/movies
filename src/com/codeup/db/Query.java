@@ -6,7 +6,6 @@ package com.codeup.db;
 import com.codeup.db.builders.queries.Insert;
 import com.codeup.db.builders.queries.Select;
 import com.codeup.db.builders.queries.Update;
-import com.codeup.movies.jdbc.RowMapper;
 
 import java.sql.*;
 import java.util.ArrayList;
