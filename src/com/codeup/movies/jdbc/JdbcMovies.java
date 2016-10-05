@@ -101,13 +101,10 @@ public class JdbcMovies implements Movies {
     @Override
     public void update(Movie movie) {
         try {
-            PreparedStatement statement = connection.prepareStatement(
-                Update.table("movies").columns("title", "rating").where("id = ?").toSQL()
+            query.update(
+                Update.table("movies").columns("title", "rating").where("id = ?"),
+                movie
             );
-            statement.setString(1, movie.title());
-            statement.setInt(2, movie.rating());
-            statement.setInt(3, movie.id());
-            statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Cannot update movie", e);
         }

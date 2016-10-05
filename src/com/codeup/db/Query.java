@@ -5,6 +5,7 @@ package com.codeup.db;
 
 import com.codeup.db.builders.queries.Insert;
 import com.codeup.db.builders.queries.Select;
+import com.codeup.db.builders.queries.Update;
 import com.codeup.movies.jdbc.RowMapper;
 
 import java.sql.*;
@@ -32,6 +33,16 @@ public class Query<T> {
         }
     }
 
+    public void update(Update update, T entity) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(
+            update.toSQL()
+        )) {
+            mapColumns(entity, statement);
+            mapIdentifier(entity, statement);
+            statement.executeUpdate();
+        }
+    }
+
     public T selectOne(Select select, Object ...parameters) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(
             select.toSQL()
@@ -53,6 +64,15 @@ public class Query<T> {
 
     private void mapColumns(T entity, PreparedStatement statement) {
         Map<Integer, Object> columns = mapper.mapColumns(entity);
+        setParameters(statement, columns);
+    }
+
+    private void mapIdentifier(T entity, PreparedStatement statement) {
+        Map<Integer, Object> columns = mapper.mapIdentifier(entity);
+        setParameters(statement, columns);
+    }
+
+    private void setParameters(PreparedStatement statement, Map<Integer, Object> columns) {
         columns.forEach((k, v) -> {
             try {
                 statement.setObject(k.intValue(), v);
