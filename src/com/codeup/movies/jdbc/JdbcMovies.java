@@ -5,6 +5,7 @@ package com.codeup.movies.jdbc;
 
 import com.codeup.db.builders.queries.Insert;
 import com.codeup.db.builders.queries.Select;
+import com.codeup.db.builders.queries.Update;
 import com.codeup.movies.Category;
 import com.codeup.movies.Movie;
 import com.codeup.movies.Movies;
@@ -110,7 +111,7 @@ public class JdbcMovies implements Movies {
     public void update(Movie movie) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                "UPDATE movies SET title = ?, rating = ? WHERE id = ?"
+                Update.table("movies").columns("title", "rating").where("id = ?").toSQL()
             );
             statement.setString(1, movie.title());
             statement.setInt(2, movie.rating());

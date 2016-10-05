@@ -5,6 +5,7 @@ package com.codeup.auth.jdbc;
 
 import com.codeup.auth.User;
 import com.codeup.auth.Users;
+import com.codeup.db.builders.queries.Insert;
 import com.codeup.db.builders.queries.Select;
 
 import java.sql.*;
@@ -20,7 +21,7 @@ public class JdbcUsers implements Users {
     public void add(User user) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO users (username, password) VALUES (?, ?)"
+                Insert.into("users").columns("username", "password").toSQL()
             );
             statement.setString(1, user.username());
             statement.setString(2, user.password());
