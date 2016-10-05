@@ -17,7 +17,7 @@ public class Select implements HasSQLRepresentation {
     private List<JoinExpression> joins;
 
     private Select(String table) {
-        columns = Columns.empty();
+        columns = Columns.empty().defaultTo("*");
         where = Where.empty();
         joins = new ArrayList<>();
         this.table = table;
@@ -61,17 +61,11 @@ public class Select implements HasSQLRepresentation {
     public String toSQL() {
         return String.format(
             "SELECT %s FROM %s %s %s",
-            columnsToString(),
+            columns.toSQL(),
             table,
             joinsToString(),
             where.toSQL()
         ).trim().replaceAll("( )+", " ");
-    }
-
-    private String columnsToString() {
-        if (columns.isEmpty()) columns.add("*");
-
-        return this.columns.toSQL();
     }
 
     private String joinsToString() {

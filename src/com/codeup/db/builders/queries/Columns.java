@@ -11,6 +11,7 @@ import java.util.List;
 
 public class Columns implements HasSQLRepresentation {
     private List<String> columns;
+    private String defaultColumn;
 
     private Columns() {
         columns = new ArrayList<>();
@@ -18,6 +19,11 @@ public class Columns implements HasSQLRepresentation {
 
     public static Columns empty() {
         return new Columns();
+    }
+
+    public Columns defaultTo(String column) {
+        defaultColumn = column;
+        return this;
     }
 
     public void add(String... columns) {
@@ -34,6 +40,8 @@ public class Columns implements HasSQLRepresentation {
 
     @Override
     public String toSQL() {
+        if (columns.isEmpty()) columns.add(defaultColumn);
+
         return String.join(", ", columns.toArray(new String[]{}));
     }
 }
