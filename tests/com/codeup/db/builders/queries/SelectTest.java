@@ -105,10 +105,10 @@ public class SelectTest {
         select = Select
             .from("posts p")
             .join("posts_tags pt", "pt.post_id = p.id")
-            .join("tags t", "pt.tag_id = t.id")
+            .outerJoin("tags t", "pt.tag_id = t.id")
         ;
         assertEquals(
-            "SELECT * FROM posts p INNER JOIN posts_tags pt ON pt.post_id = p.id INNER JOIN tags t ON pt.tag_id = t.id",
+            "SELECT * FROM posts p INNER JOIN posts_tags pt ON pt.post_id = p.id OUTER JOIN tags t ON pt.tag_id = t.id",
             select.toSQL()
         );
     }
@@ -117,12 +117,12 @@ public class SelectTest {
     public void it_converts_to_sql_several_join_statements_with_a_where_clause() {
         select = Select
             .from("posts p")
-            .join("posts_tags pt", "pt.post_id = p.id")
+            .outerJoin("posts_tags pt", "pt.post_id = p.id")
             .join("tags t", "pt.tag_id = t.id")
             .where("p.id = ?")
         ;
         assertEquals(
-            "SELECT * FROM posts p INNER JOIN posts_tags pt ON pt.post_id = p.id INNER JOIN tags t ON pt.tag_id = t.id WHERE p.id = ?",
+            "SELECT * FROM posts p OUTER JOIN posts_tags pt ON pt.post_id = p.id INNER JOIN tags t ON pt.tag_id = t.id WHERE p.id = ?",
             select.toSQL()
         );
     }
@@ -132,12 +132,12 @@ public class SelectTest {
         select = Select
             .from("posts p")
             .join("posts_tags pt", "pt.post_id = p.id")
-            .join("tags t", "pt.tag_id = t.id")
+            .outerJoin("tags t", "pt.tag_id = t.id")
             .where("p.id = ?")
             .where("p.created_at > ?")
         ;
         assertEquals(
-            "SELECT * FROM posts p INNER JOIN posts_tags pt ON pt.post_id = p.id INNER JOIN tags t ON pt.tag_id = t.id WHERE p.id = ? AND p.created_at > ?",
+            "SELECT * FROM posts p INNER JOIN posts_tags pt ON pt.post_id = p.id OUTER JOIN tags t ON pt.tag_id = t.id WHERE p.id = ? AND p.created_at > ?",
             select.toSQL()
         );
     }

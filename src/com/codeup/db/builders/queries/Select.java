@@ -5,21 +5,16 @@ package com.codeup.db.builders.queries;
 
 import com.codeup.db.builders.HasSQLRepresentation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.codeup.db.builders.queries.JoinExpression.*;
-
 public class Select implements HasSQLRepresentation {
     private Columns columns;
     private String table;
     private Where where;
-    private List<JoinExpression> joins;
+    private Join join;
 
     private Select(String table) {
         columns = Columns.empty().defaultTo("*");
         where = Where.empty();
-        joins = new ArrayList<>();
+        join = Join.empty();
         this.table = table;
     }
 
@@ -53,7 +48,12 @@ public class Select implements HasSQLRepresentation {
     }
 
     public Select join(String table, String on) {
-        joins.add(new JoinExpression(table, on, Type.INNER));
+        join.inner(table, on);
+        return this;
+    }
+
+    public Select outerJoin(String table, String on) {
+        join.outer(table, on);
         return this;
     }
 
@@ -63,14 +63,8 @@ public class Select implements HasSQLRepresentation {
             "SELECT %s FROM %s %s %s",
             columns.toSQL(),
             table,
-            joinsToString(),
+            join.toSQL(),
             where.toSQL()
         ).trim().replaceAll("( )+", " ");
-    }
-
-    private String joinsToString() {
-        StringBuilder joinClauses = new StringBuilder().append(" ");
-        joins.forEach(join -> joinClauses.append(join.toSQL()).append(" "));
-        return joinClauses.toString().replaceAll(" $", "");
     }
 }
