@@ -9,6 +9,8 @@ import com.codeup.db.builders.queries.Update;
 import com.codeup.movies.jdbc.RowMapper;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Query<T> {
@@ -48,7 +50,23 @@ public class Query<T> {
             select.toSQL()
         )) {
             mapParameters(statement, parameters);
-            return mapper.mapRow(statement.executeQuery());
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return mapper.mapRow(resultSet);
+        }
+    }
+
+    public List<T> selectMany(Select select, Object ...parameters) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(
+            select.toSQL()
+        )) {
+            mapParameters(statement, parameters);
+            ResultSet resultSet = statement.executeQuery();
+            List<T> entities = new ArrayList<>();
+            while (resultSet.next()) {
+                entities.add(mapper.mapRow(resultSet));
+            }
+            return entities;
         }
     }
 

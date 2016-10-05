@@ -13,7 +13,6 @@ import java.util.Map;
 public class MoviesMapper implements RowMapper<Movie> {
     @Override
     public Movie mapRow(ResultSet resultSet) throws SQLException {
-        resultSet.next();
         return new Movie(
             resultSet.getInt("id"),
             resultSet.getString("title"),

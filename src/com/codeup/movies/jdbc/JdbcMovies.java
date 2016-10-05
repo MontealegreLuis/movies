@@ -113,11 +113,7 @@ public class JdbcMovies implements Movies {
     @Override
     public List<Movie> all() {
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(
-                Select.from("movies").toSQL()
-            );
-            return populateMovies(resultSet);
+            return query.selectMany(Select.from("movies"));
         } catch (SQLException e) {
             throw new RuntimeException("Cannot retrieve the movies", e);
         }
@@ -126,32 +122,17 @@ public class JdbcMovies implements Movies {
     @Override
     public List<Movie> inCategory(String category) {
         try {
-            PreparedStatement statement = connection.prepareStatement(
+            return query.selectMany(
                 Select
                     .from("movies m")
                     .columns("m.*")
                     .join("movies_categories mc", "mc.movie_id = m.id")
-                    .join("categories c", "c.id = mc.category_id")
-                    .where("c.id = ?")
-                    .toSQL()
+                    .join("categories c", "c.id = mc.category_id") // Is it needed?
+                    .where("c.id = ?"),
+                category
             );
-            statement.setString(1, category);
-
-            return populateMovies(statement.executeQuery());
         } catch (SQLException e) {
             throw new RuntimeException("Cannot filter movies by category", e);
         }
-    }
-
-    private ArrayList<Movie> populateMovies(ResultSet resultSet) throws SQLException {
-        ArrayList<Movie> movies = new ArrayList<>();
-        while (resultSet.next()) {
-            movies.add(new Movie(
-                resultSet.getInt("id"),
-                resultSet.getString("title"),
-                resultSet.getInt("rating")
-            ));
-        }
-        return movies;
     }
 }
