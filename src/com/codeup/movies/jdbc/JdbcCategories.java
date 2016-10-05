@@ -56,7 +56,7 @@ public class JdbcCategories implements Categories {
             PreparedStatement statement = connection.prepareStatement(
                 Select
                     .from("categories")
-                    .whereIn("id", categories.length)
+                    .where("id", categories.length)
                     .toSQL()
             );
             for (int i = 0; i < categories.length; i++) {

@@ -73,8 +73,22 @@ public class SelectTest {
 
     @Test
     public void it_converts_to_sql_an_in_statement() {
-        select = Select.from("users").whereIn("username", 2);
+        select = Select.from("users").where("username", 2);
         assertEquals("SELECT * FROM users WHERE username IN (?, ?)", select.toSQL());
+    }
+
+    @Test
+    public void it_converts_to_sql_an_several_in_statement() {
+        select = Select
+            .from("users")
+            .where("username", 2)
+            .orWhere("id", 3)
+            .where("name", 3)
+        ;
+        assertEquals(
+            "SELECT * FROM users WHERE username IN (?, ?) OR id IN (?, ?, ?) AND name IN (?, ?, ?)",
+            select.toSQL()
+        );
     }
 
     @Test

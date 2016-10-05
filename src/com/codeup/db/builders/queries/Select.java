@@ -37,13 +37,23 @@ public class Select implements HasSQLRepresentation {
         return this;
     }
 
-    public Select whereIn(String column, int parametersCount) {
+    public Select where(String column, int parametersCount) {
         where.and(column, parametersCount);
         return this;
     }
 
     public Select orWhere(String expression) {
         where.or(expression);
+        return this;
+    }
+
+    public Select orWhere(String column, int parametersCount) {
+        where.or(column, parametersCount);
+        return this;
+    }
+
+    public Select join(String table, String on) {
+        joins.add(new JoinExpression(table, on, Type.INNER));
         return this;
     }
 
@@ -58,15 +68,9 @@ public class Select implements HasSQLRepresentation {
         ).trim().replaceAll("( )+", " ");
     }
 
-    public Select join(String table, String on) {
-        joins.add(new JoinExpression(table, on, Type.INNER));
-        return this;
-    }
-
     private String columnsToString() {
-        if (columns.isEmpty()) {
-            columns.add("*");
-        }
+        if (columns.isEmpty()) columns.add("*");
+
         return this.columns.toSQL();
     }
 
