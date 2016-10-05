@@ -10,5 +10,5 @@ public interface Movies {
     List<Movie> all();
     List<Movie> inCategory(String category);
     void update(Movie movie);
-    void add(Movie movie);
+    Movie add(Movie movie);
 }

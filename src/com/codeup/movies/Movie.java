@@ -28,10 +28,6 @@ public class Movie {
         this.categories = categories;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void rate(int rate) {
         rating = rate;
     }
@@ -56,7 +52,12 @@ public class Movie {
         return categories;
     }
 
-    public void addCategories(List<Category> categories) {
+    public boolean isCategorized() {
+        return !categories.isEmpty();
+    }
+
+    public Movie addCategories(List<Category> categories) {
         this.categories = categories;
+        return this;
     }
 }

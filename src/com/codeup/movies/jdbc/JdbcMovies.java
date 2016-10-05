@@ -3,6 +3,7 @@
  */
 package com.codeup.movies.jdbc;
 
+import com.codeup.db.Query;
 import com.codeup.db.builders.queries.Insert;
 import com.codeup.db.builders.queries.Select;
 import com.codeup.db.builders.queries.Update;
@@ -16,34 +17,33 @@ import java.util.List;
 
 public class JdbcMovies implements Movies {
     private Connection connection;
+    private Query<Movie> query;
 
     public JdbcMovies(Connection connection) {
         this.connection = connection;
+        query = new Query<>(connection);
     }
 
     @Override
-    public void add(Movie movie) {
+    public Movie add(Movie movie) {
         try {
-            PreparedStatement statement = connection.prepareStatement(
-                Insert.into("movies").columns("title", "rating").toSQL(),
-                Statement.RETURN_GENERATED_KEYS
+            int id = query.insert(
+                Insert.into("movies").columns("title", "rating"),
+                movie,
+                new MoviesMapper()
             );
-            statement.setString(1, movie.title());
-            statement.setInt(2, movie.rating());
-            statement.executeUpdate();
-            ResultSet key = statement.getGeneratedKeys();
-            key.next();
-            movie.setId(key.getInt(1));
-            statement.close();
-            if (movie.categories() != null) {
-                categorize(movie);
+            Movie newMovie = new Movie(id, movie.title(), movie.rating());
+            if (movie.isCategorized()) {
+                newMovie.addCategories(movie.categories());
+                addCategories(newMovie);
             }
+            return newMovie;
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot add movie", e);
+            throw new RuntimeException(e);
         }
     }
 
-    private void categorize(Movie movie) throws SQLException {
+    private void addCategories(Movie movie) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(
             Insert.into("movies_categories").columns("movie_id", "category_id").toSQL()
         );
@@ -57,7 +57,7 @@ public class JdbcMovies implements Movies {
             statement.setInt(2, category.id());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot categorize movie", e);
+            throw new RuntimeException("Cannot addCategories movie", e);
         }
     }
 
