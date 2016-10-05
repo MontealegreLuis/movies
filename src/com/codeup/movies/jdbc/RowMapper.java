@@ -3,14 +3,13 @@
  */
 package com.codeup.movies.jdbc;
 
-import com.codeup.movies.Movie;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
 public interface RowMapper <T> {
-    Movie mapRow(ResultSet resultSet) throws SQLException;
+    T mapRow(ResultSet resultSet) throws SQLException;
 
     Map<Integer, Object> mapColumns(T entity);
 

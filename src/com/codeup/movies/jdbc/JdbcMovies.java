@@ -21,7 +21,7 @@ public class JdbcMovies implements Movies {
 
     public JdbcMovies(Connection connection) {
         this.connection = connection;
-        query = new Query<>(connection);
+        query = new Query<>(connection, new MoviesMapper());
     }
 
     @Override
@@ -29,8 +29,7 @@ public class JdbcMovies implements Movies {
         try {
             int id = query.insert(
                 Insert.into("movies").columns("title", "rating"),
-                movie,
-                new MoviesMapper()
+                movie
             );
             Movie newMovie = new Movie(id, movie.title(), movie.rating());
             if (movie.isCategorized()) {
@@ -64,17 +63,9 @@ public class JdbcMovies implements Movies {
     @Override
     public Movie with(int id) {
         try {
-            PreparedStatement statement = connection.prepareStatement(
-                Select.from("movies").where("id = ?").toSQL()
-            );
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-
-            return addCategoriesTo(new Movie(
-                resultSet.getInt("id"),
-                resultSet.getString("title"),
-                resultSet.getInt("rating")
+            return addCategoriesTo(query.selectOne(
+                Select.from("movies").where("id = ?"),
+                id
             ));
         } catch (SQLException e) {
             throw new RuntimeException("Cannot find movie", e);
