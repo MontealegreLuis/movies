@@ -5,28 +5,26 @@ package com.codeup.auth.jdbc;
 
 import com.codeup.auth.User;
 import com.codeup.auth.Users;
+import com.codeup.db.Query;
 import com.codeup.db.builders.queries.Insert;
 import com.codeup.db.builders.queries.Select;
 
 import java.sql.*;
 
 public class JdbcUsers implements Users {
-    private final Connection connection;
+    private final Query<User> query;
 
     public JdbcUsers(Connection connection) {
-        this.connection = connection;
+        this.query = new Query<>(connection, new UsersMapper());
     }
 
     @Override
     public void add(User user) {
         try {
-            PreparedStatement statement = connection.prepareStatement(
-                Insert.into("users").columns("username", "password").toSQL()
+            query.insert(
+                Insert.into("users").columns("username", "password"),
+                user
             );
-            statement.setString(1, user.username());
-            statement.setString(2, user.password());
-            statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException("Cannot add user", e);
         }
@@ -35,19 +33,10 @@ public class JdbcUsers implements Users {
     @Override
     public User identifiedBy(String username) {
         try {
-            PreparedStatement statement = connection.prepareStatement(
-                Select.from("users").where("username = ?").toSQL()
+            return query.selectOne(
+                Select.from("users").where("username = ?"),
+                username
             );
-            statement.setString(1, username);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return new User(
-                    resultSet.getInt("id"),
-                    resultSet.getString("username"),
-                    resultSet.getString("password")
-                );
-            }
-            return null;
         } catch (SQLException e) {
             throw new RuntimeException("Cannot find user", e);
         }

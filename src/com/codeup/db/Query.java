@@ -50,7 +50,9 @@ public class Query<T> {
         )) {
             mapParameters(statement, parameters);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
+
+            if (!resultSet.next()) return null;
+
             return mapper.mapRow(resultSet);
         }
     }
