@@ -10,4 +10,5 @@ public interface Categories {
     Category named(String name);
     void add(Category category);
     List<Category> in(String... categories);
+    List<Category> relatedTo(Movie movie);
 }

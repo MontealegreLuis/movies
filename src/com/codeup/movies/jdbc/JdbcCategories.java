@@ -8,9 +8,11 @@ import com.codeup.db.builders.queries.Insert;
 import com.codeup.db.builders.queries.Select;
 import com.codeup.movies.Categories;
 import com.codeup.movies.Category;
+import com.codeup.movies.Movie;
 
 import java.sql.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcCategories implements Categories {
@@ -62,6 +64,21 @@ public class JdbcCategories implements Categories {
             return query.selectMany(Select.from("categories"));
         } catch (SQLException e) {
             throw new RuntimeException("Cannot retrieve the categories", e);
+        }
+    }
+
+    public List<Category> relatedTo(Movie movie) {
+        try {
+            return query.selectMany(
+                Select
+                    .from("categories c")
+                    .columns("c.*")
+                    .join("movies_categories mc", "mc.category_id = c.id")
+                    .where("mc.movie_id = ?"),
+                movie.id()
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

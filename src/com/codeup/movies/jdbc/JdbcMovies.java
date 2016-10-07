@@ -7,21 +7,23 @@ import com.codeup.db.Query;
 import com.codeup.db.builders.queries.Insert;
 import com.codeup.db.builders.queries.Select;
 import com.codeup.db.builders.queries.Update;
+import com.codeup.movies.Categories;
 import com.codeup.movies.Category;
 import com.codeup.movies.Movie;
 import com.codeup.movies.Movies;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcMovies implements Movies {
     private Connection connection;
     private Query<Movie> query;
+    private Categories categories;
 
     public JdbcMovies(Connection connection) {
         this.connection = connection;
         query = new Query<>(connection, new MoviesMapper());
+        categories = new JdbcCategories(connection);
     }
 
     @Override
@@ -63,39 +65,12 @@ public class JdbcMovies implements Movies {
     @Override
     public Movie with(int id) {
         try {
-            return addCategoriesTo(query.selectOne(
-                Select.from("movies").where("id = ?"),
-                id
-            ));
+            Movie movie = query.selectOne(Select.from("movies").where("id = ?"), id);
+            movie.addCategories(categories.relatedTo(movie));
+            return movie;
         } catch (SQLException e) {
             throw new RuntimeException("Cannot find movie", e);
         }
-    }
-
-    private Movie addCategoriesTo(Movie movie) {
-        try {
-            PreparedStatement statement = connection.prepareStatement(
-                Select
-                    .from("categories c")
-                    .columns("c.*")
-                    .join("movies_categories mc", "mc.category_id = c.id")
-                    .where("mc.movie_id = ?")
-                    .toSQL()
-            );
-            statement.setInt(1, movie.id());
-            ResultSet resultSet = statement.executeQuery();
-            ArrayList<Category> categories = new ArrayList<>();
-            while (resultSet.next()) {
-                categories.add(new Category(
-                    resultSet.getInt("id"),
-                    resultSet.getString("name")
-                ));
-            }
-            movie.addCategories(categories);
-        } catch (SQLException e) {
-            throw new RuntimeException("Cannot add categories to movie", e);
-        }
-        return movie;
     }
 
     @Override
