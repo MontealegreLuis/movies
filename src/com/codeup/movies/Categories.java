@@ -9,5 +9,5 @@ public interface Categories {
     List<Category> all();
     Category named(String name);
     void add(Category category);
-    List<Category> with(String... categories);
+    List<Category> in(String... categories);
 }

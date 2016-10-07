@@ -20,7 +20,7 @@ public class AddMovie {
         movies.add(new Movie(
             title,
             rating,
-            categories.with(categoriesIds)
+            categories.in(categoriesIds)
         ));
     }
 

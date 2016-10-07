@@ -45,12 +45,10 @@ public class JdbcCategories implements Categories {
     }
 
     @Override
-    public List<Category> with(String... categories) {
+    public List<Category> in(String... categories) {
         try {
             return query.selectMany(
-                Select
-                    .from("categories")
-                    .where("id", categories.length),
+                Select.from("categories").where("id", categories.length),
                 categories
             );
         } catch (SQLException e) {
