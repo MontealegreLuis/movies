@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "ViewMoviesServlet", urlPatterns = {"/movies"})
+@WebServlet(name = "ViewMoviesServlet", urlPatterns = {"/"})
 public class ViewMoviesServlet extends HttpServlet {
     private ViewMovies action;
 

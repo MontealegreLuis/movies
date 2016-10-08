@@ -15,7 +15,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/movies">
+            <a class="navbar-brand" href="/">
                 <span class="glyphicon glyphicon-hd-video"></span>
                 movies.com
             </a>
