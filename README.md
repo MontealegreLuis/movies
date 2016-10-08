@@ -1,7 +1,7 @@
 # Java Web application
 
 [![Build Status](https://travis-ci.org/MontealegreLuis/movies.svg?branch=master)](https://travis-ci.org/MontealegreLuis/movies)
-
+[![codebeat badge](https://codebeat.co/badges/9a9920f0-dbf3-4424-a5dc-e7d429870bdc)](https://codebeat.co/projects/github-com-montealegreluis-movies)
 
 ## Movies catalog
 
