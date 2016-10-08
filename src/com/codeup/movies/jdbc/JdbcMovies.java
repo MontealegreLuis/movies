@@ -32,17 +32,15 @@ public class JdbcMovies implements Movies {
                 movie
             );
             Movie newMovie = new Movie(id, movie.title(), movie.rating());
-            if (movie.isCategorized()) {
-                newMovie.addCategories(movie.categories());
-                addCategories(newMovie);
-            }
+            newMovie.addCategories(movie.categories());
+            addCategoriesTo(newMovie);
             return newMovie;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void addCategories(Movie movie) throws SQLException {
+    private void addCategoriesTo(Movie movie) throws SQLException {
         for (Category category: movie.categories()) {
             query.insert(
                 Insert.into("movies_categories").columns("movie_id", "category_id"),

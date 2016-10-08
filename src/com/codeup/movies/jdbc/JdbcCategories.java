@@ -67,6 +67,7 @@ public class JdbcCategories implements Categories {
         }
     }
 
+    @Override
     public List<Category> relatedTo(Movie movie) {
         try {
             return query.selectMany(

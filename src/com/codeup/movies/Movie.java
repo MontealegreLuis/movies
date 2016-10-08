@@ -52,10 +52,6 @@ public class Movie {
         return categories;
     }
 
-    public boolean isCategorized() {
-        return !categories.isEmpty();
-    }
-
     public Movie addCategories(List<Category> categories) {
         this.categories = categories;
         return this;
