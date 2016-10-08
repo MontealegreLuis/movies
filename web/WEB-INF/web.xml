@@ -52,4 +52,7 @@
         <servlet-name>RateMovieServlet</servlet-name>
         <servlet-name>AddMovieServlet</servlet-name>
     </filter-mapping>
+    <listener>
+        <listener-class>com.codeup.db.listeners.ConnectionListener</listener-class>
+    </listener>
 </web-app>
