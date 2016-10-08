@@ -21,6 +21,15 @@ public class Query<T> {
         this.mapper = mapper;
     }
 
+    public void insert(Insert insert, ParametersMapper mapper) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(
+            insert.toSQL()
+        )) {
+            mapper.map(statement);
+            statement.executeUpdate();
+        }
+    }
+
     public int insert(Insert insert, T entity) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(
             insert.toSQL(),

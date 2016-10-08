@@ -16,12 +16,10 @@ import java.sql.*;
 import java.util.List;
 
 public class JdbcMovies implements Movies {
-    private Connection connection;
     private Query<Movie> query;
     private Categories categories;
 
     public JdbcMovies(Connection connection) {
-        this.connection = connection;
         query = new Query<>(connection, new MoviesMapper());
         categories = new JdbcCategories(connection);
     }
@@ -45,20 +43,14 @@ public class JdbcMovies implements Movies {
     }
 
     private void addCategories(Movie movie) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(
-            Insert.into("movies_categories").columns("movie_id", "category_id").toSQL()
-        );
-        movie.categories().forEach(category -> attach(movie, category, statement));
-        statement.close();
-    }
-
-    private void attach(Movie movie, Category category, PreparedStatement statement) {
-        try {
-            statement.setInt(1, movie.id());
-            statement.setInt(2, category.id());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Cannot addCategories movie", e);
+        for (Category category: movie.categories()) {
+            query.insert(
+                Insert.into("movies_categories").columns("movie_id", "category_id"),
+                statement -> {
+                    statement.setInt(1, movie.id());
+                    statement.setInt(2, category.id());
+                }
+            );
         }
     }
 
