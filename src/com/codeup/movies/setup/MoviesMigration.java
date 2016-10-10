@@ -26,6 +26,7 @@ class MoviesMigration {
         movies.increments("id");
         movies.string("title", 300).makeRequired();
         movies.integer("rating").defaultTo("0");
+        movies.string("thumbnail");
 
         Table categories = schema.table("categories");
         categories.increments("id");

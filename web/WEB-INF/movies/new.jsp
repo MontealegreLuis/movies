@@ -8,13 +8,14 @@
     </jsp:include>
 </head>
 <body>
+<jsp:include page="/WEB-INF/includes/navigation.jsp"/>
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <header class="page-header">
                 <h1>Add a new movie</h1>
             </header>
-            <form action="/movies/new" method="post">
+            <form action="/movies/new" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input
@@ -42,6 +43,18 @@
                     </label>
                     </c:forEach>
                 </div>
+                <div class="form-group">
+                    <label for="thumbnail">Thumbnail</label>
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary">
+                                Browse&hellip;
+                                <input type="file" id="thumbnail" name="thumbnail" style="display: none;" multiple>
+                            </span>
+                        </label>
+                        <input type="text" class="form-control" readonly>
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-primary">
                     <span class="glyphicon glyphicon-facetime-video"></span>
                     Save
@@ -51,5 +64,6 @@
     </div>
 </div>
 <jsp:include page="/WEB-INF/includes/scripts.jsp"/>
+<script src="${request.contextPath}/scripts/upload.js"></script>
 </body>
 </html>

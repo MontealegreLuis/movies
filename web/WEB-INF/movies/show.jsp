@@ -14,6 +14,14 @@
             <header class="page-header">
                 <h1>${movie.title()}</h1>
             </header>
+            <c:choose>
+                <c:when test="${empty movie.thumbnail()}">
+                    <img src="http://placehold.it/100x100">
+                </c:when>
+                <c:otherwise>
+                    <img src="${request.contextPath}${initParam["thumbnails"]}/${movie.thumbnail()}">
+                </c:otherwise>
+            </c:choose>
             <ul>
                 <c:forEach items="${movie.categories()}" var="category">
                     <li>${category.name()}</li>

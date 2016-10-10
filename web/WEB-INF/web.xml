@@ -39,6 +39,18 @@
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/scripts/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/css/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/images/*</url-pattern>
+    </servlet-mapping>
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>com.codeup.auth.filters.AuthenticationFilter</filter-class>
@@ -55,4 +67,8 @@
     <listener>
         <listener-class>com.codeup.db.listeners.ConnectionListener</listener-class>
     </listener>
+    <context-param>
+        <param-name>thumbnails</param-name>
+        <param-value>/images</param-value>
+    </context-param>
 </web-app>

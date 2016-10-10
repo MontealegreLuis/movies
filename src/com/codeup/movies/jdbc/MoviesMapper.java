@@ -17,7 +17,8 @@ public class MoviesMapper implements RowMapper<Movie> {
         return new Movie(
             resultSet.getInt("id"),
             resultSet.getString("title"),
-            resultSet.getInt("rating")
+            resultSet.getInt("rating"),
+            resultSet.getString("thumbnail")
         );
     }
 
@@ -26,6 +27,7 @@ public class MoviesMapper implements RowMapper<Movie> {
         Map<Integer, Object> mapping = new LinkedHashMap<>();
         mapping.put(1, movie.title());
         mapping.put(2, movie.rating());
+        mapping.put(3, movie.thumbnail());
         return mapping;
     }
 

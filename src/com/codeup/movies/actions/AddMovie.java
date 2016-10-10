@@ -16,10 +16,11 @@ public class AddMovie {
         this.movies = movies;
     }
 
-    public void add(String title, int rating, String[] categoriesIds) {
+    public void add(String title, int rating, String thumbnail, String[] categoriesIds) {
         movies.add(new Movie(
             title,
             rating,
+            thumbnail,
             categories.in(categoriesIds)
         ));
     }

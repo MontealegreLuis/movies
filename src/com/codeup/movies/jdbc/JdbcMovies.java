@@ -25,16 +25,18 @@ public class JdbcMovies implements Movies {
     }
 
     @Override
-    public Movie add(Movie movie) {
+    public Movie add(Movie aMovie) {
         try {
             int id = query.insert(
-                Insert.into("movies").columns("title", "rating"),
-                movie
+                Insert.into("movies").columns("title", "rating", "thumbnail"),
+                aMovie
             );
-            Movie newMovie = new Movie(id, movie.title(), movie.rating());
-            newMovie.addCategories(movie.categories());
-            addCategoriesTo(newMovie);
-            return newMovie;
+            Movie movie = new Movie(
+                id, aMovie.title(), aMovie.rating(), aMovie.thumbnail()
+            );
+            movie.addCategories(aMovie.categories());
+            addCategoriesTo(movie);
+            return movie;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
