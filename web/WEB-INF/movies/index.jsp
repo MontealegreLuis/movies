@@ -50,14 +50,14 @@
             <c:forEach items="${movies}" var="movie">
             <tr>
                 <td>
-                    <a href="/movies/show?id=${movie.id()}">
+                    <a href="${request.contextPath}/movies/show?id=${movie.id()}">
                         ${movie.title()}
                     </a>
                 </td>
                 <td>${movie.rating()}</td>
                 <c:if test="${user != null}">
                 <td>
-                    <form action="/movies/rate" method="post">
+                    <form action="${request.contextPath}/movies/rate" method="post">
                         <input type="hidden" name="id" value="${movie.id()}">
                         <jsp:include page="/WEB-INF/includes/ratings.jsp"/>
                         &nbsp;&nbsp;

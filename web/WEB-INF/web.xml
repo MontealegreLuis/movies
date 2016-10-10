@@ -41,15 +41,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
-        <url-pattern>/scripts/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>/css/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>/images/*</url-pattern>
+        <url-pattern>/assets/*</url-pattern>
     </servlet-mapping>
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
@@ -69,6 +61,6 @@
     </listener>
     <context-param>
         <param-name>thumbnails</param-name>
-        <param-value>/images</param-value>
+        <param-value>/assets/images</param-value>
     </context-param>
 </web-app>

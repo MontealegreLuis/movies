@@ -15,7 +15,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="${request.contextPath}/">
                 <span class="glyphicon glyphicon-hd-video"></span>
                 movies.com
             </a>
@@ -28,13 +28,13 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a>Hi ${user.username()}</a></li>
                         <li>
-                            <a href="/movies/new">
+                            <a href="${request.contextPath}/movies/new">
                                 <span class="glyphicon glyphicon-facetime-video"></span>
                                 Add a movie
                             </a>
                         </li>
                         <li>
-                            <a href="/logout">
+                            <a href="${request.contextPath}/logout">
                                 <span class="glyphicon glyphicon-off"></span>
                                 Logout
                             </a>
@@ -43,7 +43,7 @@
                 </c:when>
                 <c:otherwise>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/login">Login</a></li>
+                        <li><a href="${request.contextPath}/login">Login</a></li>
                     </ul>
                 </c:otherwise>
             </c:choose>

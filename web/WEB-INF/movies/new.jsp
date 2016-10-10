@@ -15,7 +15,11 @@
             <header class="page-header">
                 <h1>Add a new movie</h1>
             </header>
-            <form action="/movies/new" method="post" enctype="multipart/form-data">
+            <form
+                action="${request.contextPath}/movies/new"
+                method="post"
+                enctype="multipart/form-data"
+            >
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input
@@ -49,7 +53,13 @@
                         <label class="input-group-btn">
                             <span class="btn btn-primary">
                                 Browse&hellip;
-                                <input type="file" id="thumbnail" name="thumbnail" style="display: none;" multiple>
+                                <input
+                                    type="file"
+                                    id="thumbnail"
+                                    name="thumbnail"
+                                    style="display: none;"
+                                    multiple
+                                >
                             </span>
                         </label>
                         <input type="text" class="form-control" readonly>
@@ -64,6 +74,6 @@
     </div>
 </div>
 <jsp:include page="/WEB-INF/includes/scripts.jsp"/>
-<script src="${request.contextPath}/scripts/upload.js"></script>
+<script src="${request.contextPath}/assets/scripts/upload.js"></script>
 </body>
 </html>
