@@ -8,26 +8,38 @@
     </jsp:include>
 </head>
 <body>
+<jsp:include page="/WEB-INF/includes/navigation.jsp"/>
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-8 col-md-offset-2">
             <header class="page-header">
-                <h1>${movie.title()}</h1>
+                <h1>
+                    ${movie.title()}
+                    <small> Rating: <strong>${movie.rating()}</strong></small>
+                </h1>
             </header>
-            <c:choose>
-                <c:when test="${empty movie.thumbnail()}">
-                    <img src="http://placehold.it/100x100">
-                </c:when>
-                <c:otherwise>
-                    <img src="${request.contextPath}${initParam["thumbnails"]}/${movie.thumbnail()}">
-                </c:otherwise>
-            </c:choose>
-            <ul>
-                <c:forEach items="${movie.categories()}" var="category">
-                    <li>${category.name()}</li>
-                </c:forEach>
-            </ul>
-            <p class="lead">Rating: <strong>${movie.rating()}</strong></p>
+            <div class="media">
+                <div class="media-left media-middle">
+                    <c:choose>
+                        <c:when test="${empty movie.thumbnail()}">
+                            <img src="http://placehold.it/100x100">
+                        </c:when>
+                        <c:otherwise>
+                            <img src="${request.contextPath}${initParam["thumbnails"]}/${movie.thumbnail()}">
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <div class="media-body">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Categories</div>
+                        <ul class="list-group">
+                            <c:forEach items="${movie.categories()}" var="category">
+                                <li class="list-group-item">${category.name()}</li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
