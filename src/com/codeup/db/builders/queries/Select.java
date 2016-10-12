@@ -26,7 +26,7 @@ public class Select implements HasSQLRepresentation {
         return new Select(table);
     }
 
-    public Select columns(String ...columns) {
+    public Select addColumns(String ...columns) {
         this.columns.add(columns);
         return this;
     }

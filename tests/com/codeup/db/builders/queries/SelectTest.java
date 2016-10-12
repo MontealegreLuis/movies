@@ -19,7 +19,7 @@ public class SelectTest {
 
     @Test
     public void it_selects_specific_columns() {
-        select = Select.from("users").columns("username", "password");
+        select = Select.from("users").addColumns("username", "password");
         assertEquals("SELECT username, password FROM users", select.toSQL());
     }
 

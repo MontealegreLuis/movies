@@ -12,7 +12,6 @@ import com.codeup.movies.Movie;
 
 import java.sql.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcCategories implements Categories {
@@ -73,7 +72,7 @@ public class JdbcCategories implements Categories {
             return query.selectMany(
                 Select
                     .from("categories c")
-                    .columns("c.*")
+                    .addColumns("c.*")
                     .join("movies_categories mc", "mc.category_id = c.id")
                     .where("mc.movie_id = ?"),
                 movie.id()

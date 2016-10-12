@@ -92,9 +92,8 @@ public class JdbcMovies implements Movies {
             return query.selectMany(
                 Select
                     .from("movies m")
-                    .columns("m.*")
+                    .addColumns("m.*")
                     .join("movies_categories mc", "mc.movie_id = m.id")
-                    .join("categories c", "c.id = mc.category_id") // Is it needed?
                     .where("c.id = ?"),
                 category
             );
