@@ -10,7 +10,6 @@ import com.codeup.db.builders.queries.Update;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Query<T> {
     private final Connection connection;
@@ -35,7 +34,7 @@ public class Query<T> {
             insert.toSQL(),
             Statement.RETURN_GENERATED_KEYS
         )) {
-            mapColumns(entity, statement);
+            Mapper.map(statement, mapper.mapColumns(entity));
             statement.executeUpdate();
             ResultSet key = statement.getGeneratedKeys();
             key.next();
@@ -47,8 +46,8 @@ public class Query<T> {
         try (PreparedStatement statement = connection.prepareStatement(
             update.toSQL()
         )) {
-            mapColumns(entity, statement);
-            mapIdentifier(entity, statement);
+            Mapper.map(statement, mapper.mapColumns(entity));
+            Mapper.map(statement, mapper.mapIdentifier(entity));
             statement.executeUpdate();
         }
     }
@@ -57,7 +56,7 @@ public class Query<T> {
         try (PreparedStatement statement = connection.prepareStatement(
             select.toSQL()
         )) {
-            mapParameters(statement, parameters);
+            Mapper.map(statement, parameters);
             ResultSet resultSet = statement.executeQuery();
 
             if (!resultSet.next()) return null;
@@ -66,11 +65,14 @@ public class Query<T> {
         }
     }
 
-    public List<T> selectMany(Select select, Object ...parameters) throws SQLException {
+    public List<T> selectMany(
+        Select select,
+        Object ...parameters
+    ) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(
             select.toSQL()
         )) {
-            mapParameters(statement, parameters);
+            Mapper.map(statement, parameters);
             ResultSet resultSet = statement.executeQuery();
             List<T> entities = new ArrayList<>();
             while (resultSet.next()) {
@@ -78,35 +80,5 @@ public class Query<T> {
             }
             return entities;
         }
-    }
-
-    private void mapParameters(PreparedStatement statement, Object[] parameters) {
-        for (int i = 0; i < parameters.length; i++) {
-            try {
-                statement.setObject(i + 1, parameters[i]);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    private void mapColumns(T entity, PreparedStatement statement) {
-        Map<Integer, Object> columns = mapper.mapColumns(entity);
-        setParameters(statement, columns);
-    }
-
-    private void mapIdentifier(T entity, PreparedStatement statement) {
-        Map<Integer, Object> columns = mapper.mapIdentifier(entity);
-        setParameters(statement, columns);
-    }
-
-    private void setParameters(PreparedStatement statement, Map<Integer, Object> columns) {
-        columns.forEach((k, v) -> {
-            try {
-                statement.setObject(k.intValue(), v);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
     }
 }
