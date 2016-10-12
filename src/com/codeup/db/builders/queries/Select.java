@@ -10,12 +10,16 @@ public class Select implements HasSQLRepresentation {
     private String table;
     private Where where;
     private Join join;
+    private int limit;
+    private int offset;
 
     private Select(String table) {
         columns = Columns.empty().defaultTo("*");
         where = Where.empty();
         join = Join.empty();
         this.table = table;
+        limit = -1;
+        offset = -1;
     }
 
     public static Select from(String table) {
@@ -57,14 +61,38 @@ public class Select implements HasSQLRepresentation {
         return this;
     }
 
+    public Select limit(int limit) {
+        this.limit = limit;
+        return this;
+    }
+
+    public Select offset(int offset) {
+        this.offset = offset;
+        return this;
+    }
+
     @Override
     public String toSQL() {
         return String.format(
-            "SELECT %s FROM %s %s %s",
+            "SELECT %s FROM %s %s %s %s %s",
             columns.toSQL(),
             table,
             join.toSQL(),
-            where.toSQL()
+            where.toSQL(),
+            limitToSQL(),
+            offsetToSQL()
         ).trim().replaceAll("( )+", " ");
+    }
+
+    private String offsetToSQL() {
+        if (offset < 0) return "";
+
+        return String.format("OFFSET %d", offset);
+    }
+
+    private String limitToSQL() {
+        if (limit < 0) return "";
+
+        return String.format("LIMIT %d", limit);
     }
 }

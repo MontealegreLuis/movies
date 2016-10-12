@@ -92,6 +92,18 @@ public class SelectTest {
     }
 
     @Test
+    public void it_converts_to_sql_a_statement_with_a_limit() {
+        select = Select.from("users").limit(5);
+        assertEquals("SELECT * FROM users LIMIT 5", select.toSQL());
+    }
+
+    @Test
+    public void it_converts_to_sql_a_paginated_statement() {
+        select = Select.from("users").limit(5).offset(5);
+        assertEquals("SELECT * FROM users LIMIT 5 OFFSET 5", select.toSQL());
+    }
+
+    @Test
     public void it_converts_to_sql_a_join_statement() {
         select = Select.from("users u").join("roles r", "u.role_id = r.id");
         assertEquals(
