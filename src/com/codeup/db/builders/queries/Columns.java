@@ -26,8 +26,9 @@ public class Columns implements HasSQLRepresentation {
         return this;
     }
 
-    public void add(String... columns) {
+    public Columns add(String... columns) {
         Collections.addAll(this.columns, columns);
+        return this;
     }
 
     public int size() {
@@ -43,5 +44,10 @@ public class Columns implements HasSQLRepresentation {
         if (columns.isEmpty()) columns.add(defaultColumn);
 
         return String.join(", ", columns.toArray(new String[]{}));
+    }
+
+    public Columns clear() {
+        columns.clear();
+        return this;
     }
 }

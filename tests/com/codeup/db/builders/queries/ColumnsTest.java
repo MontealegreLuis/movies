@@ -34,4 +34,11 @@ public class ColumnsTest {
         columns.add("username", "password", "email");
         assertEquals("username, password, email", columns.toSQL());
     }
+
+    @Test
+    public void it_clears_current_columns_and_append_more() {
+        Columns columns = Columns.empty();
+        columns.add("username", "password").clear().add("password", "email");
+        assertEquals("password, email", columns.toSQL());
+    }
 }

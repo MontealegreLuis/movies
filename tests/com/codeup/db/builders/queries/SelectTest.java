@@ -19,8 +19,18 @@ public class SelectTest {
 
     @Test
     public void it_selects_specific_columns() {
-        select = Select.from("users").addColumns("username", "password");
+        select = Select.from("users").columns("username", "password");
         assertEquals("SELECT username, password FROM users", select.toSQL());
+    }
+
+    @Test
+    public void it_appends_columns_to_select() {
+        select = Select
+            .from("users")
+            .addColumns("id")
+            .addColumns("username", "password")
+        ;
+        assertEquals("SELECT id, username, password FROM users", select.toSQL());
     }
 
     @Test
