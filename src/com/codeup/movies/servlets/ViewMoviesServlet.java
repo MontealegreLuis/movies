@@ -3,6 +3,7 @@
  */
 package com.codeup.movies.servlets;
 
+import com.codeup.movies.MoviesCriteria;
 import com.codeup.movies.actions.MoviesInformation;
 import com.codeup.movies.actions.ViewMovies;
 import com.codeup.movies.di.MoviesContainer;
@@ -32,10 +33,8 @@ public class ViewMoviesServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-
-        MoviesInformation information = action.view(
-            request.getParameter("category")
-        );
+        MoviesCriteria criteria = MoviesCriteria.from(request.getParameterMap());
+        MoviesInformation information = action.view(criteria);
 
         request.setAttribute("categories", information.categories);
         request.setAttribute("movies", information.movies);

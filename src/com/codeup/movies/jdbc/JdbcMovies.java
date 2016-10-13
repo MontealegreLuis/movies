@@ -7,10 +7,7 @@ import com.codeup.db.Query;
 import com.codeup.db.builders.queries.Insert;
 import com.codeup.db.builders.queries.Select;
 import com.codeup.db.builders.queries.Update;
-import com.codeup.movies.Categories;
-import com.codeup.movies.Category;
-import com.codeup.movies.Movie;
-import com.codeup.movies.Movies;
+import com.codeup.movies.*;
 
 import java.sql.*;
 import java.util.List;
@@ -78,27 +75,13 @@ public class JdbcMovies implements Movies {
     }
 
     @Override
-    public List<Movie> all() {
+    public List<Movie> matching(MoviesCriteria criteria) {
+        Select select = Select.from("movies m").columns("m.*");
+        criteria.applyTo(select);
         try {
-            return query.selectMany(Select.from("movies"));
+            return query.selectMany(select, criteria.arguments());
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot retrieve the movies", e);
-        }
-    }
-
-    @Override
-    public List<Movie> inCategory(String category) {
-        try {
-            return query.selectMany(
-                Select
-                    .from("movies m")
-                    .addColumns("m.*")
-                    .join("movies_categories mc", "mc.movie_id = m.id")
-                    .where("c.id = ?"),
-                category
-            );
-        } catch (SQLException e) {
-            throw new RuntimeException("Cannot filter movies by category", e);
+            throw new RuntimeException(e);
         }
     }
 }

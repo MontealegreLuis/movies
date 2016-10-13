@@ -5,8 +5,6 @@ package com.codeup.movies.actions;
 
 import com.codeup.movies.*;
 
-import java.util.List;
-
 public class ViewMovies {
     private final Movies movies;
     private final Categories categories;
@@ -16,17 +14,10 @@ public class ViewMovies {
         this.categories = categories;
     }
 
-    public MoviesInformation view(String category) {
+    public MoviesInformation view(MoviesCriteria criteria) {
         return new MoviesInformation(
             categories.all(),
-            getMovies(movies, category)
+            movies.matching(criteria)
         );
-    }
-
-    private List<Movie> getMovies(Movies movies, String category) {
-        if (category != null && !category.isEmpty()) {
-            return movies.inCategory(category);
-        }
-        return movies.all();
     }
 }

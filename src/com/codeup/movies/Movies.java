@@ -7,8 +7,7 @@ import java.util.List;
 
 public interface Movies {
     Movie with(int id);
-    List<Movie> all();
-    List<Movie> inCategory(String category);
     void update(Movie movie);
     Movie add(Movie movie);
+    List<Movie> matching(MoviesCriteria criteria);
 }
