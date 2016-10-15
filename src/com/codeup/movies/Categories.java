@@ -8,7 +8,7 @@ import java.util.List;
 public interface Categories {
     List<Category> all();
     Category named(String name);
-    void add(Category category);
+    Category add(Category category);
     List<Category> in(String... categories);
     List<Category> relatedTo(Movie movie);
 }

@@ -3,9 +3,7 @@
  */
 package com.codeup.movies.jdbc;
 
-import com.codeup.db.Query;
-import com.codeup.db.builders.queries.Insert;
-import com.codeup.db.builders.queries.Select;
+import com.codeup.db.Table;
 import com.codeup.movies.Categories;
 import com.codeup.movies.Category;
 import com.codeup.movies.Movie;
@@ -15,68 +13,57 @@ import java.sql.*;
 import java.util.List;
 
 public class JdbcCategories implements Categories {
-    private final Query<Category> query;
+    private final Table<Category> table;
 
     public JdbcCategories(Connection connection) {
-        query = new Query<>(connection, new CategoriesMapper());
+        table = new CategoriesTable(connection);
     }
 
     @Override
     public Category named(String name) {
         try {
-            return query.selectOne(
-                Select.from("categories").where("name = ?"),
-                name
-            );
+            return table.select("*").where("name = ?").fetch(name);
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot retrieve category...", e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void add(Category category) {
+    public Category add(Category category) {
         try {
-            query.insert(
-                Insert.into("categories").columns("name"),
-                category
-            );
+            return table.insert("name").fetch(category.name());
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot add category", e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<Category> in(String... categories) {
         try {
-            return query.selectMany(
-                Select.from("categories").where("id", categories.length),
-                categories
-            );
+            return table.select("*").whereIn("id", categories).fetchAll(categories);
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot retrieve the categories", e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<Category> all() {
         try {
-            return query.selectMany(Select.from("categories"));
+            return table.select("*").fetchAll();
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot retrieve the categories", e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<Category> relatedTo(Movie movie) {
         try {
-            return query.selectMany(
-                Select
-                    .from("categories c")
-                    .addColumns("c.*")
-                    .join("movies_categories mc", "mc.category_id = c.id")
-                    .where("mc.movie_id = ?"),
-                movie.id()
-            );
+            return table
+                .select("c.*")
+                .join("movies_categories mc", "mc.category_id = c.id")
+                .where("mc.movie_id = ?")
+                .fetchAll(movie.id())
+            ;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

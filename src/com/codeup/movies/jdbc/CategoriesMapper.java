@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class CategoriesMapper implements RowMapper<Category> {
+class CategoriesMapper implements RowMapper<Category> {
     @Override
     public Category mapRow(ResultSet resultSet) throws SQLException {
         return new Category(resultSet.getInt("id"), resultSet.getString("name"));
