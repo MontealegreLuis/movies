@@ -4,6 +4,6 @@
 package com.codeup.auth;
 
 public interface Users {
-    void add(User user);
+    User add(User user);
     User identifiedBy(String username);
 }

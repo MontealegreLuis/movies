@@ -22,6 +22,15 @@ public class UsersMapper implements RowMapper<User> {
     }
 
     @Override
+    public User newEntity(int id, Object[] parameters) {
+        return new User(
+            id,
+            parameters[0].toString(),
+            parameters[1].toString()
+        );
+    }
+
+    @Override
     public Map<Integer, Object> mapColumns(User user) {
         Map<Integer, Object> mapping = new LinkedHashMap<>();
         mapping.put(1, user.username());

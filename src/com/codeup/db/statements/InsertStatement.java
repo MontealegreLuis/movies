@@ -3,46 +3,50 @@
  */
 package com.codeup.db.statements;
 
+import com.codeup.db.RowMapper;
 import com.codeup.db.builders.queries.Insert;
 
 import java.sql.*;
 
-/**
- * int id = Insert
- *     .into("users")
- *     .columns("username", "password")
- *     .execute("luis", "changeme");
- */
-public class InsertStatement {
+public class InsertStatement<T> {
     private final Connection connection;
     private Insert insert;
+    private final RowMapper<T> mapper;
 
-    public InsertStatement(Connection connection, Insert insert) {
+    public InsertStatement(
+        Connection connection,
+        String table,
+        RowMapper<T> mapper
+    ) {
         this.connection = connection;
-        this.insert = insert;
+        this.insert = Insert.into(table);
+        this.mapper = mapper;
     }
 
-    public static InsertStatement into(Connection connection, String table) {
-        return new InsertStatement(connection, Insert.into(table));
-    }
-
-    public InsertStatement columns(String... columns) {
+    public InsertStatement<T> columns(String... columns) {
         insert.columns(columns);
         return this;
     }
 
-    public int execute(Object... parameters) throws SQLException {
+    public T fetch(Object... parameters) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(
             insert.toSQL(),
             Statement.RETURN_GENERATED_KEYS
         )) {
-            for (int i = 0; i < parameters.length; i++) {
-                statement.setObject(i+1, parameters[i]);
-            }
+            bindParameters(statement, parameters);
             statement.executeUpdate();
             ResultSet key = statement.getGeneratedKeys();
             key.next();
-            return key.getInt(1);
+            return mapper.newEntity(key.getInt(1), parameters);
+        }
+    }
+
+    private void bindParameters(
+        PreparedStatement statement,
+        Object[] parameters
+    ) throws SQLException {
+        for (int i = 0; i < parameters.length; i++) {
+            statement.setObject(i+1, parameters[i]);
         }
     }
 }

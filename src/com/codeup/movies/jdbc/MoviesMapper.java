@@ -23,6 +23,16 @@ public class MoviesMapper implements RowMapper<Movie> {
     }
 
     @Override
+    public Movie newEntity(int id, Object[] parameters) {
+        return new Movie(
+            id,
+            parameters[0].toString(),
+            (int) parameters[1],
+            parameters[2].toString()
+        );
+    }
+
+    @Override
     public Map<Integer, Object> mapColumns(Movie movie) {
         Map<Integer, Object> mapping = new LinkedHashMap<>();
         mapping.put(1, movie.title());

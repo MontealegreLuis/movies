@@ -5,40 +5,39 @@ package com.codeup.auth.jdbc;
 
 import com.codeup.auth.User;
 import com.codeup.auth.Users;
-import com.codeup.db.Query;
-import com.codeup.db.builders.queries.Insert;
-import com.codeup.db.builders.queries.Select;
+import com.codeup.db.Table;
 
 import java.sql.*;
 
 public class JdbcUsers implements Users {
-    private final Query<User> query;
+    private final Table<User> table;
 
     public JdbcUsers(Connection connection) {
-        this.query = new Query<>(connection, new UsersMapper());
+        table = new UsersTable<>(connection);
     }
 
     @Override
-    public void add(User user) {
+    public User add(User user) {
         try {
-            query.insert(
-                Insert.into("users").columns("username", "password"),
-                user
-            );
+            return table
+                .insert("username", "password")
+                .fetch(user.username(), user.password())
+            ;
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot add user", e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public User identifiedBy(String username) {
         try {
-            return query.selectOne(
-                Select.from("users").where("username = ?"),
-                username
-            );
+            return table
+                .select("*")
+                .where("username = ?")
+                .fetch(username)
+            ;
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot find user", e);
+            throw new RuntimeException(e);
         }
     }
 }

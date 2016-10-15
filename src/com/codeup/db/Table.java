@@ -4,6 +4,7 @@
 package com.codeup.db;
 
 import com.codeup.db.statements.InsertStatement;
+import com.codeup.db.statements.SelectStatement;
 
 import java.sql.Connection;
 
@@ -17,16 +18,22 @@ import java.sql.Connection;
  * // User user = // ?
  * users.insert("username", "password").execute("luis", "changeme");
  */
-public class Table {
+abstract public class Table<T> {
     private final Connection connection;
-    private final String table;
 
-    public Table(Connection connection, String table) {
+    public Table(Connection connection) {
         this.connection = connection;
-        this.table = table;
     }
 
-    public InsertStatement insert(String... columns){
-        return InsertStatement.into(connection, table).columns(columns);
+    public InsertStatement<T> insert(String... columns){
+        return new InsertStatement<>(connection, table(), mapper()).columns(columns);
     }
+
+    public SelectStatement<T> select(String... columns) {
+        return new SelectStatement<>(connection, table(), mapper()).select(columns);
+    }
+
+    abstract public String table();
+
+    abstract public RowMapper<T> mapper();
 }
