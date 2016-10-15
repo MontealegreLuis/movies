@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class UsersMapper implements RowMapper<User> {
+class UsersMapper implements RowMapper<User> {
     @Override
     public User mapRow(ResultSet resultSet) throws SQLException {
         return new User(

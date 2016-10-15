@@ -8,17 +8,18 @@ import com.codeup.db.Table;
 
 import java.sql.Connection;
 
-public class UsersTable<User> extends Table<User> {
-    public UsersTable(Connection connection) {
+class UsersTable<User> extends Table<User> {
+    UsersTable(Connection connection) {
         super(connection);
     }
 
     @Override
-    public String table() {
+    protected String table() {
         return "users";
     }
 
-    public RowMapper<User> mapper() {
+    @Override
+    protected RowMapper<User> mapper() {
         return (RowMapper<User>) new UsersMapper();
     }
 }
