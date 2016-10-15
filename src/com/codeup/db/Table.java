@@ -33,7 +33,7 @@ abstract public class Table<T> {
         return new SelectStatement<>(connection, table(), mapper()).select(columns);
     }
 
-    abstract public String table();
+    abstract protected String table();
 
-    abstract public RowMapper<T> mapper();
+    abstract protected RowMapper<T> mapper();
 }
