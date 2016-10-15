@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectStatement<T> {
     private final Connection connection;
@@ -37,19 +39,48 @@ public class SelectStatement<T> {
         return this;
     }
 
+    public SelectStatement<T> whereIn(String column, String[] values) {
+        select.where(column, values.length);
+        return this;
+    }
+
+    public SelectStatement<T> join(String table, String on) {
+        select.join(table, on);
+        return this;
+    }
+
     public T fetch(Object... parameters) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(
             select.toSQL()
         )) {
-            for (int i = 0; i < parameters.length; i++) {
-                statement.setObject(i + 1, parameters[i]);
-            }
+            bindParameters(statement, parameters);
 
             ResultSet resultSet = statement.executeQuery();
 
             if (!resultSet.next()) return null;
 
             return mapper.mapRow(resultSet);
+        }
+    }
+
+    public List<T> fetchAll(Object... parameters) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(
+            select.toSQL()
+        )) {
+            bindParameters(statement, parameters);
+
+            ResultSet resultSet = statement.executeQuery();
+            List<T> entities = new ArrayList<>();
+            while (resultSet.next()) {
+                entities.add(mapper.mapRow(resultSet));
+            }
+            return entities;
+        }
+    }
+
+    private void bindParameters(PreparedStatement statement, Object[] parameters) throws SQLException {
+        for (int i = 0; i < parameters.length; i++) {
+            statement.setObject(i + 1, parameters[i]);
         }
     }
 }
