@@ -13,7 +13,7 @@ public class JdbcUsers implements Users {
     private final Table<User> table;
 
     public JdbcUsers(Connection connection) {
-        table = new UsersTable<>(connection);
+        table = new UsersTable(connection);
     }
 
     @Override

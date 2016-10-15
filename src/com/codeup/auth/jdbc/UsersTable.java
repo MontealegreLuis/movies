@@ -3,12 +3,13 @@
  */
 package com.codeup.auth.jdbc;
 
+import com.codeup.auth.User;
 import com.codeup.db.RowMapper;
 import com.codeup.db.Table;
 
 import java.sql.Connection;
 
-class UsersTable<User> extends Table<User> {
+class UsersTable extends Table<User> {
     UsersTable(Connection connection) {
         super(connection);
     }
@@ -20,6 +21,6 @@ class UsersTable<User> extends Table<User> {
 
     @Override
     protected RowMapper<User> mapper() {
-        return (RowMapper<User>) new UsersMapper();
+        return new UsersMapper();
     }
 }
