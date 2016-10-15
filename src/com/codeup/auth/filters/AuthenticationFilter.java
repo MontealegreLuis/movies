@@ -13,17 +13,16 @@ public class AuthenticationFilter implements Filter {
     private String redirectTo;
 
     public void doFilter(
-        ServletRequest req,
-        ServletResponse resp,
+        ServletRequest request,
+        ServletResponse response,
         FilterChain chain
     ) throws ServletException, IOException {
-        HttpServletRequest request = (HttpServletRequest) req;
-        HttpSession session = request.getSession(false);
+        HttpSession session = ((HttpServletRequest) request).getSession(false);
 
         if (session == null || session.getAttribute("user") == null) {
-            ((HttpServletResponse) resp).sendRedirect(redirectTo);
+            ((HttpServletResponse) response).sendRedirect(redirectTo);
         } else {
-            chain.doFilter(req, resp);
+            chain.doFilter(request, response);
         }
     }
 
