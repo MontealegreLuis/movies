@@ -18,7 +18,6 @@ public class SelectStatement<T> {
     private final Select select;
     private final RowMapper<T> mapper;
 
-
     public SelectStatement(
         Connection connection,
         String table,
@@ -31,6 +30,16 @@ public class SelectStatement<T> {
 
     public SelectStatement<T> select(String... columns) {
         select.columns(columns);
+        return this;
+    }
+
+    public SelectStatement<T> addAlias(String alias) {
+        select.addTableAlias(alias);
+        return this;
+    }
+
+    public SelectStatement<T> matching(Criteria criteria) {
+        criteria.applyTo(select);
         return this;
     }
 
@@ -78,7 +87,10 @@ public class SelectStatement<T> {
         }
     }
 
-    private void bindParameters(PreparedStatement statement, Object[] parameters) throws SQLException {
+    private void bindParameters(
+        PreparedStatement statement,
+        Object[] parameters
+    ) throws SQLException {
         for (int i = 0; i < parameters.length; i++) {
             statement.setObject(i + 1, parameters[i]);
         }

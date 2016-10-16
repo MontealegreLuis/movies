@@ -4,16 +4,15 @@
 package com.codeup.movies;
 
 import com.codeup.db.builders.queries.Select;
+import com.codeup.db.statements.Criteria;
 
 import java.util.Map;
 
-public class MoviesCriteria {
+public class MoviesCriteria implements Criteria {
     private int categoryId;
-    private int page;
 
-    private MoviesCriteria(int categoryId, int page) {
+    private MoviesCriteria(int categoryId) {
         this.categoryId = categoryId;
-        this.page = page;
     }
 
     public static MoviesCriteria from(Map<String, String[]> values) {
@@ -21,9 +20,8 @@ public class MoviesCriteria {
             ? Integer.parseInt(values.get("category")[0])
             : -1
         ;
-        int page = 1;
 
-        return new MoviesCriteria(category, page);
+        return new MoviesCriteria(category);
     }
 
     public void applyTo(Select select) {
@@ -35,13 +33,13 @@ public class MoviesCriteria {
         }
     }
 
-    private boolean hasCategory() {
-        return categoryId != -1;
-    }
-
     public Object[] arguments() {
         if (categoryId ==  -1) return new Object[0];
 
         return new Object[]{categoryId};
+    }
+
+    private boolean hasCategory() {
+        return categoryId != -1;
     }
 }

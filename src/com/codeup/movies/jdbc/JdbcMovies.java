@@ -77,10 +77,13 @@ public class JdbcMovies implements Movies {
 
     @Override
     public List<Movie> matching(MoviesCriteria criteria) {
-        Select select = Select.from("movies m").columns("m.*");
-        criteria.applyTo(select);
         try {
-            return query.selectMany(select, criteria.arguments());
+            return table
+                .select("m.*")
+                .addAlias("m")
+                .matching(criteria)
+                .fetchAll(criteria.arguments())
+            ;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

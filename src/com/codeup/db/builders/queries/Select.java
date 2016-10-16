@@ -26,6 +26,20 @@ public class Select implements HasSQLRepresentation {
         return new Select(table);
     }
 
+    /**
+     * Add alias to original table name in order to remove ambiguity, possibly due to
+     * a criteria object trying to add a join. For instance:
+     *
+     * `select.addTableAlias("u")`
+     *
+     * @param alias
+     * @return Select
+     */
+    public Select addTableAlias(String alias) {
+        table = String.format("%s %s", table, alias);
+        return this;
+    }
+
     public Select addColumns(String ...columns) {
         this.columns.add(columns);
         return this;

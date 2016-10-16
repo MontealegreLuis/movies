@@ -34,6 +34,12 @@ public class SelectTest {
     }
 
     @Test
+    public void it_adds_an_alias_to_a_query() {
+        select = Select.from("movies").addTableAlias("m");
+        assertEquals("SELECT * FROM movies m", select.toSQL());
+    }
+
+    @Test
     public void it_converts_to_sql_a_single_where_expression() {
         select = Select.from("users").where("username = ?");
         assertEquals("SELECT * FROM users WHERE username = ?", select.toSQL());
