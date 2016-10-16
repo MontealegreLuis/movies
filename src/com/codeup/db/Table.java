@@ -5,19 +5,10 @@ package com.codeup.db;
 
 import com.codeup.db.statements.InsertStatement;
 import com.codeup.db.statements.SelectStatement;
+import com.codeup.db.statements.UpdateStatement;
 
 import java.sql.Connection;
 
-/**
- * Table gateway implementation
- *
- * - insert, update, select, delete
- * - fetchOne, fetchAll, fetchInt
- *
- * Tables users = new Table(connection, "users")
- * // User user = // ?
- * users.insert("username", "password").execute("luis", "changeme");
- */
 abstract public class Table<T> {
     private final Connection connection;
 
@@ -27,6 +18,10 @@ abstract public class Table<T> {
 
     public InsertStatement<T> insert(String... columns){
         return new InsertStatement<>(connection, table(), mapper()).columns(columns);
+    }
+
+    public UpdateStatement update(String... columns) {
+        return new UpdateStatement(connection, table()).columns(columns);
     }
 
     public SelectStatement<T> select(String... columns) {

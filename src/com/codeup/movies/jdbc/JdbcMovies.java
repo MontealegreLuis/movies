@@ -65,12 +65,13 @@ public class JdbcMovies implements Movies {
     @Override
     public void update(Movie movie) {
         try {
-            query.update(
-                Update.table("movies").columns("title", "rating").where("id = ?"),
-                movie
-            );
+            table
+                .update("title", "rating")
+                .where("id = ?")
+                .execute(movie.title(), movie.rating(), movie.id())
+            ;
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot update movie", e);
+            throw new RuntimeException(e);
         }
     }
 
