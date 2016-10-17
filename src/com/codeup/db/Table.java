@@ -38,7 +38,7 @@ abstract public class Table<T> {
         try (PreparedStatement statement = connection.prepareStatement(
             insertOrUpdate.toSQL()
         )) {
-            Mapper.map(statement, parameters);
+            QueryParameters.bind(statement, parameters);
             statement.execute();
         }
     }

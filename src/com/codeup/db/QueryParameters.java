@@ -6,8 +6,8 @@ package com.codeup.db;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class Mapper {
-    public static void map(
+public class QueryParameters {
+    public static void bind(
         PreparedStatement statement,
         Object[] parameters
     ) throws SQLException {

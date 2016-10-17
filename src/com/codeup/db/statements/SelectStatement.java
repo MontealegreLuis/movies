@@ -3,7 +3,7 @@
  */
 package com.codeup.db.statements;
 
-import com.codeup.db.Mapper;
+import com.codeup.db.QueryParameters;
 import com.codeup.db.RowMapper;
 import com.codeup.db.builders.queries.Select;
 
@@ -63,7 +63,7 @@ public class SelectStatement<T> {
         try (PreparedStatement statement = connection.prepareStatement(
             select.toSQL()
         )) {
-            Mapper.map(statement, parameters);
+            QueryParameters.bind(statement, parameters);
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -77,7 +77,7 @@ public class SelectStatement<T> {
         try (PreparedStatement statement = connection.prepareStatement(
             select.toSQL()
         )) {
-            Mapper.map(statement, parameters);
+            QueryParameters.bind(statement, parameters);
 
             ResultSet resultSet = statement.executeQuery();
             List<T> entities = new ArrayList<>();

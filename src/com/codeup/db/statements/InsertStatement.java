@@ -3,7 +3,7 @@
  */
 package com.codeup.db.statements;
 
-import com.codeup.db.Mapper;
+import com.codeup.db.QueryParameters;
 import com.codeup.db.RowMapper;
 import com.codeup.db.builders.queries.Insert;
 
@@ -34,7 +34,7 @@ public class InsertStatement<T> {
             insert.toSQL(),
             Statement.RETURN_GENERATED_KEYS
         )) {
-            Mapper.map(statement, parameters);
+            QueryParameters.bind(statement, parameters);
             statement.executeUpdate();
             ResultSet key = statement.getGeneratedKeys();
             key.next();
