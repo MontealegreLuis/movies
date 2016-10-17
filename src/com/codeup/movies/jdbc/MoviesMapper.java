@@ -8,8 +8,6 @@ import com.codeup.movies.Movie;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class MoviesMapper implements RowMapper<Movie> {
     @Override
@@ -30,21 +28,5 @@ public class MoviesMapper implements RowMapper<Movie> {
             (int) parameters[1],
             parameters[2].toString()
         );
-    }
-
-    @Override
-    public Map<Integer, Object> mapColumns(Movie movie) {
-        Map<Integer, Object> mapping = new LinkedHashMap<>();
-        mapping.put(1, movie.title());
-        mapping.put(2, movie.rating());
-        mapping.put(3, movie.thumbnail());
-        return mapping;
-    }
-
-    @Override
-    public Map<Integer, Object> mapIdentifier(Movie movie) {
-        Map<Integer, Object> mapping = new LinkedHashMap<>();
-        mapping.put(3, movie.id());
-        return mapping;
     }
 }

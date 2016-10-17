@@ -8,8 +8,6 @@ import com.codeup.db.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 class UsersMapper implements RowMapper<User> {
     @Override
@@ -28,20 +26,5 @@ class UsersMapper implements RowMapper<User> {
             parameters[0].toString(),
             parameters[1].toString()
         );
-    }
-
-    @Override
-    public Map<Integer, Object> mapColumns(User user) {
-        Map<Integer, Object> mapping = new LinkedHashMap<>();
-        mapping.put(1, user.username());
-        mapping.put(2, user.password());
-        return mapping;
-    }
-
-    @Override
-    public Map<Integer, Object> mapIdentifier(User user) {
-        Map<Integer, Object> mapping = new LinkedHashMap<>();
-        mapping.put(3, user.id());
-        return mapping;
     }
 }

@@ -8,8 +8,6 @@ import com.codeup.movies.Category;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 class CategoriesMapper implements RowMapper<Category> {
     @Override
@@ -20,19 +18,5 @@ class CategoriesMapper implements RowMapper<Category> {
     @Override
     public Category newEntity(int id, Object[] parameters) {
         return new Category(id, parameters[0].toString());
-    }
-
-    @Override
-    public Map<Integer, Object> mapColumns(Category category) {
-        Map<Integer, Object> mapping = new LinkedHashMap<>();
-        mapping.put(1, category.name());
-        return mapping;
-    }
-
-    @Override
-    public Map<Integer, Object> mapIdentifier(Category category) {
-        Map<Integer, Object> mapping = new LinkedHashMap<>();
-        mapping.put(2, category.id());
-        return mapping;
     }
 }

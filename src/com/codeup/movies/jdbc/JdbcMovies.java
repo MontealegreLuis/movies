@@ -3,7 +3,6 @@
  */
 package com.codeup.movies.jdbc;
 
-import com.codeup.db.Query;
 import com.codeup.db.Table;
 import com.codeup.db.builders.queries.Insert;
 import com.codeup.movies.*;
