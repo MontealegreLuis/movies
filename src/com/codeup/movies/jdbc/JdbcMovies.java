@@ -6,8 +6,6 @@ package com.codeup.movies.jdbc;
 import com.codeup.db.Query;
 import com.codeup.db.Table;
 import com.codeup.db.builders.queries.Insert;
-import com.codeup.db.builders.queries.Select;
-import com.codeup.db.builders.queries.Update;
 import com.codeup.movies.*;
 
 import java.sql.*;
@@ -82,7 +80,7 @@ public class JdbcMovies implements Movies {
                 .select("m.*")
                 .addAlias("m")
                 .matching(criteria)
-                .fetchAll(criteria.arguments())
+                .fetchAll(criteria.arguments().toArray())
             ;
         } catch (SQLException e) {
             throw new RuntimeException(e);

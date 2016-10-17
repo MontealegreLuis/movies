@@ -33,7 +33,8 @@ public class ViewMoviesServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        MoviesCriteria criteria = MoviesCriteria.from(request.getParameterMap());
+
+        MoviesCriteria criteria = new MoviesCriteria(request.getParameterMap(), 10);
         MoviesInformation information = action.view(criteria);
 
         request.setAttribute("categories", information.categories);

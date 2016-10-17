@@ -5,6 +5,30 @@ package com.codeup.db.statements;
 
 import com.codeup.db.builders.queries.Select;
 
-public interface Criteria {
-    void applyTo(Select select);
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+public abstract class Criteria {
+    private final Map<String, String[]> request;
+    private List<Object> arguments = new ArrayList<>();
+
+    public Criteria(Map<String, String[]> request) {
+        this.request = request;
+    }
+
+    protected Criteria() {
+        request = Collections.emptyMap();
+    }
+
+    protected Map<String, String[]> request() {
+        return request;
+    }
+
+    public abstract void applyTo(Select select);
+
+    public List<Object> arguments() {
+        return arguments;
+    }
 }
