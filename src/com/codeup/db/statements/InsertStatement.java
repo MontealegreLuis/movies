@@ -3,6 +3,7 @@
  */
 package com.codeup.db.statements;
 
+import com.codeup.db.Mapper;
 import com.codeup.db.RowMapper;
 import com.codeup.db.builders.queries.Insert;
 
@@ -33,20 +34,11 @@ public class InsertStatement<T> {
             insert.toSQL(),
             Statement.RETURN_GENERATED_KEYS
         )) {
-            bindParameters(statement, parameters);
+            Mapper.map(statement, parameters);
             statement.executeUpdate();
             ResultSet key = statement.getGeneratedKeys();
             key.next();
             return mapper.newEntity(key.getInt(1), parameters);
-        }
-    }
-
-    private void bindParameters(
-        PreparedStatement statement,
-        Object[] parameters
-    ) throws SQLException {
-        for (int i = 0; i < parameters.length; i++) {
-            statement.setObject(i+1, parameters[i]);
         }
     }
 }
