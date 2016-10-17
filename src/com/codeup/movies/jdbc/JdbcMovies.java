@@ -12,12 +12,10 @@ import java.sql.*;
 import java.util.List;
 
 public class JdbcMovies implements Movies {
-    private Query<Movie> query;
     private Table<Movie> table;
     private Categories categories;
 
     public JdbcMovies(Connection connection) {
-        query = new Query<>(connection, new MoviesMapper());
         table = new MoviesTable(connection);
         categories = new JdbcCategories(connection);
     }
@@ -39,12 +37,10 @@ public class JdbcMovies implements Movies {
 
     private void addCategoriesTo(Movie movie) throws SQLException {
         for (Category category: movie.categories()) {
-            query.insert(
+            table.executeUpdate(
                 Insert.into("movies_categories").columns("movie_id", "category_id"),
-                statement -> {
-                    statement.setInt(1, movie.id());
-                    statement.setInt(2, category.id());
-                }
+                movie.id(),
+                category.id()
             );
         }
     }
