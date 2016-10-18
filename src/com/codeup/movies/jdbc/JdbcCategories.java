@@ -60,6 +60,7 @@ public class JdbcCategories implements Categories {
         try {
             return table
                 .select("c.*")
+                .addAlias("c")
                 .join("movies_categories mc", "mc.category_id = c.id")
                 .where("mc.movie_id = ?")
                 .fetchAll(movie.id())

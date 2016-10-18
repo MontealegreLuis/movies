@@ -34,6 +34,11 @@ public class SelectStatement<T> {
         return this;
     }
 
+    public SelectStatement<T> count() {
+        select.count();
+        return this;
+    }
+
     public SelectStatement<T> addAlias(String alias) {
         select.addTableAlias(alias);
         return this;
@@ -51,6 +56,16 @@ public class SelectStatement<T> {
 
     public SelectStatement<T> whereIn(String column, String[] values) {
         select.where(column, values.length);
+        return this;
+    }
+
+    public SelectStatement<T> offset(int offset) {
+        select.offset(offset);
+        return this;
+    }
+
+    public SelectStatement<T> limit(int limit) {
+        select.limit(limit);
         return this;
     }
 
@@ -85,6 +100,20 @@ public class SelectStatement<T> {
                 entities.add(mapper.mapRow(resultSet));
             }
             return entities;
+        }
+    }
+
+    public int fetchInt(Object[] parameters) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(
+            select.toSQL()
+        )) {
+            QueryParameters.bind(statement, parameters);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (!resultSet.next()) return 0;
+
+            return resultSet.getInt(1);
         }
     }
 }

@@ -30,7 +30,7 @@ public class MoviesInCategoryCriteriaTest {
         Map<String, String[]> request = new LinkedHashMap<>();
         request.put("category", new String[]{"6"});
         criteria = new MoviesInCategoryCriteria(request);
-        Select select = Select.from("movies m").columns("m.*");
+        Select select = Select.from("movies", "m").columns("m.*");
 
         criteria.applyTo(select);
 

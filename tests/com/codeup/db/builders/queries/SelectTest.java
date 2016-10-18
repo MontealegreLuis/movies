@@ -8,7 +8,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class SelectTest {
-
     private Select select;
 
     @Test
@@ -37,6 +36,27 @@ public class SelectTest {
     public void it_adds_an_alias_to_a_query() {
         select = Select.from("movies").addTableAlias("m");
         assertEquals("SELECT * FROM movies m", select.toSQL());
+    }
+
+    @Test
+    public void it_converts_to_sql_a_count_select_without_joins() {
+        select = Select.from("movies").count().where("category_id = ?");
+        assertEquals("SELECT COUNT(*) FROM movies WHERE category_id = ?", select.toSQL());
+    }
+
+    @Test
+    public void it_converts_to_sql_a_count_select_with_joins() {
+        select = Select
+            .from("movies")
+            .addTableAlias("m")
+            .count()
+            .join("movies_categories mc", "m.id = mc.movie_id")
+            .where("m.id = ?")
+        ;
+        assertEquals(
+            "SELECT COUNT(DISTINCT m.id) FROM movies m INNER JOIN movies_categories mc ON m.id = mc.movie_id WHERE m.id = ?",
+            select.toSQL()
+        );
     }
 
     @Test
@@ -121,7 +141,7 @@ public class SelectTest {
 
     @Test
     public void it_converts_to_sql_a_join_statement() {
-        select = Select.from("users u").join("roles r", "u.role_id = r.id");
+        select = Select.from("users", "u").join("roles r", "u.role_id = r.id");
         assertEquals(
             "SELECT * FROM users u INNER JOIN roles r ON u.role_id = r.id",
             select.toSQL()
@@ -131,7 +151,7 @@ public class SelectTest {
     @Test
     public void it_converts_to_sql_several_join_statements() {
         select = Select
-            .from("posts p")
+            .from("posts", "p")
             .join("posts_tags pt", "pt.post_id = p.id")
             .outerJoin("tags t", "pt.tag_id = t.id")
         ;
@@ -144,7 +164,7 @@ public class SelectTest {
     @Test
     public void it_converts_to_sql_several_join_statements_with_a_where_clause() {
         select = Select
-            .from("posts p")
+            .from("posts", "p")
             .outerJoin("posts_tags pt", "pt.post_id = p.id")
             .join("tags t", "pt.tag_id = t.id")
             .where("p.id = ?")
@@ -158,7 +178,7 @@ public class SelectTest {
     @Test
     public void it_converts_to_sql_several_join_statements_with_two_where_clauses() {
         select = Select
-            .from("posts p")
+            .from("posts", "p")
             .join("posts_tags pt", "pt.post_id = p.id")
             .outerJoin("tags t", "pt.tag_id = t.id")
             .where("p.id = ?")

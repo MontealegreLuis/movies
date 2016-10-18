@@ -30,6 +30,10 @@ public class Join implements HasSQLRepresentation {
         return this;
     }
 
+    public boolean isEmpty() {
+        return joins.isEmpty();
+    }
+
     public String toSQL() {
         StringBuilder joinClauses = new StringBuilder();
         joins.forEach(join -> joinClauses.append(join.toSQL()).append(" "));

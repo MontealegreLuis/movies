@@ -8,29 +8,51 @@ import com.codeup.db.builders.HasSQLRepresentation;
 public class Select implements HasSQLRepresentation {
     private Columns columns;
     private String table;
+    private String alias;
     private Where where;
     private Join join;
     private int limit;
     private int offset;
+    private boolean determineCount = false;
 
     private Select(String table) {
+        this(table, null);
+    }
+
+    public Select(String table, String alias) {
+        assertValidTableName(table);
+        this.table = table;
+        this.alias = alias;
         columns = Columns.empty().defaultTo("*");
         where = Where.empty();
         join = Join.empty();
-        this.table = table;
         limit = -1;
         offset = -1;
+    }
+
+    private void assertValidTableName(String table) {
+        if (table.indexOf(' ') != -1) {
+            throw new IllegalArgumentException("Invalid table name given");
+        }
     }
 
     public static Select from(String table) {
         return new Select(table);
     }
 
+    public static Select from(String table, String alias) {
+        return new Select(table, alias);
+    }
+
     /**
      * Add alias to original table name in order to remove ambiguity, possibly due to
      * a criteria object trying to add a join. For instance:
      *
-     * `select.addTableAlias("u")`
+     * `Select.from("users").addTableAlias("u").toSQL()`
+     *
+     * will result in:
+     *
+     * `SELECT * FROM users u`
      *
      * @param alias
      * @return Select
@@ -48,6 +70,17 @@ public class Select implements HasSQLRepresentation {
     public Select columns(String ...columns) {
         this.columns.clear().add(columns);
         return this;
+    }
+
+    public Select count() {
+        determineCount = true;
+        return this;
+    }
+
+    private String alias() {
+        if (alias == null) return Character.toString(table.charAt(0)).toLowerCase();
+
+        return alias;
     }
 
     public Select where(String expression) {
@@ -94,13 +127,33 @@ public class Select implements HasSQLRepresentation {
     public String toSQL() {
         return String.format(
             "SELECT %s FROM %s %s %s %s %s",
-            columns.toSQL(),
-            table,
+            columnsToSQL(),
+            fromToSQL(),
             join.toSQL(),
             where.toSQL(),
             limitToSQL(),
             offsetToSQL()
         ).trim().replaceAll("( )+", " ");
+    }
+
+    private String columnsToSQL() {
+        if (determineCount) {
+            determineCount();
+        }
+        return columns.toSQL();
+    }
+
+    private void determineCount() {
+        columns.clear();
+        if (join.isEmpty()) {
+            columns.add("COUNT(*)");
+        } else {
+            columns.add(String.format("COUNT(DISTINCT %s.id)", alias()));
+        }
+    }
+
+    private String fromToSQL() {
+        return table + ((alias == null) ? "" : " " + alias);
     }
 
     private String offsetToSQL() {

@@ -16,7 +16,7 @@ class CategoriesTable extends Table<Category> {
 
     @Override
     protected String table() {
-        return "categories c";
+        return "categories";
     }
 
     @Override
