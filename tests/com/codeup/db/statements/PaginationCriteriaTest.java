@@ -30,7 +30,7 @@ public class PaginationCriteriaTest {
 
     @Test
     public void it_adds_limit_and_offset_to_query() {
-        Select select = Select.from("movies m").columns("m.*");
+        Select select = Select.from("movies", "m").columns("m.*");
         Map<String, String[]> request = new LinkedHashMap<>();
         request.put("page", new String[]{"6"});
 
