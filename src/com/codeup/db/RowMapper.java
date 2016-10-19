@@ -16,6 +16,7 @@ public interface RowMapper <T> {
      * @throws SQLException
      */
     T mapRow(ResultSet resultSet) throws SQLException;
+    T mapRow(Object[] values);
 
     /**
      * This method is used to create new entities after an insert operation

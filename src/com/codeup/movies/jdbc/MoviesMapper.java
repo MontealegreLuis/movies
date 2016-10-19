@@ -21,6 +21,16 @@ public class MoviesMapper implements RowMapper<Movie> {
     }
 
     @Override
+    public Movie mapRow(Object[] values) {
+        return new Movie(
+            (int) values[0],
+            values[1].toString(),
+            (int) values[2],
+            values[3].toString()
+        );
+    }
+
+    @Override
     public Movie newEntity(int id, Object[] parameters) {
         return new Movie(
             id,

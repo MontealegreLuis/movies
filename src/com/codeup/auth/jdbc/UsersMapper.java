@@ -20,6 +20,15 @@ class UsersMapper implements RowMapper<User> {
     }
 
     @Override
+    public User mapRow(Object[] values) {
+        return new User(
+            ((Long) values[0]).intValue(),
+            values[1].toString(),
+            values[2].toString()
+        );
+    }
+
+    @Override
     public User newEntity(int id, Object[] parameters) {
         return new User(
             id,

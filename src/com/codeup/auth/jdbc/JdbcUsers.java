@@ -34,7 +34,8 @@ public class JdbcUsers implements Users {
             return table
                 .select("*")
                 .where("username = ?")
-                .fetch(username)
+                .execute(username)
+                .fetch()
             ;
         } catch (SQLException e) {
             throw new RuntimeException(e);

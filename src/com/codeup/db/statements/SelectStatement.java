@@ -18,6 +18,7 @@ public class SelectStatement<T> {
     private final Connection connection;
     private final Select select;
     private final RowMapper<T> mapper;
+    private Hydrator<T> hydrator;
 
     public SelectStatement(
         Connection connection,
@@ -85,6 +86,18 @@ public class SelectStatement<T> {
             if (!resultSet.next()) return null;
 
             return mapper.mapRow(resultSet);
+        }
+    }
+
+    public Hydrator<T> execute(Object... parameters) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(
+            select.toSQL()
+        )) {
+            QueryParameters.bind(statement, parameters);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            return new Hydrator<>(resultSet, mapper);
         }
     }
 
