@@ -51,7 +51,7 @@ public class InsertStatement<T> {
             statement.executeUpdate();
             ResultSet key = statement.getGeneratedKeys();
             key.next();
-            return new Hydrator<>(key.getInt(1), parameters, mapper);
+            return new Hydrator<>(key.getLong(1), parameters, mapper);
         }
     }
 }

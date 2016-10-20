@@ -4,18 +4,18 @@
 package com.codeup.auth;
 
 public class User {
-    private final int id;
+    private final long id;
     private final String username;
     private final String password;
 
-    public User(int id, String username, String password) {
+    public User(long id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
     }
 
     public static User signUp(String username, String password) {
-        return new User(0, username, password);
+        return new User(0L, username, password);
     }
 
     public String password() {
@@ -26,7 +26,7 @@ public class User {
         return username;
     }
 
-    public int id() {
+    public long id() {
         return id;
     }
 }

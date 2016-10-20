@@ -25,5 +25,5 @@ public interface RowMapper <T> {
      * @param parameters The arguments needed by the entity's constructor
      * @return A new entity
      */
-    T newEntity(int id, Object[] parameters);
+    T newEntity(long id, Object[] parameters);
 }

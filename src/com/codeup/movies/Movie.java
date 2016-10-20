@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Movie {
-    private int id;
+    private long id;
     private String title;
     private int rating;
     private String thumbnail;
     private List<Category> categories = new ArrayList<>();
 
-    public Movie(int id, String title, int rating, String thumbnail) {
+    public Movie(long id, String title, int rating, String thumbnail) {
         this.id = id;
         this.title = title;
         this.rating = rating;
@@ -21,7 +21,7 @@ public class Movie {
     }
 
     private Movie(String title, Category category) {
-        this(0, title, 0, null); // No ID, no rating and no thumbnail
+        this(0L, title, 0, null); // No ID, no rating and no thumbnail
         categories.add(category);
     }
 
@@ -31,7 +31,7 @@ public class Movie {
         String thumbnail,
         List<Category> categories
     ) {
-        this(0, title, rating, thumbnail);
+        this(0L, title, rating, thumbnail);
         this.categories = categories;
     }
 
@@ -43,7 +43,7 @@ public class Movie {
         return title;
     }
 
-    public int id() {
+    public long id() {
         return id;
     }
 

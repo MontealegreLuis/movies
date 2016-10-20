@@ -25,7 +25,7 @@ public class Hydrator<T> {
         this(Hydrator.populateValues(resultSet), mapper);
     }
 
-    public Hydrator(int id, Object[] insertedValues, RowMapper<T> mapper) {
+    public Hydrator(long id, Object[] insertedValues, RowMapper<T> mapper) {
         this.mapper = mapper;
         values = new Object[1][insertedValues.length + 1];
         System.arraycopy(new Object[]{id}, 0, values[0], 0, 1);
@@ -38,7 +38,7 @@ public class Hydrator<T> {
         return mapper.mapRow(values[0]);
     }
 
-    public List<T> fetchAll(RowMapper<T> mapper) {
+    public List<T> fetchAll() {
         List<T> entities = new ArrayList<>();
         for (Object[] value : values) {
             entities.add(mapper.mapRow(value));

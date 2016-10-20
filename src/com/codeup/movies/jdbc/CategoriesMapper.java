@@ -12,16 +12,19 @@ import java.sql.SQLException;
 class CategoriesMapper implements RowMapper<Category> {
     @Override
     public Category mapRow(ResultSet resultSet) throws SQLException {
-        return new Category(resultSet.getInt("id"), resultSet.getString("name"));
+        return new Category(resultSet.getLong("id"), resultSet.getString("name"));
     }
 
     @Override
     public Category mapRow(Object[] values) {
-        return new Category((int) values[0], values[1].toString());
+        return new Category(
+            (long) values[0],
+            values[1].toString()
+        );
     }
 
     @Override
-    public Category newEntity(int id, Object[] parameters) {
+    public Category newEntity(long id, Object[] parameters) {
         return new Category(id, parameters[0].toString());
     }
 }

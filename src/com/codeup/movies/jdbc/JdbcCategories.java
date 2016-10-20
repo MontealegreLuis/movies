@@ -22,7 +22,7 @@ public class JdbcCategories implements Categories {
     @Override
     public Category named(String name) {
         try {
-            return table.select("*").where("name = ?").fetch(name);
+            return table.select("*").where("name = ?").execute(name).fetch();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -31,7 +31,7 @@ public class JdbcCategories implements Categories {
     @Override
     public Category add(Category category) {
         try {
-            return table.insert("name").fetch(category.name());
+            return table.insert("name").execute(category.name()).fetch();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -40,7 +40,12 @@ public class JdbcCategories implements Categories {
     @Override
     public List<Category> in(String... categories) {
         try {
-            return table.select("*").whereIn("id", categories).fetchAll(categories);
+            return table
+                .select("*")
+                .whereIn("id", categories)
+                .execute(categories)
+                .fetchAll()
+            ;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -49,7 +54,7 @@ public class JdbcCategories implements Categories {
     @Override
     public List<Category> all() {
         try {
-            return table.select("*").fetchAll();
+            return table.select("*").execute().fetchAll();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -63,7 +68,8 @@ public class JdbcCategories implements Categories {
                 .addAlias("c")
                 .join("movies_categories mc", "mc.category_id = c.id")
                 .where("mc.movie_id = ?")
-                .fetchAll(movie.id())
+                .execute(movie.id())
+                .fetchAll()
             ;
         } catch (SQLException e) {
             throw new RuntimeException(e);

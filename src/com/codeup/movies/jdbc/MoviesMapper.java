@@ -13,7 +13,7 @@ public class MoviesMapper implements RowMapper<Movie> {
     @Override
     public Movie mapRow(ResultSet resultSet) throws SQLException {
         return new Movie(
-            resultSet.getInt("id"),
+            resultSet.getLong("id"),
             resultSet.getString("title"),
             resultSet.getInt("rating"),
             resultSet.getString("thumbnail")
@@ -23,7 +23,7 @@ public class MoviesMapper implements RowMapper<Movie> {
     @Override
     public Movie mapRow(Object[] values) {
         return new Movie(
-            (int) values[0],
+            (long) values[0],
             values[1].toString(),
             (int) values[2],
             values[3].toString()
@@ -31,7 +31,7 @@ public class MoviesMapper implements RowMapper<Movie> {
     }
 
     @Override
-    public Movie newEntity(int id, Object[] parameters) {
+    public Movie newEntity(long id, Object[] parameters) {
         return new Movie(
             id,
             parameters[0].toString(),
