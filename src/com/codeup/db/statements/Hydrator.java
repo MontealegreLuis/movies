@@ -27,14 +27,14 @@ public class Hydrator<T> {
 
     public Hydrator(int id, Object[] insertedValues, RowMapper<T> mapper) {
         this.mapper = mapper;
-        values = new Object[][]{};
-        System.arraycopy(new Object[]{id}, 0, insertedValues, 0, 1);
-        values[0] = insertedValues;
+        values = new Object[1][insertedValues.length + 1];
+        System.arraycopy(new Object[]{id}, 0, values[0], 0, 1);
+        System.arraycopy(insertedValues, 0, values[0], 1, insertedValues.length);
     }
 
     public T fetch() {
         if (values.length == 0) return null;
-        System.out.println(Arrays.toString(values[0]));
+
         return mapper.mapRow(values[0]);
     }
 

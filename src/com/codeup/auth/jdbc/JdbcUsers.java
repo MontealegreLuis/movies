@@ -21,7 +21,8 @@ public class JdbcUsers implements Users {
         try {
             return table
                 .insert("username", "password")
-                .fetch(user.username(), user.password())
+                .execute(user.username(), user.password())
+                .fetch()
             ;
         } catch (SQLException e) {
             throw new RuntimeException(e);

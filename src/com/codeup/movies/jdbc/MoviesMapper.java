@@ -36,7 +36,7 @@ public class MoviesMapper implements RowMapper<Movie> {
             id,
             parameters[0].toString(),
             (int) parameters[1],
-            parameters[2].toString()
+            parameters[2] == null ? null : parameters[2].toString()
         );
     }
 }
