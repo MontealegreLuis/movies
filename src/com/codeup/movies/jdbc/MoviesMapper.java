@@ -26,7 +26,7 @@ public class MoviesMapper implements RowMapper<Movie> {
             (long) values[0],
             values[1].toString(),
             (int) values[2],
-            values[3].toString()
+            thumbnail(values[3])
         );
     }
 
@@ -36,7 +36,11 @@ public class MoviesMapper implements RowMapper<Movie> {
             id,
             parameters[0].toString(),
             (int) parameters[1],
-            parameters[2] == null ? null : parameters[2].toString()
+            thumbnail(parameters[2])
         );
+    }
+
+    private String thumbnail(Object thumbnail) {
+        return thumbnail == null ? null : thumbnail.toString();
     }
 }

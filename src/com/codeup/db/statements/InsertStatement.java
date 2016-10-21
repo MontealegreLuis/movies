@@ -42,7 +42,7 @@ public class InsertStatement<T> {
         }
     }
 
-    public Hydrator<T> execute(String... parameters) throws SQLException {
+    public Hydrator<T> execute(Object... parameters) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(
             insert.toSQL(),
             Statement.RETURN_GENERATED_KEYS

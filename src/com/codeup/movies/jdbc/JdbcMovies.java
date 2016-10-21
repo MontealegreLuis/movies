@@ -24,7 +24,8 @@ public class JdbcMovies implements Movies {
         try {
             Movie movie = table
                 .insert("title", "rating", "thumbnail")
-                .fetch(aMovie.title(), aMovie.rating(), aMovie.thumbnail())
+                .execute(aMovie.title(), aMovie.rating(), aMovie.thumbnail())
+                .fetch()
             ;
             movie.addCategories(aMovie.categories());
             addCategoriesTo(movie);
@@ -47,7 +48,7 @@ public class JdbcMovies implements Movies {
     @Override
     public Movie with(int id) {
         try {
-            Movie movie = table.select("*").where("id = ?").fetch(id);
+            Movie movie = table.select("*").where("id = ?").execute(id).fetch();
             movie.addCategories(categories.relatedTo(movie));
             return movie;
         } catch (SQLException e) {
@@ -75,7 +76,8 @@ public class JdbcMovies implements Movies {
                 .select("m.*")
                 .addAlias("m")
                 .matching(criteria)
-                .fetchAll(criteria.arguments().toArray())
+                .execute(criteria.arguments().toArray())
+                .fetchAll()
             ;
         } catch (SQLException e) {
             throw new RuntimeException(e);
