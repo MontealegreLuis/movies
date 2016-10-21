@@ -47,7 +47,7 @@
                 </tr>
             </thead>
             <tbody>
-            <c:forEach items="${movies}" var="movie">
+            <c:forEach items="${movies.pageItems()}" var="movie">
             <tr>
                 <td>
                     <a href="${request.contextPath}/movies/show?id=${movie.id()}">
@@ -71,6 +71,36 @@
             </tr>
             </c:forEach>
             </tbody>
+            <tfoot>
+                <tr>
+                    <td
+                        class="text-center"
+                        colspan="<c:out default="2" escapeXml="true" value="${user != null  ? 3 : 2}"/>"
+                    >
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li>
+                                    <a href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <c:forEach begin="1" end="${movies.pagesCount()}" varStatus="loop">
+                                    <li>
+                                        <a href="${request.contextPath}?page=${loop.count}">
+                                            <c:out value="${loop.count}"/>
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                                <li>
+                                    <a href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </td>
+                </tr>
+            </tfoot>
         </table>
     </div>
     <jsp:include page="/WEB-INF/includes/scripts.jsp"/>

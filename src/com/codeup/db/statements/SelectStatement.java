@@ -27,6 +27,20 @@ public class SelectStatement<T> {
         this.mapper = mapper;
     }
 
+    private SelectStatement(
+        Connection connection,
+        Select select,
+        RowMapper<T> mapper
+    ) {
+        this.connection = connection;
+        this.select = select;
+        this.mapper = mapper;
+    }
+
+    public SelectStatement(SelectStatement<T> statement) {
+        this(statement.connection, statement.select, statement.mapper);
+    }
+
     public SelectStatement<T> select(String... columns) {
         select.columns(columns);
         return this;

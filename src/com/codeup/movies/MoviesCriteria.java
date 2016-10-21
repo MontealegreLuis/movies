@@ -4,16 +4,12 @@
 package com.codeup.movies;
 
 import com.codeup.db.statements.CompoundCriteria;
-import com.codeup.db.statements.PaginationCriteria;
 import com.codeup.movies.jdbc.MoviesInCategoryCriteria;
 
 import java.util.Map;
 
 public class MoviesCriteria extends CompoundCriteria {
-    public MoviesCriteria(Map<String, String[]> request, int pageSize) {
-        super(
-            new MoviesInCategoryCriteria(request),
-            PaginationCriteria.with(request, pageSize)
-        );
+    public MoviesCriteria(Map<String, String[]> request) {
+        super(new MoviesInCategoryCriteria(request));
     }
 }

@@ -14,10 +14,10 @@ public class ViewMovies {
         this.categories = categories;
     }
 
-    public MoviesInformation view(MoviesCriteria criteria) {
+    public MoviesInformation view(MoviesCriteria criteria, int page) {
         return new MoviesInformation(
             categories.all(),
-            movies.matching(criteria)
+            movies.matching(criteria, page)
         );
     }
 }

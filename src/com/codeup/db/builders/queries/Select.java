@@ -145,6 +145,8 @@ public class Select implements HasSQLRepresentation {
 
     private void determineCount() {
         columns.clear();
+        offset = -1;
+        limit = -1;
         if (join.isEmpty()) {
             columns.add("COUNT(*)");
         } else {

@@ -5,10 +5,12 @@ package com.codeup.movies.jdbc;
 
 import com.codeup.db.Table;
 import com.codeup.db.builders.queries.Insert;
+import com.codeup.db.statements.SelectStatement;
 import com.codeup.movies.*;
+import com.codeup.pagination.Pagination;
+import com.codeup.pagination.QueryPagination;
 
 import java.sql.*;
-import java.util.List;
 
 public class JdbcMovies implements Movies {
     private Table<Movie> table;
@@ -70,17 +72,15 @@ public class JdbcMovies implements Movies {
     }
 
     @Override
-    public List<Movie> matching(MoviesCriteria criteria) {
-        try {
-            return table
-                .select("m.*")
-                .addAlias("m")
-                .matching(criteria)
-                .execute(criteria.arguments().toArray())
-                .fetchAll()
-            ;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public Pagination<Movie> matching(MoviesCriteria criteria, int page) {
+        SelectStatement<Movie> query = table
+            .select("m.*")
+            .addAlias("m")
+            .matching(criteria)
+        ;
+        QueryPagination<Movie> storage = new QueryPagination<>(
+            query, criteria.arguments().toArray()
+        );
+        return new Pagination<>(10, storage, page);
     }
 }

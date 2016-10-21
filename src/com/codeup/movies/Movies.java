@@ -3,11 +3,11 @@
  */
 package com.codeup.movies;
 
-import java.util.List;
+import com.codeup.pagination.Pagination;
 
 public interface Movies {
     Movie with(int id);
     void update(Movie movie);
     Movie add(Movie movie);
-    List<Movie> matching(MoviesCriteria criteria);
+    Pagination<Movie> matching(MoviesCriteria criteria, int page);
 }

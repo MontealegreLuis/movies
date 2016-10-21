@@ -45,8 +45,8 @@ public class Hydrator<T> {
         return entities;
     }
 
-    public int fetchInt() {
-        return (int) values[0][0];
+    public long fetchLong() {
+        return (long) values[0][0];
     }
 
     private static Object[][] populateValues(

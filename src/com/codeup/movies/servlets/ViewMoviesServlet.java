@@ -34,14 +34,23 @@ public class ViewMoviesServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
 
-        MoviesCriteria criteria = new MoviesCriteria(request.getParameterMap(), 10);
-        MoviesInformation information = action.view(criteria);
+        MoviesInformation information = action.view(
+            new MoviesCriteria(request.getParameterMap()),
+            page(request)
+        );
 
         request.setAttribute("categories", information.categories);
         request.setAttribute("movies", information.movies);
         request
             .getRequestDispatcher("/WEB-INF/movies/index.jsp")
             .forward(request, response)
+        ;
+    }
+
+    private int page(HttpServletRequest request) {
+        return request.getParameter("page") != null
+            ? Integer.parseInt(request.getParameter("page"))
+            : 1
         ;
     }
 }
