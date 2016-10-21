@@ -71,6 +71,7 @@
             </tr>
             </c:forEach>
             </tbody>
+            <c:if test="${movies.hasPages()}">
             <tfoot>
                 <tr>
                     <td
@@ -81,6 +82,7 @@
                     </td>
                 </tr>
             </tfoot>
+            </c:if>
         </table>
     </div>
     <jsp:include page="/WEB-INF/includes/scripts.jsp"/>

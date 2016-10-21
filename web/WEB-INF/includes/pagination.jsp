@@ -2,9 +2,14 @@
 <nav aria-label="Page navigation">
     <ul class="pagination">
         <li>
-            <a href="#" aria-label="Previous">
+            <c:if test="${movies.hasPreviousPage()}">
+            <a
+                href="${request.contextPath}?page=${movies.previousPage()}"
+                aria-label="Previous"
+            >
                 <span aria-hidden="true">&laquo;</span>
             </a>
+            </c:if>
         </li>
         <c:forEach begin="1" end="${movies.pagesCount()}" varStatus="loop">
             <li>
@@ -14,9 +19,14 @@
             </li>
         </c:forEach>
         <li>
-            <a href="#" aria-label="Next">
+            <c:if test="${movies.hasNextPage()}">
+            <a
+                href="${request.contextPath}?page=${movies.nextPage()}"
+                aria-label="Next"
+            >
                 <span aria-hidden="true">&raquo;</span>
             </a>
+            </c:if>
         </li>
     </ul>
 </nav>

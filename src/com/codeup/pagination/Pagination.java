@@ -25,6 +25,22 @@ public class Pagination<T> {
         return itemsCount() > pageSize;
     }
 
+    public int nextPage() {
+        return currentPage + 1;
+    }
+
+    public boolean hasNextPage() {
+        return currentPage < pagesCount();
+    }
+
+    public int previousPage() {
+        return currentPage - 1;
+    }
+
+    public boolean hasPreviousPage() {
+        return currentPage > 1;
+    }
+
     public int pagesCount() {
         return (int) Math.ceil(itemsCount() / pageSize);
     }
