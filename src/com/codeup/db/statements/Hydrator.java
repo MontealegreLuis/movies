@@ -45,6 +45,10 @@ public class Hydrator<T> {
         return entities;
     }
 
+    public int fetchInt() {
+        return (int) values[0][0];
+    }
+
     private static Object[][] populateValues(
         ResultSet resultSet
     ) throws SQLException {

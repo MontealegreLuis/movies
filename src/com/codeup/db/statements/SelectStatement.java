@@ -83,18 +83,4 @@ public class SelectStatement<T> {
             return new Hydrator<>(resultSet, mapper);
         }
     }
-
-    public int fetchInt(Object[] parameters) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(
-            select.toSQL()
-        )) {
-            QueryParameters.bind(statement, parameters);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            if (!resultSet.next()) return 0;
-
-            return resultSet.getInt(1);
-        }
-    }
 }
