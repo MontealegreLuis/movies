@@ -11,14 +11,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SelectStatement<T> {
     private final Connection connection;
     private final Select select;
     private final RowMapper<T> mapper;
-    private Hydrator<T> hydrator;
 
     public SelectStatement(
         Connection connection,
@@ -75,20 +72,6 @@ public class SelectStatement<T> {
         return this;
     }
 
-    public T fetch(Object... parameters) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(
-            select.toSQL()
-        )) {
-            QueryParameters.bind(statement, parameters);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            if (!resultSet.next()) return null;
-
-            return mapper.mapRow(resultSet);
-        }
-    }
-
     public Hydrator<T> execute(Object... parameters) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(
             select.toSQL()
@@ -98,21 +81,6 @@ public class SelectStatement<T> {
             ResultSet resultSet = statement.executeQuery();
 
             return new Hydrator<>(resultSet, mapper);
-        }
-    }
-
-    public List<T> fetchAll(Object... parameters) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(
-            select.toSQL()
-        )) {
-            QueryParameters.bind(statement, parameters);
-
-            ResultSet resultSet = statement.executeQuery();
-            List<T> entities = new ArrayList<>();
-            while (resultSet.next()) {
-                entities.add(mapper.mapRow(resultSet));
-            }
-            return entities;
         }
     }
 
