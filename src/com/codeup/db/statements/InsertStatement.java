@@ -29,19 +29,6 @@ public class InsertStatement<T> {
         return this;
     }
 
-    public T fetch(Object... parameters) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(
-            insert.toSQL(),
-            Statement.RETURN_GENERATED_KEYS
-        )) {
-            QueryParameters.bind(statement, parameters);
-            statement.executeUpdate();
-            ResultSet key = statement.getGeneratedKeys();
-            key.next();
-            return mapper.newEntity(key.getInt(1), parameters);
-        }
-    }
-
     public Hydrator<T> execute(Object... parameters) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(
             insert.toSQL(),

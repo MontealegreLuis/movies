@@ -10,15 +10,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class CompoundCriteria extends Criteria {
-    private final List<Criteria> criterias = new ArrayList<>();
+    private final List<Criteria> criteria = new ArrayList<>();
 
-    public CompoundCriteria(Criteria... criterias) {
-        Collections.addAll(this.criterias, criterias);
+    public CompoundCriteria(Criteria... criteria) {
+        Collections.addAll(this.criteria, criteria);
     }
 
     @Override
     public void applyTo(Select select) {
-        criterias.forEach(criteria -> {
+        criteria.forEach(criteria -> {
             criteria.applyTo(select);
             arguments().addAll(criteria.arguments());
         });

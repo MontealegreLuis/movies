@@ -20,11 +20,11 @@ public class Hydrator<T> {
         this.mapper = mapper;
     }
 
-    public Hydrator(ResultSet resultSet, RowMapper<T> mapper) throws SQLException {
+    Hydrator(ResultSet resultSet, RowMapper<T> mapper) throws SQLException {
         this(Hydrator.populateValues(resultSet), mapper);
     }
 
-    public Hydrator(long id, Object[] insertedValues, RowMapper<T> mapper) {
+    Hydrator(long id, Object[] insertedValues, RowMapper<T> mapper) {
         this.mapper = mapper;
         values = new Object[1][insertedValues.length + 1];
         System.arraycopy(new Object[]{id}, 0, values[0], 0, 1);
