@@ -14,9 +14,4 @@ class CategoriesMapper implements RowMapper<Category> {
             values[1].toString()
         );
     }
-
-    @Override
-    public Category newEntity(long id, Object[] parameters) {
-        return new Category(id, parameters[0].toString());
-    }
 }

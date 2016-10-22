@@ -17,16 +17,6 @@ public class MoviesMapper implements RowMapper<Movie> {
         );
     }
 
-    @Override
-    public Movie newEntity(long id, Object[] parameters) {
-        return new Movie(
-            id,
-            parameters[0].toString(),
-            (int) parameters[1],
-            thumbnail(parameters[2])
-        );
-    }
-
     private String thumbnail(Object thumbnail) {
         return thumbnail == null ? null : thumbnail.toString();
     }

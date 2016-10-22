@@ -15,13 +15,4 @@ class UsersMapper implements RowMapper<User> {
             values[2].toString()
         );
     }
-
-    @Override
-    public User newEntity(long id, Object[] parameters) {
-        return new User(
-            id,
-            parameters[0].toString(),
-            parameters[1].toString()
-        );
-    }
 }
