@@ -9,7 +9,7 @@ import com.codeup.auth.User;
 
 import java.sql.Connection;
 
-public class UsersSeeder {
+class UsersSeeder {
     private final Connection connection;
 
     UsersSeeder(Connection connection) {

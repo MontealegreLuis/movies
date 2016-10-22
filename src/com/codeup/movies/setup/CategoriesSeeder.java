@@ -26,8 +26,8 @@ class CategoriesSeeder {
             "animated"
         };
         JdbcCategories categories = new JdbcCategories(connection);
-        for (String category :catalog) {
-            categories.add(Category.named(category));
+        for (String name :catalog) {
+            categories.add(Category.named(name));
         }
     }
 }

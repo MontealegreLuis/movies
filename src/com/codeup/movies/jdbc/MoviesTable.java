@@ -9,8 +9,8 @@ import com.codeup.movies.Movie;
 
 import java.sql.Connection;
 
-public class MoviesTable extends Table<Movie> {
-    public MoviesTable(Connection connection) {
+class MoviesTable extends Table<Movie> {
+    MoviesTable(Connection connection) {
         super(connection);
     }
 

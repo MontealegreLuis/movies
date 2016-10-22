@@ -6,7 +6,7 @@ package com.codeup.movies.jdbc;
 import com.codeup.db.RowMapper;
 import com.codeup.movies.Movie;
 
-public class MoviesMapper implements RowMapper<Movie> {
+class MoviesMapper implements RowMapper<Movie> {
     @Override
     public Movie mapRow(Object[] values) {
         return new Movie(
