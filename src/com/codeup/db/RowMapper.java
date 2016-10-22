@@ -3,7 +3,6 @@
  */
 package com.codeup.db;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface RowMapper <T> {
@@ -11,11 +10,10 @@ public interface RowMapper <T> {
     /**
      * Re-create an existing entity
      *
-     * @param resultSet
+     * @param values
      * @return A existing entity
      * @throws SQLException
      */
-    T mapRow(ResultSet resultSet) throws SQLException;
     T mapRow(Object[] values);
 
     /**
