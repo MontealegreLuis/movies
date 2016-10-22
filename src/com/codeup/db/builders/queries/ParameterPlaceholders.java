@@ -14,8 +14,8 @@ import java.util.Arrays;
  *
  * Useful for VALUES and IN clauses
  */
-public class ParameterPlaceholders {
-    public static String generate(int count) {
+class ParameterPlaceholders {
+    static String generate(int count) {
         assertCountIsPositive(count);
         String[] parameters = new String[count];
         Arrays.fill(parameters, "?");

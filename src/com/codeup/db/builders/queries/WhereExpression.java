@@ -5,10 +5,10 @@ package com.codeup.db.builders.queries;
 
 import com.codeup.db.builders.HasSQLRepresentation;
 
-public class WhereExpression implements HasSQLRepresentation {
-
+class WhereExpression implements HasSQLRepresentation {
     private final String expression;
     private final Operator operator;
+
     enum Operator {AND, OR};
 
     public static WhereExpression with(String expression, Operator operator) {

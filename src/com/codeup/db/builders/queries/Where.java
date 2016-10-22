@@ -9,7 +9,7 @@ import com.codeup.db.builders.queries.WhereExpression.Operator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Where implements HasSQLRepresentation {
+class Where implements HasSQLRepresentation {
     private final List<WhereExpression> expressions;
 
     private Where() {

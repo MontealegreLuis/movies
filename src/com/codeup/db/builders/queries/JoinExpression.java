@@ -5,10 +5,18 @@ package com.codeup.db.builders.queries;
 
 import com.codeup.db.builders.HasSQLRepresentation;
 
-public class JoinExpression implements HasSQLRepresentation {
+class JoinExpression implements HasSQLRepresentation {
     private final String table;
     private final String on;
     private final Type type;
+
+    enum Type {INNER, OUTER};
+
+    JoinExpression(String table, String on, Type type) {
+        this.table = table;
+        this.on = on;
+        this.type = type;
+    }
 
     public String toSQL() {
         return String.format(
@@ -17,13 +25,5 @@ public class JoinExpression implements HasSQLRepresentation {
             table,
             on
         );
-    }
-
-    enum Type {INNER, OUTER};
-
-    public JoinExpression(String table, String on, Type type) {
-        this.table = table;
-        this.on = on;
-        this.type = type;
     }
 }

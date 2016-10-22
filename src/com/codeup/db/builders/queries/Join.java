@@ -9,7 +9,7 @@ import com.codeup.db.builders.queries.JoinExpression.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Join implements HasSQLRepresentation {
+class Join implements HasSQLRepresentation {
     private List<JoinExpression> joins;
 
     private Join() {
@@ -20,12 +20,12 @@ public class Join implements HasSQLRepresentation {
         return new Join();
     }
 
-    public Join inner(String table, String on) {
+    Join inner(String table, String on) {
         joins.add(new JoinExpression(table, on, Type.INNER));
         return this;
     }
 
-    public Join outer(String table, String on) {
+    Join outer(String table, String on) {
         joins.add(new JoinExpression(table, on, Type.OUTER));
         return this;
     }

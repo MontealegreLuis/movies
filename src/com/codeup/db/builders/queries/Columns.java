@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Columns implements HasSQLRepresentation {
+class Columns implements HasSQLRepresentation {
     private List<String> columns;
     private String defaultColumn;
 
@@ -21,7 +21,7 @@ public class Columns implements HasSQLRepresentation {
         return new Columns();
     }
 
-    public Columns defaultTo(String column) {
+    Columns defaultTo(String column) {
         defaultColumn = column;
         return this;
     }
@@ -31,12 +31,13 @@ public class Columns implements HasSQLRepresentation {
         return this;
     }
 
-    public int size() {
+    int size() {
         return columns.size();
     }
 
-    public boolean isEmpty() {
-        return columns.isEmpty();
+    Columns clear() {
+        columns.clear();
+        return this;
     }
 
     @Override
@@ -44,10 +45,5 @@ public class Columns implements HasSQLRepresentation {
         if (columns.isEmpty()) columns.add(defaultColumn);
 
         return String.join(", ", columns.toArray(new String[]{}));
-    }
-
-    public Columns clear() {
-        columns.clear();
-        return this;
     }
 }

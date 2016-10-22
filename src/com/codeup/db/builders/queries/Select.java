@@ -19,7 +19,7 @@ public class Select implements HasSQLRepresentation {
         this(table, null);
     }
 
-    public Select(String table, String alias) {
+    private Select(String table, String alias) {
         assertValidTableName(table);
         this.table = table;
         this.alias = alias;
@@ -88,6 +88,19 @@ public class Select implements HasSQLRepresentation {
         return this;
     }
 
+    /**
+     * Generates WHERE IN clause.
+     *
+     * `select.where("name", 3)`
+     *
+     * will generate
+     *
+     * `AND name IN (?, ?, ?)`
+     *
+     * @param column
+     * @param parametersCount
+     * @return
+     */
     public Select where(String column, int parametersCount) {
         where.and(column, parametersCount);
         return this;
@@ -98,6 +111,19 @@ public class Select implements HasSQLRepresentation {
         return this;
     }
 
+    /**
+     * Generates WHERE IN clause.
+     *
+     * `select.where("name", 3)`
+     *
+     * will generate
+     *
+     * `OR name IN (?, ?, ?)`
+     *
+     * @param column
+     * @param parametersCount
+     * @return
+     */
     public Select orWhere(String column, int parametersCount) {
         where.or(column, parametersCount);
         return this;
