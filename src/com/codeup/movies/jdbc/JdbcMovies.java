@@ -25,7 +25,7 @@ public class JdbcMovies implements Movies {
     public Movie add(Movie aMovie) {
         try {
             Movie movie = table
-                .insert("title", "rating", "thumbnail")
+                .createInsert("title", "rating", "thumbnail")
                 .execute(aMovie.title(), aMovie.rating(), aMovie.thumbnail())
                 .fetch()
             ;
@@ -62,7 +62,7 @@ public class JdbcMovies implements Movies {
     public void update(Movie movie) {
         try {
             table
-                .update("title", "rating")
+                .createUpdate("title", "rating")
                 .where("id = ?")
                 .execute(movie.title(), movie.rating(), movie.id())
             ;

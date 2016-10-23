@@ -20,7 +20,7 @@ public class JdbcUsers implements Users {
     public User add(User user) {
         try {
             return table
-                .insert("username", "password")
+                .createInsert("username", "password")
                 .execute(user.username(), user.password())
                 .fetch()
             ;

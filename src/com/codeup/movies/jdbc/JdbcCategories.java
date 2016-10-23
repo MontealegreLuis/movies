@@ -31,7 +31,7 @@ public class JdbcCategories implements Categories {
     @Override
     public Category add(Category category) {
         try {
-            return table.insert("name").execute(category.name()).fetch();
+            return table.createInsert("name").execute(category.name()).fetch();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

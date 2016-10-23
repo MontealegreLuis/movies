@@ -19,11 +19,11 @@ abstract public class Table<T> {
         this.connection = connection;
     }
 
-    public InsertStatement<T> insert(String... columns){
+    public InsertStatement<T> createInsert(String... columns){
         return new InsertStatement<>(connection, table(), mapper()).columns(columns);
     }
 
-    public UpdateStatement update(String... columns) {
+    public UpdateStatement createUpdate(String... columns) {
         return new UpdateStatement(connection, table()).columns(columns);
     }
 
