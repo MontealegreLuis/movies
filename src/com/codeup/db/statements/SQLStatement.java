@@ -9,14 +9,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-class SQLStatement {
+public class SQLStatement {
     protected final Connection connection;
 
     SQLStatement(Connection connection) {
         this.connection = connection;
     }
 
-    RuntimeException queryException(
+    public static RuntimeException queryException(
         HasSQLRepresentation statement,
         Object[] parameters,
         SQLException cause

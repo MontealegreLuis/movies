@@ -5,6 +5,7 @@ package com.codeup.db;
 
 import com.codeup.db.builders.HasSQLRepresentation;
 import com.codeup.db.statements.InsertStatement;
+import com.codeup.db.statements.SQLStatement;
 import com.codeup.db.statements.SelectStatement;
 import com.codeup.db.statements.UpdateStatement;
 
@@ -34,12 +35,14 @@ abstract public class Table<T> {
     protected void executeUpdate(
         HasSQLRepresentation insertOrUpdate,
         Object... parameters
-    ) throws SQLException {
+    ) {
         try (PreparedStatement statement = connection.prepareStatement(
             insertOrUpdate.toSQL()
         )) {
             QueryParameters.bind(statement, parameters);
             statement.execute();
+        } catch (SQLException e) {
+            throw SQLStatement.queryException(insertOrUpdate, parameters, e);
         }
     }
 

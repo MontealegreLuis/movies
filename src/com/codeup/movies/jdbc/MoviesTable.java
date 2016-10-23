@@ -14,7 +14,6 @@ import com.codeup.pagination.Pagination;
 import com.codeup.pagination.QueryPagination;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 class MoviesTable extends Table<Movie> {
@@ -52,21 +51,17 @@ class MoviesTable extends Table<Movie> {
         String thumbnail,
         List<Category> categories
     ) {
-        try {
-            Movie movie = this
-                .createInsert("title", "rating", "thumbnail")
-                .execute(title, rating, thumbnail)
-                .fetch()
-            ;
-            movie.addCategories(categories);
-            addCategoriesTo(movie);
-            return movie;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Movie movie = this
+            .createInsert("title", "rating", "thumbnail")
+            .execute(title, rating, thumbnail)
+            .fetch()
+        ;
+        movie.addCategories(categories);
+        addCategoriesTo(movie);
+        return movie;
     }
 
-    private void addCategoriesTo(Movie movie) throws SQLException {
+    private void addCategoriesTo(Movie movie) {
         for (Category category: movie.categories()) {
             this.executeUpdate(
                 Insert.into("movies_categories").columns("movie_id", "category_id"),
