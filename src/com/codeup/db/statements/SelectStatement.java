@@ -5,17 +5,14 @@ package com.codeup.db.statements;
 
 import com.codeup.db.QueryParameters;
 import com.codeup.db.RowMapper;
-import com.codeup.db.builders.HasSQLRepresentation;
 import com.codeup.db.builders.queries.Select;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 
-public class SelectStatement<T> {
-    private final Connection connection;
+public class SelectStatement<T> extends SQLStatement {
     private final Select select;
     private final RowMapper<T> mapper;
 
@@ -24,7 +21,7 @@ public class SelectStatement<T> {
         String table,
         RowMapper<T> mapper
     ) {
-        this.connection = connection;
+        super(connection);
         this.select = Select.from(table);
         this.mapper = mapper;
     }
@@ -38,7 +35,7 @@ public class SelectStatement<T> {
         Select select,
         RowMapper<T> mapper
     ) {
-        this.connection = connection;
+        super(connection);
         this.select = select;
         this.mapper = mapper;
     }
@@ -100,20 +97,5 @@ public class SelectStatement<T> {
         } catch (SQLException e) {
             throw queryException(select, parameters, e);
         }
-    }
-
-    private RuntimeException queryException(
-        HasSQLRepresentation statement,
-        Object[] parameters,
-        SQLException cause
-    ) {
-        return new RuntimeException(
-            String.format(
-                "Cannot execute statement %s with parameters %s",
-                statement.toSQL(),
-                Arrays.toString(parameters)
-            ),
-            cause
-        );
     }
 }
