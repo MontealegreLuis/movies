@@ -8,7 +8,6 @@ import com.codeup.db.Table;
 import com.codeup.movies.Category;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 class CategoriesTable extends Table<Category> {
@@ -17,55 +16,35 @@ class CategoriesTable extends Table<Category> {
     }
 
     Category insert(String name) {
-        try {
-            return this.createInsert("name").execute(name).fetch();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return this.createInsert("name").execute(name).fetch();
     }
 
     Category findBy(String name) {
-        try {
-            return this.select("*").where("name = ?").execute(name).fetch();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return this.select("*").where("name = ?").execute(name).fetch();
     }
 
     List<Category> findAllIn(String... categories) {
-        try {
-            return this
-                .select("*")
-                .whereIn("id", categories)
-                .execute(categories)
-                .fetchAll()
-            ;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return this
+            .select("*")
+            .whereIn("id", categories)
+            .execute(categories)
+            .fetchAll()
+        ;
     }
 
     List<Category> findAll() {
-        try {
-            return this.select("*").execute().fetchAll();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return this.select("*").execute().fetchAll();
     }
 
     List<Category> findAllBy(long movieId) {
-        try {
-            return this
-                .select("c.*")
-                .addAlias("c")
-                .join("movies_categories mc", "mc.category_id = c.id")
-                .where("mc.movie_id = ?")
-                .execute(movieId)
-                .fetchAll()
-            ;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return this
+            .select("c.*")
+            .addAlias("c")
+            .join("movies_categories mc", "mc.category_id = c.id")
+            .where("mc.movie_id = ?")
+            .execute(movieId)
+            .fetchAll()
+        ;
     }
 
     @Override

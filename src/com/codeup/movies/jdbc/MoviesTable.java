@@ -35,23 +35,15 @@ class MoviesTable extends Table<Movie> {
     }
 
     Movie findBy(int movieId) {
-        try {
-            return this.select("*").where("id = ?").execute(movieId).fetch();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return this.select("*").where("id = ?").execute(movieId).fetch();
     }
 
     void update(String title, int rating, long id) {
-        try {
-            this
-                .createUpdate("title", "rating")
-                .where("id = ?")
-                .execute(title, rating, id)
-            ;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        this
+            .createUpdate("title", "rating")
+            .where("id = ?")
+            .execute(title, rating, id)
+        ;
     }
 
     Movie insert(

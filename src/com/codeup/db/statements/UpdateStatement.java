@@ -4,11 +4,13 @@
 package com.codeup.db.statements;
 
 import com.codeup.db.QueryParameters;
+import com.codeup.db.builders.HasSQLRepresentation;
 import com.codeup.db.builders.queries.Update;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class UpdateStatement {
     private final Connection connection;
@@ -24,17 +26,34 @@ public class UpdateStatement {
         return this;
     }
 
-    public void execute(Object... parameters) throws SQLException {
+    public UpdateStatement where(String clause) {
+        update.where(clause);
+        return this;
+    }
+
+    public void execute(Object... parameters) {
         try (PreparedStatement statement = connection.prepareStatement(
             update.toSQL()
         )) {
             QueryParameters.bind(statement, parameters);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            throw queryException(update, parameters, e);
         }
     }
 
-    public UpdateStatement where(String clause) {
-        update.where(clause);
-        return this;
+    private RuntimeException queryException(
+        HasSQLRepresentation statement,
+        Object[] parameters,
+        SQLException cause
+    ) {
+        return new RuntimeException(
+            String.format(
+                "Cannot execute statement %s with parameters %s",
+                statement.toSQL(),
+                Arrays.toString(parameters)
+            ),
+            cause
+        );
     }
 }

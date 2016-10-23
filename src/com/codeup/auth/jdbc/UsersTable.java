@@ -8,7 +8,6 @@ import com.codeup.db.RowMapper;
 import com.codeup.db.Table;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 class UsersTable extends Table<User> {
     UsersTable(Connection connection) {
@@ -16,28 +15,20 @@ class UsersTable extends Table<User> {
     }
 
     User insert(String username, String password) {
-        try {
-            return this
-                .createInsert("username", "password")
-                .execute(username, password)
-                .fetch()
-            ;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return this
+            .createInsert("username", "password")
+            .execute(username, password)
+            .fetch()
+        ;
     }
 
     User findBy(String username) {
-        try {
-            return this
-                .select("*")
-                .where("username = ?")
-                .execute(username)
-                .fetch()
-            ;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return this
+            .select("*")
+            .where("username = ?")
+            .execute(username)
+            .fetch()
+        ;
     }
 
     @Override
