@@ -19,19 +19,19 @@ abstract public class Table<T> {
         this.connection = connection;
     }
 
-    public InsertStatement<T> createInsert(String... columns){
+    protected InsertStatement<T> createInsert(String... columns){
         return new InsertStatement<>(connection, table(), mapper()).columns(columns);
     }
 
-    public UpdateStatement createUpdate(String... columns) {
+    protected UpdateStatement createUpdate(String... columns) {
         return new UpdateStatement(connection, table()).columns(columns);
     }
 
-    public SelectStatement<T> select(String... columns) {
+    protected SelectStatement<T> select(String... columns) {
         return new SelectStatement<>(connection, table(), mapper()).select(columns);
     }
 
-    public void executeUpdate(
+    protected void executeUpdate(
         HasSQLRepresentation insertOrUpdate,
         Object... parameters
     ) throws SQLException {
