@@ -5,12 +5,11 @@ package com.codeup.auth.jdbc;
 
 import com.codeup.auth.User;
 import com.codeup.auth.Users;
-import com.codeup.db.Table;
 
-import java.sql.*;
+import java.sql.Connection;
 
 public class JdbcUsers implements Users {
-    private final Table<User> table;
+    private final UsersTable table;
 
     public JdbcUsers(Connection connection) {
         table = new UsersTable(connection);
@@ -18,28 +17,11 @@ public class JdbcUsers implements Users {
 
     @Override
     public User add(User user) {
-        try {
-            return table
-                .createInsert("username", "password")
-                .execute(user.username(), user.password())
-                .fetch()
-            ;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return table.insert(user.username(), user.password());
     }
 
     @Override
     public User identifiedBy(String username) {
-        try {
-            return table
-                .select("*")
-                .where("username = ?")
-                .execute(username)
-                .fetch()
-            ;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return table.findBy(username);
     }
 }
