@@ -33,6 +33,7 @@
                                 name="username"
                                 id="username"
                                 autofocus
+                                value="${param.username}"
                             >
                             <jsp:include page="/WEB-INF/includes/errors.jsp">
                                 <jsp:param name="field" value="username"/>
