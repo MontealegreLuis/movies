@@ -24,7 +24,7 @@
                             ${requestScope.error}
                         </p>
                     </c:if>
-                    <form method="post" action="/login">
+                    <form method="post" action="${request.contextPath}/login">
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input
@@ -34,6 +34,9 @@
                                 id="username"
                                 autofocus
                             >
+                            <jsp:include page="/WEB-INF/includes/errors.jsp">
+                                <jsp:param name="field" value="username"/>
+                            </jsp:include>
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
@@ -43,6 +46,9 @@
                                 name="password"
                                 id="password"
                             >
+                            <jsp:include page="/WEB-INF/includes/errors.jsp">
+                                <jsp:param name="field" value="password"/>
+                            </jsp:include>
                         </div>
                         <button type="submit" class="btn btn-primary">
                             <span class="glyphicon glyphicon-user"></span>

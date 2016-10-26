@@ -5,6 +5,7 @@ package com.codeup.auth.servlets;
 
 import com.codeup.auth.actions.AuthenticateUser;
 import com.codeup.auth.di.AuthContainer;
+import com.codeup.auth.validation.LoginValidator;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -32,10 +33,16 @@ public class LoginServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        if (!action.attemptLogin(
-            request.getParameter("username"),
-            request.getParameter("password")
-        )) {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        LoginValidator validator = LoginValidator.from(username, password);
+        if (!validator.isValid()) {
+            invalidInput(validator, request, response);
+            return;
+        }
+
+        if (!action.attemptLogin(username, password )) {
             invalidCredentials(request, response);
             return;
         }
@@ -44,14 +51,13 @@ public class LoginServlet extends HttpServlet {
         response.sendRedirect(homePage);
     }
 
-    protected void doGet(
+    private void invalidInput(
+        LoginValidator validator,
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        request
-            .getRequestDispatcher("/WEB-INF/auth/login.jsp")
-            .forward(request, response)
-        ;
+        request.setAttribute("errors", validator.messages());
+        doGet(request, response);
     }
 
     private void invalidCredentials(
@@ -62,6 +68,13 @@ public class LoginServlet extends HttpServlet {
             "error",
             "Either your username or password is incorrect."
         );
+        doGet(request, response);
+    }
+
+    protected void doGet(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException {
         request
             .getRequestDispatcher("/WEB-INF/auth/login.jsp")
             .forward(request, response)
