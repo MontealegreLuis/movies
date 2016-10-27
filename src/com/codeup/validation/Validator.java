@@ -3,9 +3,10 @@
  */
 package com.codeup.validation;
 
+import java.util.List;
 import java.util.Map;
 
 public interface Validator {
     boolean isValid();
-    Map<String, String[]> messages();
+    Map<String, List<String>> messages();
 }

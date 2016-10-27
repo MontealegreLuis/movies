@@ -6,13 +6,15 @@ package com.codeup.auth.validation;
 import com.codeup.validation.Validator;
 import org.apache.commons.validator.GenericValidator;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LoginValidator implements Validator {
     private final String username;
     private final String password;
-    private Map<String, String[]> messages;
+    private Map<String, List<String>> messages;
 
     private LoginValidator(String username, String password) {
         this.username = username;
@@ -26,20 +28,35 @@ public class LoginValidator implements Validator {
 
     @Override
     public boolean isValid() {
-        boolean isValid = true;
-        if (GenericValidator.isBlankOrNull(username)) {
-            messages.put("username", new String[]{"Enter your username"});
-            isValid = false;
-        }
+        validateUsername();
+        validatePassword();
+
+        return messages.size() == 0;
+    }
+
+    private void validatePassword() {
+        ArrayList<String> messages = new ArrayList<>();
         if (GenericValidator.isBlankOrNull(password)) {
-            messages.put("password", new String[]{"Enter your password"});
-            isValid = false;
+            messages.add("Enter your password");
         }
-        return isValid;
+        if (messages.size() > 0) this.messages.put("password", messages);
+    }
+
+    private void validateUsername() {
+        ArrayList<String> messages = new ArrayList<>();
+
+        if (GenericValidator.isBlankOrNull(username)) {
+            messages.add("Enter your username");
+        }
+        if (username != null && !GenericValidator.matchRegexp(username, "[A-Za-z0-9._-]+")) {
+            messages.add("Your username does not have a valid format");
+        }
+
+        if (messages.size() > 0) this.messages.put("username", messages);
     }
 
     @Override
-    public Map<String, String[]> messages() {
+    public Map<String, List<String>> messages() {
         return messages;
     }
 }

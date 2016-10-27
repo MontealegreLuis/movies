@@ -12,7 +12,7 @@ public class LoginValidatorTest {
     private LoginValidator validator;
 
     @Test
-    public void it_validates_an_empty_password() {
+    public void it_fails_validation_with_an_empty_password() {
         validator = LoginValidator.from("luis", "");
 
         assertFalse(validator.isValid());
@@ -20,7 +20,7 @@ public class LoginValidatorTest {
     }
 
     @Test
-    public void it_validates_a_password_with_only_spaces() {
+    public void it_fails_validation_with_a_password_with_only_spaces() {
         validator = LoginValidator.from("luis", "    ");
 
         assertFalse(validator.isValid());
@@ -28,7 +28,7 @@ public class LoginValidatorTest {
     }
 
     @Test
-    public void it_validates_a_null_password() {
+    public void it_fails_validation_with_a_null_password() {
         validator = LoginValidator.from("luis", null);
 
         assertFalse(validator.isValid());
@@ -36,7 +36,7 @@ public class LoginValidatorTest {
     }
 
     @Test
-    public void it_validates_an_empty_username() {
+    public void it_fails_validation_with_an_empty_username() {
         validator = LoginValidator.from("", "changeme");
 
         assertFalse(validator.isValid());
@@ -44,7 +44,7 @@ public class LoginValidatorTest {
     }
 
     @Test
-    public void it_validates_a_username_with_only_spaces() {
+    public void it_fails_validation_with_a_username_with_only_spaces() {
         validator = LoginValidator.from("      ", "changeme");
 
         assertFalse(validator.isValid());
@@ -52,8 +52,24 @@ public class LoginValidatorTest {
     }
 
     @Test
-    public void it_validates_a_null_username() {
+    public void it_fails_validation_with_a_null_username() {
         validator = LoginValidator.from(null, "changeme");
+
+        assertFalse(validator.isValid());
+        assertTrue(validator.messages().containsKey("username"));
+    }
+
+    @Test
+    public void it_fails_validation_with_a_username_with_invalid_format() {
+        validator = LoginValidator.from("luis!montealegre ", "changeme");
+
+        assertFalse(validator.isValid());
+        assertTrue(validator.messages().containsKey("username"));
+    }
+
+    @Test
+    public void it_passes_if_valid_credentials_are_provided() {
+        validator = LoginValidator.from("Luis.Mont-al3gr_ ", "changeme");
 
         assertFalse(validator.isValid());
         assertTrue(validator.messages().containsKey("username"));
