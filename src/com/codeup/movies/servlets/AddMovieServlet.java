@@ -5,6 +5,7 @@ package com.codeup.movies.servlets;
 
 import com.codeup.movies.actions.AddMovie;
 import com.codeup.movies.di.MoviesContainer;
+import com.codeup.movies.validation.AddMovieValidator;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -37,6 +38,17 @@ public class AddMovieServlet extends HttpServlet {
     ) throws ServletException, IOException {
         String thumbnail = saveThumbnail(request);
 
+        AddMovieValidator validator = AddMovieValidator.withInput(
+            request.getParameter("title"),
+            request.getParameter("rating"),
+            request.getParameterValues("category[]")
+        );
+
+        if (!validator.isValid()) {
+            invalidInput(request, response, validator);
+            return;
+        }
+
         action.add(
             request.getParameter("title"),
             Integer.parseInt(request.getParameter("rating")),
@@ -45,6 +57,15 @@ public class AddMovieServlet extends HttpServlet {
         );
 
         response.sendRedirect("/movies");
+    }
+
+    private void invalidInput(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        AddMovieValidator validator
+    ) throws ServletException, IOException {
+        request.setAttribute("errors", validator.messages());
+        doGet(request, response);
     }
 
     private String saveThumbnail(

@@ -32,10 +32,16 @@
                                 id="title"
                                 autofocus
                             >
+                            <jsp:include page="/WEB-INF/includes/errors.jsp">
+                                <jsp:param name="field" value="title"/>
+                            </jsp:include>
                         </div>
                         <div class="form-group">
                             <label for="title">Rating</label><br>
                             <jsp:include page="/WEB-INF/includes/ratings.jsp"/>
+                            <jsp:include page="/WEB-INF/includes/errors.jsp">
+                                <jsp:param name="field" value="rating"/>
+                            </jsp:include>
                         </div>
                         <div class="form-group">
                             <label>Categories</label><br>
@@ -49,6 +55,9 @@
                                 ${category.name()}
                             </label>
                             </c:forEach>
+                            <jsp:include page="/WEB-INF/includes/errors.jsp">
+                                <jsp:param name="field" value="categories"/>
+                            </jsp:include>
                         </div>
                         <div class="form-group">
                             <label for="thumbnail">Thumbnail</label>
