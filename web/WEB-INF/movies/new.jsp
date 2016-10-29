@@ -76,6 +76,9 @@
                                 </label>
                                 <input type="text" class="form-control" disabled>
                             </div>
+                            <jsp:include page="/WEB-INF/includes/errors.jsp">
+                                <jsp:param name="field" value="thumbnail"/>
+                            </jsp:include>
                         </div>
                         <button type="submit" class="btn btn-primary">
                             <span class="glyphicon glyphicon-facetime-video"></span>

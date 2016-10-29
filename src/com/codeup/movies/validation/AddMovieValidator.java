@@ -3,6 +3,7 @@
  */
 package com.codeup.movies.validation;
 
+import com.codeup.movies.servlets.Upload;
 import com.codeup.validation.Validator;
 import org.apache.commons.validator.GenericValidator;
 
@@ -15,21 +16,29 @@ public class AddMovieValidator implements Validator {
     private final String title;
     private final String rating;
     private final String[] categories;
+    private final Upload upload;
     private final Map<String, List<String>> errors;
 
-    private AddMovieValidator(String title, String rating, String[] categories) {
+    private AddMovieValidator(
+        String title,
+        String rating,
+        String[] categories,
+        Upload upload
+    ) {
         this.title = title;
         this.rating = rating;
         this.categories = categories;
+        this.upload = upload;
         errors = new HashMap<>();
     }
 
     public static AddMovieValidator withInput(
         String title,
         String rating,
-        String[] categories
+        String[] categories,
+        Upload upload
     ) {
-        return new AddMovieValidator(title, rating, categories);
+        return new AddMovieValidator(title, rating, categories, upload);
     }
 
     @Override
@@ -37,6 +46,7 @@ public class AddMovieValidator implements Validator {
         validateTitle();
         validateRating();
         validateCategories();
+        validateUpload();
         return errors.size() == 0;
     }
 
@@ -73,6 +83,12 @@ public class AddMovieValidator implements Validator {
         if (!GenericValidator.isInRange(Integer.parseInt(rating), 1, 5)) {
             messages.add("Rating should be a number between 1 and 5");
             errors.put("rating", messages);
+        }
+    }
+
+    private void validateUpload() {
+        if (!upload.isValid()) {
+            errors.putAll(upload.messages());
         }
     }
 

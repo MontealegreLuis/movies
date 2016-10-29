@@ -6,6 +6,7 @@ package com.codeup.movies.servlets;
 import com.codeup.movies.actions.AddMovie;
 import com.codeup.movies.di.MoviesContainer;
 import com.codeup.movies.validation.AddMovieValidator;
+import com.codeup.validation.Validator;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,7 +15,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import java.io.IOException;
 
 @WebServlet(name = "AddMovieServlet", urlPatterns = {"/movies/new"})
@@ -36,12 +36,18 @@ public class AddMovieServlet extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        String thumbnail = saveThumbnail(request);
+
+        Upload upload = Upload
+            .fileTo(request.getPart("thumbnail"), uploadsFolder())
+            .required()
+            .onlyImages()
+        ;
 
         AddMovieValidator validator = AddMovieValidator.withInput(
             request.getParameter("title"),
             request.getParameter("rating"),
-            request.getParameterValues("category[]")
+            request.getParameterValues("category[]"),
+            upload
         );
 
         if (!validator.isValid()) {
@@ -49,10 +55,11 @@ public class AddMovieServlet extends HttpServlet {
             return;
         }
 
+        upload.move();
         action.add(
             request.getParameter("title"),
             Integer.parseInt(request.getParameter("rating")),
-            thumbnail,
+            upload.name(),
             request.getParameterValues("category[]")
         );
 
@@ -62,22 +69,10 @@ public class AddMovieServlet extends HttpServlet {
     private void invalidInput(
         HttpServletRequest request,
         HttpServletResponse response,
-        AddMovieValidator validator
+        Validator validator
     ) throws ServletException, IOException {
         request.setAttribute("errors", validator.messages());
         doGet(request, response);
-    }
-
-    private String saveThumbnail(
-        HttpServletRequest request
-    ) throws IOException, ServletException {
-        Part part = request.getPart("thumbnail");
-
-        return Upload.saveTo(
-            uploadsFolder(),
-            part.getSubmittedFileName(),
-            part.getInputStream()
-        );
     }
 
     private String uploadsFolder() {
