@@ -11,4 +11,4 @@ before_script:
   - mysql -e 'create database movies_db;'
 
 script:
-  - mvn test
+  - mvn clean verify
