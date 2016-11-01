@@ -2,3 +2,10 @@ language: java
 
 jdk:
   - oraclejdk8
+
+services:
+  - mysql
+
+before_script:
+  - cp travis.properties config.properties
+  - mysql -e 'create database movies_db;'
