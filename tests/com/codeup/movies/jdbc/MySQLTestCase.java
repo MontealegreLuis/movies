@@ -11,11 +11,11 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.ext.mysql.MySqlDataTypeFactory;
 import org.dbunit.ext.mysql.MySqlMetadataHandler;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
+
+import static com.codeup.movies.jdbc.DatabaseRuleSuite.*;
 
 abstract public class MySQLTestCase extends DatabaseTestCase {
     @Override
@@ -50,18 +50,5 @@ abstract public class MySQLTestCase extends DatabaseTestCase {
             statement.executeUpdate(String.format("TRUNCATE %s", table));
         }
         statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
-    }
-
-    protected MysqlDataSource dataSource() throws IOException {
-        Properties config = new Properties();
-        config.load(new FileInputStream("config.properties"));
-
-        MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setURL(config.getProperty("url"));
-        dataSource.setUser(config.getProperty("user"));
-        dataSource.setPassword(config.getProperty("password"));
-        dataSource.setDatabaseName(config.getProperty("database"));
-
-        return dataSource;
     }
 }

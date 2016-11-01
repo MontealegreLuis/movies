@@ -13,6 +13,7 @@ public class Table implements HasSQLRepresentation {
     private List<Column> columns;
     private PrimaryKey primaryKey;
     private List<ForeignKey> foreignKeys;
+    private boolean ifNotExists = false;
 
     Table(String name) {
         this.name = name;
@@ -58,17 +59,27 @@ public class Table implements HasSQLRepresentation {
         return primaryKey;
     }
 
+    public Table ifNotExists() {
+        ifNotExists = true;
+        return this;
+    }
+
     @Override
     public String toSQL() {
         assertPrimaryKeyIsPresent();
 
         return String.format(
-            "CREATE TABLE %s (%s %s %s) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;",
+            "CREATE TABLE %s %s (%s %s %s) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;",
+            ifNotExistsSQL(),
             name,
             columnDefinitions(),
             primaryKey.toSQL(),
             foreignKeysSQL()
-        );
+        ).replaceAll("( )+", " ");
+    }
+
+    private String ifNotExistsSQL() {
+        return ifNotExists ? "IF NOT EXISTS" : "";
     }
 
     private void assertPrimaryKeyIsPresent() {

@@ -22,7 +22,19 @@ public class TableTest {
     }
 
     @Test
-    public void it_converts_to_sql_a_table_with_an_autoincrementing_key() {
+    public void it_converts_to_sql_a_table_to_be_created_if_not_exists() {
+        table.increments("id");
+
+        table.ifNotExists();
+
+        assertEquals(
+            "CREATE TABLE IF NOT EXISTS users (id INT UNSIGNED NOT NULL AUTO_INCREMENT, PRIMARY KEY (id) ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;",
+            table.toSQL()
+        );
+    }
+
+    @Test
+    public void it_converts_to_sql_a_table_with_an_auto_increment_key() {
         table.increments("id");
         assertEquals(
             "CREATE TABLE users (id INT UNSIGNED NOT NULL AUTO_INCREMENT, PRIMARY KEY (id) ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8;",

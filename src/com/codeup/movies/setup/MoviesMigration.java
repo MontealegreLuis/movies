@@ -7,32 +7,26 @@ import com.codeup.db.builders.schema.Table;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-class MoviesMigration {
+public class MoviesMigration {
     private Connection connection;
 
-    MoviesMigration(Connection connection) {
+    public MoviesMigration(Connection connection) {
         this.connection = connection;
     }
 
-    void up() throws SQLException {
+    public void up() throws SQLException {
         SchemaBuilder schema = new SchemaBuilder(connection);
 
-        Table users = schema.table("users");
-        users.increments("id");
-        users.string("username", 50).makeRequired();
-        users.string("password").makeRequired();
+        usersTable(schema);
+        moviesTable(schema);
+        categoriesTable(schema);
+        moviesCategoriesTable(schema);
 
-        Table movies = schema.table("movies");
-        movies.increments("id");
-        movies.string("title", 300).makeRequired();
-        movies.integer("rating").defaultTo("0");
-        movies.string("thumbnail");
+        schema.build();
+    }
 
-        Table categories = schema.table("categories");
-        categories.increments("id");
-        categories.string("name").makeRequired();
-
-        Table moviesCategories = schema.table("movies_categories");
+    private void moviesCategoriesTable(SchemaBuilder schema) {
+        Table moviesCategories = schema.table("movies_categories").ifNotExists();
         IntColumn movieId = (IntColumn) moviesCategories
             .integer("movie_id")
             .unsigned()
@@ -46,7 +40,26 @@ class MoviesMigration {
         moviesCategories.foreign(movieId).references("id").on("movies");
         moviesCategories.foreign(categoryId).references("id").on("categories");
         moviesCategories.primary(movieId, categoryId);
+    }
 
-        schema.build();
+    private void categoriesTable(SchemaBuilder schema) {
+        Table categories = schema.table("categories").ifNotExists();
+        categories.increments("id");
+        categories.string("name").makeRequired();
+    }
+
+    private void moviesTable(SchemaBuilder schema) {
+        Table movies = schema.table("movies").ifNotExists();
+        movies.increments("id");
+        movies.string("title", 300).makeRequired();
+        movies.integer("rating").defaultTo("0");
+        movies.string("thumbnail");
+    }
+
+    private void usersTable(SchemaBuilder schema) {
+        Table users = schema.table("users").ifNotExists();
+        users.increments("id");
+        users.string("username", 50).makeRequired();
+        users.string("password").makeRequired();
     }
 }

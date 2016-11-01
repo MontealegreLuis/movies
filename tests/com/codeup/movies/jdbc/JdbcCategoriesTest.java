@@ -25,7 +25,7 @@ public class JdbcCategoriesTest extends MySQLTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        categories = new JdbcCategories(dataSource().getConnection());
+        categories = new JdbcCategories(DatabaseRuleSuite.dataSource().getConnection());
     }
 
     @Override
