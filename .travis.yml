@@ -9,3 +9,6 @@ services:
 before_script:
   - cp travis.properties config.properties
   - mysql -e 'create database movies_db;'
+
+script:
+  - mvn test
