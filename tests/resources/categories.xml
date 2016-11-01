@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <movies
+        title="Seven"
+        rating="5"
+    />
+    <categories
+        name="thriller"
+    />
+    <movies_categories
+        movie_id="1"
+        category_id="1"
+    />
+</dataset>
