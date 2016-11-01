@@ -9,6 +9,7 @@ services:
 before_script:
   - cp travis.properties config.properties
   - mysql -e 'create database movies_db;'
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 script:
-  - mvn clean verify
+  - mvn test -B
