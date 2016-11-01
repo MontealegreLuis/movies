@@ -53,10 +53,30 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <properties>
+        <dbSuite>**/DatabaseRuleSuite.class</dbSuite>
+    </properties>
     <build>
         <sourceDirectory>src</sourceDirectory>
         <testSourceDirectory>tests</testSourceDirectory>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <includes>
+                        <include>com.codeup.auth.validation.*</include>
+                        <include>com.codeup.db.builders.*</include>
+                        <include>com.codeup.db.builders.queries.*</include>
+                        <include>com.codeup.db.builders.schema.*</include>
+                        <include>com.codeup.movies.servlets.*</include>
+                        <include>com.codeup.movies.validation.*</include>
+                        <include>com.codeup.movies.*</include>
+                        <include>${dbSuite}</include>
+                    </includes>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
