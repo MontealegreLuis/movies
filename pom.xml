@@ -54,7 +54,7 @@
         </dependency>
     </dependencies>
     <properties>
-        <dbSuite>**/DatabaseRuleSuite.class</dbSuite>
+        <dbSuite>**/DatabaseSuite.class</dbSuite>
     </properties>
     <build>
         <sourceDirectory>src</sourceDirectory>

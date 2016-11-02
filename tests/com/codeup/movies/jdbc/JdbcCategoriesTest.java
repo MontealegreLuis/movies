@@ -4,41 +4,35 @@
 package com.codeup.movies.jdbc;
 
 import com.codeup.movies.Category;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class JdbcCategoriesTest extends MySQLTestCase {
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNull;
+import static org.junit.Assert.assertNotNull;
+
+public class JdbcCategoriesTest {
 
     private JdbcCategories categories;
 
-    @Override
-    protected IDataSet getDataSet() throws Exception {
-        return new FlatXmlDataSetBuilder()
-            .build(new FileInputStream("tests/resources/categories.xml"))
-        ;
+    @Before
+    public void loadFixtures() throws Exception {
+        MySQLSetup.truncate("movies_categories", "categories", "movies");
+        MySQLSetup.loadDataSet("tests/resources/categories.xml");
+        categories = new JdbcCategories(MySQLSetup.dataSource().getConnection());
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        categories = new JdbcCategories(DatabaseRuleSuite.dataSource().getConnection());
-    }
-
-    @Override
-    protected void setupTables() throws IOException, SQLException {
-        truncate("movies_categories", "categories", "movies");
-    }
-
+    @Test
     public void testFindsExistingCategory() throws SQLException, IOException {
         Category thriller = categories.named("thriller");
         assertNotNull(thriller);
         assertEquals("thriller", thriller.name());
     }
 
+    @Test
     public void testDoesNotFindUnknownCategory() throws SQLException, IOException {
         Category unknown = categories.named("this is an UNKNOWN category");
         assertNull(unknown);
