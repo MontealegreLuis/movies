@@ -7,6 +7,18 @@
     <categories
         name="thriller"
     />
+    <categories
+        name="drama"
+    />
+    <categories
+        name="horror"
+    />
+    <categories
+        name="comedy"
+    />
+    <categories
+        name="animated"
+    />
     <movies_categories
         movie_id="1"
         category_id="1"
