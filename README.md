@@ -18,8 +18,9 @@ Registered users have the ability to.
 
 ## Setup
 
-To setup the application you'll need to customize a `config.properties` 
-file.
+You need to have both Tomcat and MySQL up and running to use this 
+application. To setup the application you'll need to customize a 
+`config.properties` file.
 
 ```bash
 $ cp config.dist.properties config.properties
@@ -53,7 +54,8 @@ configuration.
 />
 ```
 
-Use the same values you used in the properties file.
+Use the same values you used in the properties file for the attributes
+`url`, `username`, and `password`.
 
 ## Tests
 
