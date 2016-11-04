@@ -42,7 +42,7 @@ public class Pagination<T> {
     }
 
     public int pagesCount() {
-        return (int) Math.ceil(itemsCount() / pageSize);
+        return (int) Math.ceil((double) itemsCount() / pageSize);
     }
 
     private long itemsCount() {

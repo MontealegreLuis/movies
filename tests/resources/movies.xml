@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <movies
+        title="Seven"
+        rating="5"
+    />
+    <movies
+        title="Home"
+        rating="4"
+    />
+    <movies
+        title="Iron Man"
+        rating="5"
+    />
+    <categories
+        name="thriller"
+    />
+    <categories
+        name="animated"
+    />
+    <categories
+        name="comedia"
+    />
+    <categories
+        name="scifi"
+    />
+    <movies_categories
+        movie_id="1"
+        category_id="1"
+    />
+    <movies_categories
+        movie_id="2"
+        category_id="2"
+    />
+    <movies_categories
+        movie_id="2"
+        category_id="3"
+    />
+    <movies_categories
+        movie_id="3"
+        category_id="4"
+    />
+</dataset>

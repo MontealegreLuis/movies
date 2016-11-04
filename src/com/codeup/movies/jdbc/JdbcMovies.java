@@ -30,6 +30,9 @@ public class JdbcMovies implements Movies {
     @Override
     public Movie with(int id) {
         Movie movie = table.findBy(id);
+
+        if (movie == null) return null;
+
         movie.addCategories(categories.relatedTo(movie));
         return movie;
     }

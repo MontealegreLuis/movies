@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({JdbcCategoriesTest.class})
+@Suite.SuiteClasses({JdbcCategoriesTest.class, JdbcMoviesTest.class})
 public class DatabaseSuite {
     @ClassRule
     public static ExternalResource testRule = new ExternalResource() {
