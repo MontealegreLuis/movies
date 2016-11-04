@@ -3,6 +3,7 @@
  */
 package com.codeup.movies.jdbc;
 
+import com.codeup.db.tests.MySQLSetup;
 import com.codeup.movies.Category;
 import org.junit.Before;
 import org.junit.Test;

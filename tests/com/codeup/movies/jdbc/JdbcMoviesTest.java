@@ -3,6 +3,7 @@
  */
 package com.codeup.movies.jdbc;
 
+import com.codeup.db.tests.MySQLSetup;
 import com.codeup.movies.Movie;
 import com.codeup.movies.MoviesCriteria;
 import com.codeup.pagination.Pagination;

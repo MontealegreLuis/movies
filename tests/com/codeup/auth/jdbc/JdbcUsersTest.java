@@ -4,7 +4,7 @@
 package com.codeup.auth.jdbc;
 
 import com.codeup.auth.User;
-import com.codeup.movies.jdbc.MySQLSetup;
+import com.codeup.db.tests.MySQLSetup;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,8 +15,8 @@ public class JdbcUsersTest {
 
     @Before
     public void loadFixtures() throws Exception {
-        MySQLSetup.truncate("movies_categories", "categories", "movies");
-        MySQLSetup.loadDataSet("tests/resources/movies.xml");
+        MySQLSetup.truncate("users");
+        MySQLSetup.loadDataSet("tests/resources/users.xml");
 
         users = new JdbcUsers(MySQLSetup.dataSource().getConnection());
     }
