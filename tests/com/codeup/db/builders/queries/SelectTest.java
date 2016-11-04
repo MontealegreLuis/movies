@@ -11,6 +11,17 @@ public class SelectTest {
     private Select select;
 
     @Test
+    public void it_creates_a_copy_of_a_given_select() {
+        select = Select.from("users", "u").where("u.username = ?");
+
+        Select copy = new Select(this.select);
+        copy.columns("COUNT(*)");
+
+        assertEquals("SELECT * FROM users u WHERE u.username = ?", select.toSQL());
+        assertEquals("SELECT COUNT(*) FROM users u WHERE u.username = ?", copy.toSQL());
+    }
+
+    @Test
     public void it_sets_default_value_for_select_clause() {
         select = Select.from("users");
         assertEquals("SELECT * FROM users", select.toSQL());

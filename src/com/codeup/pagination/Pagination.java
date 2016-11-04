@@ -10,6 +10,7 @@ public class Pagination<T> {
     private int pageSize;
     private int currentPage;
     private long itemsCount = -1L;
+    private int pagesCount = -1;
 
     public Pagination(int pageSize, PaginationStorage<T> storage, int currentPage) {
         this.pageSize = pageSize;
@@ -41,10 +42,6 @@ public class Pagination<T> {
         return currentPage() > 1;
     }
 
-    public int pagesCount() {
-        return (int) Math.ceil((double) itemsCount() / pageSize);
-    }
-
     private long itemsCount() {
         if (itemsCount == -1) {
             itemsCount = storage.itemsCount();
@@ -62,5 +59,12 @@ public class Pagination<T> {
         if (currentPage < 1) return 1;
 
         return currentPage;
+    }
+
+    public int pagesCount() {
+        if (pagesCount == -1) {
+            pagesCount =  (int) Math.ceil((double) itemsCount() / pageSize);
+        }
+        return pagesCount;
     }
 }

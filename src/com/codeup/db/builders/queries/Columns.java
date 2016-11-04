@@ -17,6 +17,11 @@ class Columns implements HasSQLRepresentation {
         columns = new ArrayList<>();
     }
 
+    Columns(Columns columns) {
+        this.columns = new ArrayList<>(columns.columns);
+        defaultColumn = columns.defaultColumn;
+    }
+
     public static Columns empty() {
         return new Columns();
     }

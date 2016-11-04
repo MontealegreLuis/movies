@@ -27,7 +27,7 @@ public class SelectStatement<T> extends SQLStatement {
     }
 
     public SelectStatement(SelectStatement<T> statement) {
-        this(statement.connection, statement.select, statement.mapper);
+        this(statement.connection, new Select(statement.select), statement.mapper);
     }
 
     private SelectStatement(

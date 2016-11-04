@@ -36,6 +36,22 @@ public class Select implements HasSQLRepresentation {
         }
     }
 
+    /**
+     * Create a 'cloned' copy of the given select statement
+     *
+     * @param select
+     */
+    public Select(Select select) {
+        table = select.table;
+        alias = select.alias;
+        columns = new Columns(select.columns);
+        where = select.where;
+        join = select.join;
+        limit = select.limit;
+        offset = select.offset;
+        determineCount = select.determineCount;
+    }
+
     public static Select from(String table) {
         return new Select(table);
     }
@@ -62,12 +78,12 @@ public class Select implements HasSQLRepresentation {
         return this;
     }
 
-    public Select addColumns(String ...columns) {
+    public Select addColumns(String... columns) {
         this.columns.add(columns);
         return this;
     }
 
-    public Select columns(String ...columns) {
+    public Select columns(String... columns) {
         this.columns.clear().add(columns);
         return this;
     }
@@ -97,8 +113,8 @@ public class Select implements HasSQLRepresentation {
      *
      * `AND name IN (?, ?, ?)`
      *
-     * @param column
-     * @param parametersCount
+     * @param column Column name
+     * @param parametersCount Count of `?` parameters in the `IN` clause
      * @return
      */
     public Select where(String column, int parametersCount) {
@@ -120,8 +136,8 @@ public class Select implements HasSQLRepresentation {
      *
      * `OR name IN (?, ?, ?)`
      *
-     * @param column
-     * @param parametersCount
+     * @param column Column name
+     * @param parametersCount Count of `?` parameters in the `IN` clause
      * @return
      */
     public Select orWhere(String column, int parametersCount) {
