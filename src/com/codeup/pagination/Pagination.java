@@ -26,19 +26,19 @@ public class Pagination<T> {
     }
 
     public int nextPage() {
-        return currentPage + 1;
+        return currentPage() + 1;
     }
 
     public boolean hasNextPage() {
-        return currentPage < pagesCount();
+        return currentPage() < pagesCount();
     }
 
     public int previousPage() {
-        return currentPage - 1;
+        return currentPage() - 1;
     }
 
     public boolean hasPreviousPage() {
-        return currentPage > 1;
+        return currentPage() > 1;
     }
 
     public int pagesCount() {
@@ -53,6 +53,14 @@ public class Pagination<T> {
     }
 
     private int offset() {
-        return (currentPage - 1) * pageSize;
+        return (currentPage() - 1) * pageSize;
+    }
+
+    private int currentPage() {
+        if (currentPage > pagesCount()) return pagesCount();
+
+        if (currentPage < 1) return 1;
+
+        return currentPage;
     }
 }
