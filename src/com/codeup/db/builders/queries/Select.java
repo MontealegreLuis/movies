@@ -10,8 +10,7 @@ public class Select implements HasSQLRepresentation {
     private From from;
     private Where where;
     private Join join;
-    private int limit;
-    private int offset;
+    private Rows rows;
     private boolean determineCount = false;
 
     private Select(From from) {
@@ -19,8 +18,7 @@ public class Select implements HasSQLRepresentation {
         columns = Columns.empty().defaultTo("*");
         where = Where.empty();
         join = Join.empty();
-        limit = -1;
-        offset = -1;
+        rows = Rows.all();
     }
 
     /**
@@ -33,8 +31,7 @@ public class Select implements HasSQLRepresentation {
         columns = new Columns(select.columns);
         where = select.where;
         join = select.join;
-        limit = select.limit;
-        offset = select.offset;
+        rows = select.rows;
         determineCount = select.determineCount;
     }
 
@@ -80,7 +77,7 @@ public class Select implements HasSQLRepresentation {
     }
 
     private String alias() {
-        return from.addAlias();
+        return from.alias();
     }
 
     public Select where(String expression) {
@@ -140,25 +137,24 @@ public class Select implements HasSQLRepresentation {
     }
 
     public Select limit(int limit) {
-        this.limit = limit;
+        rows.countTo(limit);
         return this;
     }
 
     public Select offset(int offset) {
-        this.offset = offset;
+        rows.startingAt(offset);
         return this;
     }
 
     @Override
     public String toSQL() {
         return String.format(
-            "SELECT %s FROM %s %s %s %s %s",
+            "SELECT %s FROM %s %s %s %s",
             columnsToSQL(),
             from.toSQL(),
             join.toSQL(),
             where.toSQL(),
-            limitToSQL(),
-            offsetToSQL()
+            rows.toSQL()
         ).trim().replaceAll("( )+", " ");
     }
 
@@ -171,24 +167,11 @@ public class Select implements HasSQLRepresentation {
 
     private void determineCount() {
         columns.clear();
-        offset = -1;
-        limit = -1;
+        rows.clear();
         if (join.isEmpty()) {
             columns.add("COUNT(*)");
         } else {
             columns.add(String.format("COUNT(DISTINCT %s.id)", alias()));
         }
-    }
-
-    private String offsetToSQL() {
-        if (offset < 0) return "";
-
-        return String.format("OFFSET %d", offset);
-    }
-
-    private String limitToSQL() {
-        if (limit < 0) return "";
-
-        return String.format("LIMIT %d", limit);
     }
 }
