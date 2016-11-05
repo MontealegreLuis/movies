@@ -42,4 +42,15 @@ public class FromTest {
 
         assertEquals("users u", from.toSQL());
     }
+
+    @Test
+    public void it_can_create_a_copy_from_existing_object() {
+        from = From.tableWithAlias("users", "u");
+        From copy = new From(this.from);
+
+        copy.addAlias("p");
+
+        assertEquals("users u", from.toSQL());
+        assertEquals("users p", copy.toSQL());
+    }
 }

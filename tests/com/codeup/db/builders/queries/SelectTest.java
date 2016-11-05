@@ -14,7 +14,7 @@ public class SelectTest {
     public void it_creates_a_copy_of_a_given_select() {
         select = Select.from("users", "u").where("u.username = ?");
 
-        Select copy = new Select(this.select);
+        Select copy = new Select(select);
         copy.columns("COUNT(*)");
 
         assertEquals("SELECT * FROM users u WHERE u.username = ?", select.toSQL());

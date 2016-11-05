@@ -26,10 +26,10 @@ public class Select implements HasSQLRepresentation {
     /**
      * Create a 'cloned' copy of the given select statement
      *
-     * @param select
+     * @param select Statement to be copied
      */
     public Select(Select select) {
-        from = select.from;
+        from = new From(select.from);
         columns = new Columns(select.columns);
         where = select.where;
         join = select.join;

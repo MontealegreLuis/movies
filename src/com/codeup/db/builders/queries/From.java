@@ -21,6 +21,11 @@ class From implements HasSQLRepresentation {
         throw new IllegalArgumentException("Invalid table name given");
     }
 
+    From(From from) {
+        table = from.table;
+        alias = from.alias;
+    }
+
     static From table(String table) {
         return new From(table, null);
     }
@@ -33,7 +38,7 @@ class From implements HasSQLRepresentation {
         this.alias = alias;
     }
 
-    String addAlias() {
+    String alias() {
         if (alias == null) return Character.toString(table.charAt(0)).toLowerCase();
 
         return alias;
