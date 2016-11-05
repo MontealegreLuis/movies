@@ -7,39 +7,39 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class TableTest {
-    private Table table;
+public class FromTest {
+    private From from;
 
     @Test
     public void it_converts_to_sql_a_table_without_alias() {
-        table = Table.named("users");
+        from = From.table("users");
 
-        assertEquals("users", table.toSQL());
+        assertEquals("users", from.toSQL());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void it_does_not_create_a_table_with_an_empty_name() {
-        table = Table.named("    ");
+        from = From.table("    ");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void it_does_not_create_a_table_with_alias_as_part_of_the_table_name() {
-        table = Table.named("users u");
+        from = From.table("users u");
     }
 
     @Test
     public void it_converts_to_sql_a_table_with_an_alias() {
-        table = Table.withAlias("users", "u");
+        from = From.tableWithAlias("users", "u");
 
-        assertEquals("users u", table.toSQL());
+        assertEquals("users u", from.toSQL());
     }
 
     @Test
     public void it_adds_an_alias_to_an_existing_table() {
-        table = Table.named("users");
+        from = From.table("users");
 
-        table.addAlias("u");
+        from.addAlias("u");
 
-        assertEquals("users u", table.toSQL());
+        assertEquals("users u", from.toSQL());
     }
 }

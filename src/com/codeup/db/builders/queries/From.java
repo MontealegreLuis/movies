@@ -5,11 +5,11 @@ package com.codeup.db.builders.queries;
 
 import com.codeup.db.builders.HasSQLRepresentation;
 
-public class Table implements HasSQLRepresentation {
+class From implements HasSQLRepresentation {
     private String table;
     private String alias;
 
-    private Table(String table, String alias) {
+    private From(String table, String alias) {
         assertValidTableName(table);
         this.table = table;
         this.alias = alias;
@@ -21,12 +21,12 @@ public class Table implements HasSQLRepresentation {
         throw new IllegalArgumentException("Invalid table name given");
     }
 
-    static Table named(String table) {
-        return new Table(table, null);
+    static From table(String table) {
+        return new From(table, null);
     }
 
-    static Table withAlias(String table, String alias) {
-        return new Table(table, alias);
+    static From tableWithAlias(String table, String alias) {
+        return new From(table, alias);
     }
 
     void addAlias(String alias) {

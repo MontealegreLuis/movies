@@ -7,15 +7,15 @@ import com.codeup.db.builders.HasSQLRepresentation;
 
 public class Select implements HasSQLRepresentation {
     private Columns columns;
-    private Table table;
+    private From from;
     private Where where;
     private Join join;
     private int limit;
     private int offset;
     private boolean determineCount = false;
 
-    private Select(Table table) {
-        this.table = table;
+    private Select(From from) {
+        this.from = from;
         columns = Columns.empty().defaultTo("*");
         where = Where.empty();
         join = Join.empty();
@@ -29,7 +29,7 @@ public class Select implements HasSQLRepresentation {
      * @param select
      */
     public Select(Select select) {
-        table = select.table;
+        from = select.from;
         columns = new Columns(select.columns);
         where = select.where;
         join = select.join;
@@ -39,11 +39,11 @@ public class Select implements HasSQLRepresentation {
     }
 
     public static Select from(String table) {
-        return new Select(Table.named(table));
+        return new Select(From.table(table));
     }
 
     public static Select from(String table, String alias) {
-        return new Select(Table.withAlias(table, alias));
+        return new Select(From.tableWithAlias(table, alias));
     }
 
     /**
@@ -60,7 +60,7 @@ public class Select implements HasSQLRepresentation {
      * @return Select
      */
     public Select addTableAlias(String alias) {
-        table.addAlias(alias);
+        from.addAlias(alias);
         return this;
     }
 
@@ -80,7 +80,7 @@ public class Select implements HasSQLRepresentation {
     }
 
     private String alias() {
-        return table.addAlias();
+        return from.addAlias();
     }
 
     public Select where(String expression) {
@@ -154,7 +154,7 @@ public class Select implements HasSQLRepresentation {
         return String.format(
             "SELECT %s FROM %s %s %s %s %s",
             columnsToSQL(),
-            table.toSQL(),
+            from.toSQL(),
             join.toSQL(),
             where.toSQL(),
             limitToSQL(),
