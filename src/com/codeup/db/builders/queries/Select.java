@@ -7,33 +7,20 @@ import com.codeup.db.builders.HasSQLRepresentation;
 
 public class Select implements HasSQLRepresentation {
     private Columns columns;
-    private String table;
-    private String alias;
+    private Table table;
     private Where where;
     private Join join;
     private int limit;
     private int offset;
     private boolean determineCount = false;
 
-    private Select(String table) {
-        this(table, null);
-    }
-
-    private Select(String table, String alias) {
-        assertValidTableName(table);
+    private Select(Table table) {
         this.table = table;
-        this.alias = alias;
         columns = Columns.empty().defaultTo("*");
         where = Where.empty();
         join = Join.empty();
         limit = -1;
         offset = -1;
-    }
-
-    private void assertValidTableName(String table) {
-        if (table.indexOf(' ') != -1) {
-            throw new IllegalArgumentException("Invalid table name given");
-        }
     }
 
     /**
@@ -43,7 +30,6 @@ public class Select implements HasSQLRepresentation {
      */
     public Select(Select select) {
         table = select.table;
-        alias = select.alias;
         columns = new Columns(select.columns);
         where = select.where;
         join = select.join;
@@ -53,11 +39,11 @@ public class Select implements HasSQLRepresentation {
     }
 
     public static Select from(String table) {
-        return new Select(table);
+        return new Select(Table.named(table));
     }
 
     public static Select from(String table, String alias) {
-        return new Select(table, alias);
+        return new Select(Table.withAlias(table, alias));
     }
 
     /**
@@ -74,7 +60,7 @@ public class Select implements HasSQLRepresentation {
      * @return Select
      */
     public Select addTableAlias(String alias) {
-        table = String.format("%s %s", table, alias);
+        table.addAlias(alias);
         return this;
     }
 
@@ -94,9 +80,7 @@ public class Select implements HasSQLRepresentation {
     }
 
     private String alias() {
-        if (alias == null) return Character.toString(table.charAt(0)).toLowerCase();
-
-        return alias;
+        return table.addAlias();
     }
 
     public Select where(String expression) {
@@ -170,7 +154,7 @@ public class Select implements HasSQLRepresentation {
         return String.format(
             "SELECT %s FROM %s %s %s %s %s",
             columnsToSQL(),
-            fromToSQL(),
+            table.toSQL(),
             join.toSQL(),
             where.toSQL(),
             limitToSQL(),
@@ -194,10 +178,6 @@ public class Select implements HasSQLRepresentation {
         } else {
             columns.add(String.format("COUNT(DISTINCT %s.id)", alias()));
         }
-    }
-
-    private String fromToSQL() {
-        return table + ((alias == null) ? "" : " " + alias);
     }
 
     private String offsetToSQL() {
