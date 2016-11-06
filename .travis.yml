@@ -7,7 +7,7 @@ services:
   - mysql
 
 before_script:
-  - cp travis.properties config.properties
+  - cp travis.properties config.test.properties
   - mysql -e 'create database movies_test_db;'
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
