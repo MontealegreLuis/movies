@@ -1,2 +1,3 @@
 *.iml
 config.properties
+config.test.properties

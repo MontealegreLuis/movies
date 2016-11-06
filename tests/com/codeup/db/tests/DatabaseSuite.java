@@ -23,6 +23,7 @@ public class DatabaseSuite {
     public static ExternalResource testRule = new ExternalResource() {
         @Override
         protected void before() throws Throwable {
+            MySQLSetup.createDatabaseIfNotExists();
             new MoviesMigration(MySQLSetup.dataSource().getConnection()).up();
             System.out.println("Creating database tables, if needed...");
         };

@@ -3,6 +3,7 @@
  */
 package com.codeup.db.tests;
 
+import com.codeup.db.Database;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.DefaultDatabaseTester;
@@ -17,12 +18,15 @@ import org.dbunit.operation.DatabaseOperation;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-
 public class MySQLSetup {
+
+    private static Properties config;
+
     public static void loadDataSet(String path) throws Exception {
         cleanlyInsert(new FlatXmlDataSetBuilder().build(new FileInputStream(path)));
     }
@@ -56,17 +60,17 @@ public class MySQLSetup {
     public static void truncate(
         String... tables
     ) throws SQLException, IOException {
-        Statement statement = dataSource().getConnection().createStatement();
-        statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
-        for (String table : tables) {
-            statement.executeUpdate(String.format("TRUNCATE %s", table));
+        try (Statement statement = dataSource().getConnection().createStatement()) {
+            statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+            for (String table : tables) {
+                statement.executeUpdate(String.format("TRUNCATE %s", table));
+            }
+            statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
         }
-        statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
     }
 
     public static MysqlDataSource dataSource() throws IOException {
-        Properties config = new Properties();
-        config.load(new FileInputStream("config.properties"));
+        initConfiguration();
 
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setURL(config.getProperty("url"));
@@ -75,5 +79,27 @@ public class MySQLSetup {
         dataSource.setDatabaseName(config.getProperty("database"));
 
         return dataSource;
+    }
+
+    static void createDatabaseIfNotExists(
+    ) throws IOException, SQLException {
+        initConfiguration();
+
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setUser(config.getProperty("user"));
+        dataSource.setPassword(config.getProperty("password"));
+
+        Connection connection = dataSource.getConnection(
+            config.getProperty("user"),
+            config.getProperty("password")
+        );
+        new Database(connection).create(config.getProperty("database"));
+    }
+
+    private static void initConfiguration() throws IOException {
+        if (config == null) {
+            config = new Properties();
+            config.load(new FileInputStream("config.test.properties"));
+        }
     }
 }
