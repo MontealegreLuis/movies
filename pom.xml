@@ -67,12 +67,13 @@
                 <configuration>
                     <includes>
                         <include>com.codeup.auth.validation.*</include>
-                        <include>com.codeup.db.builders.*</include>
+                        <include>com.codeup.db.*</include>
                         <include>com.codeup.db.builders.queries.*</include>
                         <include>com.codeup.db.builders.schema.*</include>
                         <include>com.codeup.movies.servlets.*</include>
                         <include>com.codeup.movies.validation.*</include>
                         <include>com.codeup.movies.*</include>
+                        <include>com.codeup.pagination.*</include>
                         <include>${dbSuite}</include>
                     </includes>
                 </configuration>
