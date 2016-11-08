@@ -6,13 +6,15 @@ package com.codeup.auth.jdbc;
 import com.codeup.auth.User;
 import com.codeup.db.RowMapper;
 
+import java.util.List;
+
 class UsersMapper implements RowMapper<User> {
     @Override
-    public User mapRow(Object[] values) {
+    public User mapRow(List<Object> values) {
         return new User(
-            (long) values[0],
-            values[1].toString(),
-            values[2].toString()
+            (long) values.get(0),
+            values.get(1).toString(),
+            values.get(2).toString()
         );
     }
 }

@@ -70,6 +70,7 @@
                         <include>com.codeup.db.*</include>
                         <include>com.codeup.db.builders.queries.*</include>
                         <include>com.codeup.db.builders.schema.*</include>
+                        <include>com.codeup.movies.jdbc.*</include>
                         <include>com.codeup.movies.servlets.*</include>
                         <include>com.codeup.movies.validation.*</include>
                         <include>com.codeup.movies.*</include>

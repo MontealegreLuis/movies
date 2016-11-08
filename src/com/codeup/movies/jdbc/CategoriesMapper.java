@@ -6,12 +6,14 @@ package com.codeup.movies.jdbc;
 import com.codeup.db.RowMapper;
 import com.codeup.movies.Category;
 
+import java.util.List;
+
 class CategoriesMapper implements RowMapper<Category> {
     @Override
-    public Category mapRow(Object[] values) {
+    public Category mapRow(List<Object> values) {
         return new Category(
-            (long) values[0],
-            values[1].toString()
+            (long) values.get(0),
+            values.get(1).toString()
         );
     }
 }

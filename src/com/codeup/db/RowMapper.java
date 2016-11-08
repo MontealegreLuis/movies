@@ -3,15 +3,14 @@
  */
 package com.codeup.db;
 
-import java.sql.SQLException;
+import java.util.List;
 
 public interface RowMapper <T> {
     /**
      * Re-create an existing entity
      *
-     * @param values
+     * @param values The values to be used to create the entity
      * @return A existing entity
-     * @throws SQLException
      */
-    T mapRow(Object[] values);
+    T mapRow(List<Object> values);
 }

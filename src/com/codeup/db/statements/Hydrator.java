@@ -6,17 +6,17 @@ package com.codeup.db.statements;
 import com.codeup.db.RowMapper;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Hydrator<T> {
-    private Object[][] values;
+    private List<List<Object>> rows;
     private RowMapper<T> mapper;
 
-    private Hydrator(Object[][] values, RowMapper<T> mapper) {
-        this.values = values;
+    private Hydrator(List<List<Object>> rows, RowMapper<T> mapper) {
+        this.rows = rows;
         this.mapper = mapper;
     }
 
@@ -26,49 +26,44 @@ public class Hydrator<T> {
 
     Hydrator(long id, Object[] insertedValues, RowMapper<T> mapper) {
         this.mapper = mapper;
-        values = new Object[1][insertedValues.length + 1];
-        System.arraycopy(new Object[]{id}, 0, values[0], 0, 1);
-        System.arraycopy(insertedValues, 0, values[0], 1, insertedValues.length);
+        this.rows = new ArrayList<>();
+        ArrayList<Object> row = new ArrayList<>();
+        row.add(id);
+        row.addAll(Arrays.asList(insertedValues));
+        rows.add(row);
     }
 
     public T fetch() {
-        if (values.length == 0) return null;
+        if (rows.isEmpty()) return null;
 
-        return mapper.mapRow(values[0]);
+        return mapper.mapRow(rows.get(0));
     }
 
     public List<T> fetchAll() {
         List<T> entities = new ArrayList<>();
-        for (Object[] value : values) {
-            entities.add(mapper.mapRow(value));
-        }
+
+        rows.forEach(row -> entities.add(mapper.mapRow(row)));
+
         return entities;
     }
 
     public long fetchLong() {
-        return (long) values[0][0];
+        return (long) rows.get(0).get(0);
     }
 
-    private static Object[][] populateValues(
+    private static List<List<Object>> populateValues(
         ResultSet resultSet
     ) throws SQLException {
-        List<Object[]> rows = new ArrayList<>();
-        ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-        int columnCount = resultSetMetaData.getColumnCount();
+        List<List<Object>> rows = new ArrayList<>();
+        int columnCount = resultSet.getMetaData().getColumnCount();
 
         while (resultSet.next()) {
-            Object[] row = new Object[columnCount];
-            for (int j = 1; j <= columnCount; j++) {
-                row[j - 1] = resultSet.getObject(j);
+            ArrayList<Object> row = new ArrayList<>();
+            for (int i = 1; i <= columnCount; i++) {
+                row.add(resultSet.getObject(i));
             }
             rows.add(row);
         }
-        Object[][] values = new Object[rows.size()][];
-        int i = 0;
-        for (Object[] row: rows) {
-            values[i] = row;
-            i++;
-        }
-        return values;
+        return rows;
     }
 }
