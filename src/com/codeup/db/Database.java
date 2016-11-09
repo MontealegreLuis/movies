@@ -17,49 +17,48 @@ public class Database {
     }
 
     public void create(String database) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(
-            String.format("CREATE DATABASE IF NOT EXISTS %s", database)
-        );
-        statement.close();
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(
+                String.format("CREATE DATABASE IF NOT EXISTS %s", database)
+            );
+        }
     }
 
     public void drop(String database) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(
-            String.format("DROP DATABASE IF EXISTS %s", database)
-        );
-        statement.close();
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(
+                String.format("DROP DATABASE IF EXISTS %s", database)
+            );
+        }
     }
 
     public void use(String database) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(String.format("USE %s", database));
-        statement.close();
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(String.format("USE %s", database));
+        }
     }
 
-    public void importFile(
-        String sqlFile
+    public void importSQLFile(
+        String path
     ) throws IOException, SQLException {
-        String line;
         StringBuilder queries = new StringBuilder();
 
-        BufferedReader reader = new BufferedReader(new FileReader(
-            new File(sqlFile)
-        ));
-        while ((line = reader.readLine()) != null) {
-            queries.append(line).append(" ");
-        }
-        reader.close();
-
-        Statement statement = connection.createStatement();
-
-        String[] ddlStatements = queries.toString().split(";");
-        for (String query : ddlStatements) {
-            if (!query.trim().isEmpty()) {
-                statement.executeUpdate(query);
+        try (
+            BufferedReader reader = new BufferedReader(new FileReader(new File(path)))
+        ) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                queries.append(line).append(" ");
             }
         }
-        statement.close();
+
+        try (Statement statement = connection.createStatement()) {
+            String[] ddlStatements = queries.toString().split(";");
+            for (String query : ddlStatements) {
+                if (!query.trim().isEmpty()) {
+                    statement.executeUpdate(query);
+                }
+            }
+        }
     }
 }
