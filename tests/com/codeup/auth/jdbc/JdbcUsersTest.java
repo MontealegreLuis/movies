@@ -4,7 +4,9 @@
 package com.codeup.auth.jdbc;
 
 import com.codeup.auth.User;
+import com.codeup.db.ConfigurableDataSource;
 import com.codeup.db.tests.MySQLSetup;
+import com.mysql.cj.jdbc.MysqlDataSource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,10 +17,11 @@ public class JdbcUsersTest {
 
     @Before
     public void loadFixtures() throws Exception {
-        MySQLSetup.truncate("users");
-        MySQLSetup.loadDataSet("tests/resources/users.xml");
+        MysqlDataSource source = ConfigurableDataSource.using(MySQLSetup.configuration());
+        MySQLSetup.truncate(source, "users");
+        MySQLSetup.loadDataSet(source, "tests/resources/users.xml");
 
-        users = new JdbcUsers(MySQLSetup.dataSource().getConnection());
+        users = new JdbcUsers(source.getConnection());
     }
 
     @Test

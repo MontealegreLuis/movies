@@ -24,26 +24,49 @@ import java.sql.Statement;
 import java.util.Properties;
 
 public class MySQLSetup {
-
     private static Properties config;
 
-    public static void loadDataSet(String path) throws Exception {
-        cleanlyInsert(new FlatXmlDataSetBuilder().build(new FileInputStream(path)));
+    public static void truncate(
+        MysqlDataSource source,
+        String... tables
+    ) throws SQLException, IOException {
+        try (
+            Connection connection = source.getConnection();
+            Statement statement = connection.createStatement()
+        ) {
+            statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+            for (String table : tables) {
+                statement.executeUpdate(String.format("TRUNCATE %s", table));
+            }
+            statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
+        }
     }
 
-    private static void cleanlyInsert(IDataSet dataSet) throws Exception {
-        IDatabaseTester databaseTester = new DefaultDatabaseTester(connection());
+    public static void loadDataSet(
+        MysqlDataSource source,
+        String path
+    ) throws Exception {
+        cleanlyInsert(
+            source,
+            new FlatXmlDataSetBuilder().build(new FileInputStream(path))
+        );
+    }
+
+    private static void cleanlyInsert(
+        MysqlDataSource source,
+        IDataSet dataSet
+    ) throws Exception {
+        IDatabaseTester databaseTester = new DefaultDatabaseTester(connection(source));
         databaseTester.setSetUpOperation(DatabaseOperation.CLEAN_INSERT);
         databaseTester.setDataSet(dataSet);
         databaseTester.onSetup();
     }
 
-    private static DatabaseConnection connection()
+    private static DatabaseConnection connection(MysqlDataSource source)
         throws IOException, SQLException, DatabaseUnitException {
-        MysqlDataSource dataSource = dataSource();
 
         DatabaseConnection dbConnection = new DatabaseConnection(
-            dataSource.getConnection(), dataSource.getDatabaseName()
+            source.getConnection(), source.getDatabaseName()
         );
 
         DatabaseConfig dbConfig = dbConnection.getConfig();
@@ -57,49 +80,20 @@ public class MySQLSetup {
         return dbConnection;
     }
 
-    public static void truncate(
-        String... tables
-    ) throws SQLException, IOException {
-        try (Statement statement = dataSource().getConnection().createStatement()) {
-            statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
-            for (String table : tables) {
-                statement.executeUpdate(String.format("TRUNCATE %s", table));
-            }
-            statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
-        }
-    }
-
-    public static MysqlDataSource dataSource() throws IOException {
-        initConfiguration();
-
-        MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setURL(config.getProperty("url"));
-        dataSource.setUser(config.getProperty("user"));
-        dataSource.setPassword(config.getProperty("password"));
-        dataSource.setDatabaseName(config.getProperty("database"));
-
-        return dataSource;
-    }
-
     static void createDatabaseIfNotExists(
-    ) throws IOException, SQLException {
-        initConfiguration();
-
-        MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setUser(config.getProperty("user"));
-        dataSource.setPassword(config.getProperty("password"));
-
-        Connection connection = dataSource.getConnection(
-            config.getProperty("user"),
-            config.getProperty("password")
-        );
-        new Database(connection).create(config.getProperty("database"));
+        Connection connection,
+        String databaseName
+    ) throws SQLException {
+        Database database = new Database(connection);
+        database.create(databaseName);
+        database.use(databaseName);
     }
 
-    private static void initConfiguration() throws IOException {
+    public static Properties configuration() throws IOException {
         if (config == null) {
             config = new Properties();
             config.load(new FileInputStream("config.test.properties"));
         }
+        return config;
     }
 }

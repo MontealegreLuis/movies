@@ -3,10 +3,12 @@
  */
 package com.codeup.movies.jdbc;
 
+import com.codeup.db.ConfigurableDataSource;
 import com.codeup.db.tests.MySQLSetup;
 import com.codeup.movies.Movie;
 import com.codeup.movies.MoviesCriteria;
 import com.codeup.pagination.Pagination;
+import com.mysql.cj.jdbc.MysqlDataSource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,10 +24,11 @@ public class JdbcMoviesTest {
 
     @Before
     public void loadFixtures() throws Exception {
-        MySQLSetup.truncate("movies_categories", "categories", "movies");
-        MySQLSetup.loadDataSet("tests/resources/movies.xml");
+        MysqlDataSource source = ConfigurableDataSource.using(MySQLSetup.configuration());
+        MySQLSetup.truncate(source, "movies_categories", "categories", "movies");
+        MySQLSetup.loadDataSet(source, "tests/resources/movies.xml");
 
-        movies = new JdbcMovies(MySQLSetup.dataSource().getConnection());
+        movies = new JdbcMovies(source.getConnection());
     }
 
     @Test

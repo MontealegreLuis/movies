@@ -3,8 +3,10 @@
  */
 package com.codeup.movies.jdbc;
 
+import com.codeup.db.ConfigurableDataSource;
 import com.codeup.db.tests.MySQLSetup;
 import com.codeup.movies.Category;
+import com.mysql.cj.jdbc.MysqlDataSource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,13 +20,15 @@ import static org.junit.Assert.assertNotNull;
 
 public class JdbcCategoriesTest {
     private JdbcCategories categories;
+    private MysqlDataSource source;
 
     @Before
     public void loadFixtures() throws Exception {
-        MySQLSetup.truncate("movies_categories", "categories", "movies");
-        MySQLSetup.loadDataSet("tests/resources/categories.xml");
+        source = ConfigurableDataSource.using(MySQLSetup.configuration());
+        MySQLSetup.truncate(source, "movies_categories", "categories", "movies");
+        MySQLSetup.loadDataSet(source, "tests/resources/categories.xml");
 
-        categories = new JdbcCategories(MySQLSetup.dataSource().getConnection());
+        categories = new JdbcCategories(source.getConnection());
     }
 
     @Test
@@ -65,7 +69,7 @@ public class JdbcCategoriesTest {
 
     @Test
     public void it_finds_all_categories_related_to_a_movie() throws IOException, SQLException {
-        JdbcMovies movies = new JdbcMovies(MySQLSetup.dataSource().getConnection());
+        JdbcMovies movies = new JdbcMovies(source.getConnection());
 
         List<Category> related = categories.relatedTo(movies.with(1));
 
