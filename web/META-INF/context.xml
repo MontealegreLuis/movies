@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context>
+    <Resource
+        name="jdbc/movies_db"
+        auth="Container"
+        type="javax.sql.DataSource"
+        driverClassName="com.mysql.cj.jdbc.Driver"
+        url="jdbc:mysql://localhost:3306/movies_db?useLegacyDatetimeCode=false&amp;serverTimezone=UTC"
+        username="movies_user"
+        password="movies_password"
+        maxActive="100"
+        maxIdle="20"
+        minIdle="5"
+        maxWait="10000"
+    />
+    <ResourceLink
+        name="jdbc/movies_db"
+        global="jdbc/movies_db"
+        type="javax.sql.DataSource"
+    />
+</Context>

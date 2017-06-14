@@ -30,32 +30,8 @@ Once you set your database credentials. Run the command line application
 in the class `com.codeup.movies.setup.MoviesSetupApplication`. It will
 create and seed the database.
 
-You'll need to modify Tomcat's `context.xml` file using the following
-configuration.
-
-```xml
-<Resource 
-    name="jdbc/movies_db" 
-    auth="Container" 
-    type="javax.sql.DataSource" 
-    driverClassName="com.mysql.cj.jdbc.Driver" 
-    url="jdbc:mysql://localhost:3306/movies_db?useLegacyDatetimeCode=false&amp;serverTimezone=UTC"
-    username="movies_user" 
-    password="movies_password"
-    maxActive="100" 
-    maxIdle="20" 
-    minIdle="5" 
-    maxWait="10000"
-/>
-<ResourceLink 
-    name="jdbc/movies_db"
-    global="jdbc/movies_db"
-    type="javax.sql.DataSource" 
-/>
-```
-
-Use the same values you used in the properties file for the attributes
-`url`, `username`, and `password`.
+Change the values in `web/META-INF/context.xml` to use the same values you
+used in the properties file for the attributes `url`, `username`, and `password`.
 
 ## Tests
 
