@@ -26,14 +26,25 @@ application. To setup the application you'll need to customize a
 $ cp config.dist.properties config.properties
 ```
 
-Once you set your database credentials. Run the command line application
-in the class `com.codeup.movies.setup.MoviesSetupApplication`. It will
+Once you set your database credentials, create a `context.xml` file for Tomcat
+with the same database information.
+
+```bash
+$ cp context.dist.xml web/META-INF/context.xml
+```
+
+Now you're ready to run the command line application in the class 
+`com.codeup.movies.setup.MoviesSetupApplication`. It will
 create and seed the database.
 
-Change the values in `web/META-INF/context.xml` to use the same values you
-used in the properties file for the attributes `url`, `username`, and `password`.
-
 ## Tests
+
+The tests use a different MySQL database, so you'll need a different `properties`
+file.
+
+```bash
+$ cp config.dist.test.properties config.test.properties
+```
 
 To run the tests execute.
 
