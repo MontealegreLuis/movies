@@ -36,6 +36,16 @@
                 </form>
             </div>
         </div>
+        <c:if test="${!movies.hasPages()}">
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                No movies found...
+                <strong>
+                    <a href="#">Register maybe?...</a>
+                </strong>
+            </div>
+        </c:if>
+        <c:if test="${movies.hasPages()}">
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
@@ -84,6 +94,7 @@
             </tfoot>
             </c:if>
         </table>
+        </c:if>
     </div>
     <jsp:include page="/WEB-INF/includes/scripts.jsp"/>
 </body>
