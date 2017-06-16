@@ -83,7 +83,7 @@ public class PaginationTest {
         int page = 100;
         int offset = 20;
         List<Object> items = new ArrayList<>(
-            Arrays.asList(new Object[]{new Object(), new Object(), new Object()})
+            Arrays.asList(new Object(), new Object(), new Object())
         );
         when(storage.itemsCount()).thenReturn(23L);
         when(storage.slice(offset, pageSize)).thenReturn(items);
