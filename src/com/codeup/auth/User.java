@@ -15,7 +15,7 @@ public class User {
     }
 
     public static User signUp(String username, String password) {
-        return new User(0L, username, password);
+        return new User(0L, username, Password.hash(password));
     }
 
     public String password() {
