@@ -41,7 +41,14 @@
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 No movies found...
                 <strong>
-                    <a href="#">Register maybe?...</a>
+                    <c:choose>
+                        <c:when test="${user == null}">
+                            <a href="${request.contextPath}/sign-up">Sign up maybe?...</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${request.contextPath}/movies/new">Add one maybe?...</a>
+                        </c:otherwise>
+                    </c:choose>
                 </strong>
             </div>
         </c:if>

@@ -8,9 +8,10 @@
     </jsp:include>
 </head>
 <body>
+<jsp:include page="/WEB-INF/includes/navigation.jsp"/>
 <div class="container">
     <div class="row">
-        <div class="col-md-4 col-md-offset-4">
+        <div class="col-md-6 col-md-offset-3">
             <header class="page-header">
                 <h1>Welcome back!</h1>
             </header>

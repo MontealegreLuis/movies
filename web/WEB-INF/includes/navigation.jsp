@@ -43,6 +43,11 @@
                 </c:when>
                 <c:otherwise>
                     <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="${request.contextPath}/sign-up">
+                                <strong>Sign up!</strong>
+                            </a>
+                        </li>
                         <li><a href="${request.contextPath}/login">Login</a></li>
                     </ul>
                 </c:otherwise>
