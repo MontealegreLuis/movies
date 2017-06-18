@@ -1,17 +1,42 @@
-/**
+/*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 package com.codeup.auth;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 public class Password {
-    public static String hash(String rawPassword) {
-        int rounds = 12;
-        return BCrypt.hashpw(rawPassword, BCrypt.gensalt(rounds));
+    private String hash;
+    private HashingAlgorithm bcrypt;
+
+    private Password(String plainTextPassword) {
+        this(plainTextPassword, new HashingAlgorithm());
     }
 
-    public static boolean verify(String rawPassword, String hashedPassword) {
-        return BCrypt.checkpw(rawPassword, hashedPassword);
+    private Password(String password, HashingAlgorithm algorithm) {
+        hash =  null != algorithm ? algorithm.hash(password): password;
+        bcrypt = null != algorithm ? algorithm : new HashingAlgorithm();
+    }
+
+    public static Password fromPlainText(String plainTextPassword) {
+        return new Password(plainTextPassword);
+    }
+
+    public static Password fromHash(String hash) {
+        return new Password(hash, null);
+    }
+
+    public boolean verify(String plainTextPassword) {
+        return bcrypt.verify(plainTextPassword, hash);
+    }
+
+    @Override
+    public String toString() {
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object anotherPassword) {
+        return anotherPassword != null
+            && anotherPassword instanceof Password
+            && ((Password) anotherPassword).hash.equals(hash);
     }
 }

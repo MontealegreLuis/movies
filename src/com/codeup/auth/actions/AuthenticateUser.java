@@ -3,7 +3,6 @@
  */
 package com.codeup.auth.actions;
 
-import com.codeup.auth.Password;
 import com.codeup.auth.User;
 import com.codeup.auth.Users;
 
@@ -20,7 +19,7 @@ public class AuthenticateUser {
         if (user == null) {
             return false;
         }
-        if (Password.verify(password, user.password())) {
+        if (user.passwordMatch(password)) {
             this.user = user;
             return true;
         }

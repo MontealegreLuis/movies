@@ -3,6 +3,7 @@
  */
 package com.codeup.auth.jdbc;
 
+import com.codeup.auth.Password;
 import com.codeup.auth.User;
 import com.codeup.db.RowMapper;
 
@@ -14,7 +15,7 @@ class UsersMapper implements RowMapper<User> {
         return new User(
             (long) values.get(0),
             values.get(1).toString(),
-            values.get(2).toString()
+            Password.fromHash(values.get(2).toString())
         );
     }
 }

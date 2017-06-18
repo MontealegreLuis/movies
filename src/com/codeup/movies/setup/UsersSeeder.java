@@ -3,8 +3,8 @@
  */
 package com.codeup.movies.setup;
 
-import com.codeup.auth.jdbc.JdbcUsers;
 import com.codeup.auth.Password;
+import com.codeup.auth.jdbc.JdbcUsers;
 import com.codeup.auth.User;
 
 import java.sql.Connection;
@@ -18,6 +18,6 @@ class UsersSeeder {
 
     void seed() {
         JdbcUsers users = new JdbcUsers(connection);
-        users.add(User.signUp("admin", Password.hash("admin")));
+        users.add(User.signUp("admin", Password.fromPlainText("admin")));
     }
 }
