@@ -23,6 +23,6 @@ public class UsersMapperTest {
 
         assertEquals(7L, user.id());
         assertEquals("luis", user.username());
-        assertEquals("changeme", user.password());
+        assertTrue("changeme".equals(user.password().toString()));
     }
 }
