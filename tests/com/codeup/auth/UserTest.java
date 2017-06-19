@@ -24,6 +24,20 @@ public class UserTest {
         assertThat(user.passwordMatch(plainTextPassword), is(true));
     }
 
+    @Test
+    public void it_can_be_rebuilt_from_stored_data()
+    {
+        long id = 12L;
+        String username = "luis";
+        String plainTextPassword = "any_password";
+        Password password = Password.fromPlainText(plainTextPassword);
+        User registeredUser = User.registeredWith(id, username, password.toString());
+
+        assertThat(registeredUser.id(), is(id));
+        assertThat(registeredUser.username(), is(username));
+        assertThat(registeredUser.passwordMatch(plainTextPassword), is(true));
+    }
+
     @Before
     public void configureUser() {
         user = User.signUp(username, plainTextPassword);

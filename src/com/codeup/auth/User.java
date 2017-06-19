@@ -8,10 +8,14 @@ public class User {
     private final String username;
     private final Password password;
 
-    public User(long id, String username, Password password) {
+    private User(long id, String username, Password password) {
         this.id = id;
         this.username = username;
         this.password = password;
+    }
+
+    public static User registeredWith(long id, String username, String password) {
+        return new User(id, username, Password.fromHash(password));
     }
 
     public static User signUp(String username, String plainTextPassword) {
