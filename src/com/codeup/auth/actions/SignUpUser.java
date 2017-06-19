@@ -14,10 +14,8 @@ public class SignUpUser {
     }
 
     public void signUp(String username, String plainTextPassword) {
-        if (users.identifiedBy(username) != null) {
-            throw DuplicateUser.with(username);
-        }
-        User user = User.signUp(username, plainTextPassword);
-        users.add(user);
+        if (users.identifiedBy(username) != null) throw DuplicateUser.with(username);
+
+        users.add(User.signUp(username, plainTextPassword));
     }
 }
