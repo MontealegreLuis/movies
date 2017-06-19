@@ -9,11 +9,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.*;
 
-public class HashingAlgorithmTest {
+public class BcryptTest {
     @Test
     public void it_hashes_plain_text()
     {
-        String hash = algorithm.hash(plainTextPassword);
+        String hash = bcrypt.hash(plainTextPassword);
 
         assertThat(hash, containsString("$12$"));
         assertThat(hash.length(), is(60) );
@@ -22,11 +22,11 @@ public class HashingAlgorithmTest {
     @Test
     public void it_verifies_that_a_hash_matches_its_plain_text_version()
     {
-        String hash = algorithm.hash(plainTextPassword);
+        String hash = bcrypt.hash(plainTextPassword);
 
-        assertThat(algorithm.verify(plainTextPassword, hash), is(true));
+        assertThat(bcrypt.verify(plainTextPassword, hash), is(true));
     }
 
-    private HashingAlgorithm algorithm = new HashingAlgorithm();
+    private Bcrypt bcrypt = new Bcrypt();
     private String plainTextPassword = "iLoveMyJ0b";
 }

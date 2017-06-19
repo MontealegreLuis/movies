@@ -5,15 +5,15 @@ package com.codeup.auth;
 
 public class Password {
     private String hash;
-    private HashingAlgorithm bcrypt;
+    private HashingAlgorithm hashingAlgorithm;
 
     private Password(String plainTextPassword) {
-        this(plainTextPassword, new HashingAlgorithm());
+        this(plainTextPassword, new Bcrypt());
     }
 
     private Password(String password, HashingAlgorithm algorithm) {
         hash =  null != algorithm ? algorithm.hash(password): password;
-        bcrypt = null != algorithm ? algorithm : new HashingAlgorithm();
+        hashingAlgorithm = null != algorithm ? algorithm : new Bcrypt();
     }
 
     public static Password fromPlainText(String plainTextPassword) {
@@ -25,7 +25,7 @@ public class Password {
     }
 
     public boolean verify(String plainTextPassword) {
-        return bcrypt.verify(plainTextPassword, hash);
+        return hashingAlgorithm.verify(plainTextPassword, hash);
     }
 
     @Override
