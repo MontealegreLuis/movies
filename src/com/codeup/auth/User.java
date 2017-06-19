@@ -1,4 +1,4 @@
-/**
+/*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 package com.codeup.auth;
@@ -14,8 +14,8 @@ public class User {
         this.password = password;
     }
 
-    public static User signUp(String username, Password password) {
-        return new User(0L, username, password);
+    public static User signUp(String username, String plainTextPassword) {
+        return new User(0L, username, Password.fromPlainText(plainTextPassword));
     }
 
     public boolean passwordMatch(String plainTextPassword) {

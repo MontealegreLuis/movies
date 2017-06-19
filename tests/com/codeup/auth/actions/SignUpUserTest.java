@@ -3,7 +3,6 @@
  */
 package com.codeup.auth.actions;
 
-import com.codeup.auth.Password;
 import com.codeup.auth.User;
 import com.codeup.auth.Users;
 import org.junit.Before;
@@ -28,7 +27,7 @@ public class SignUpUserTest {
     public void it_prevents_the_creation_of_a_user_with_a_duplicate_name()
     {
         when(users.identifiedBy("luis"))
-            .thenReturn(User.signUp("luis", Password.fromPlainText("anything")))
+            .thenReturn(User.signUp("luis", "anything"))
         ;
 
         action.signUp("luis", "iL0veMyJob");

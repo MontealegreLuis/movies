@@ -1,9 +1,8 @@
-/**
+/*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 package com.codeup.auth.jdbc;
 
-import com.codeup.auth.Password;
 import com.codeup.auth.User;
 import com.codeup.db.ConfigurableDataSource;
 import com.codeup.db.tests.MySQLSetup;
@@ -37,7 +36,7 @@ public class JdbcUsersTest {
 
     @Test
     public void it_registers_a_new_user() {
-        User user = User.signUp("luis", Password.fromPlainText("password"));
+        User user = User.signUp("luis", "password");
 
         users.add(user);
 

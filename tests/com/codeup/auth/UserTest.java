@@ -26,8 +26,7 @@ public class UserTest {
 
     @Before
     public void configureUser() {
-        Password password = Password.fromPlainText(plainTextPassword);
-        user = User.signUp(username, password);
+        user = User.signUp(username, plainTextPassword);
     }
 
     private String username = "luis";
