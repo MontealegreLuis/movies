@@ -17,7 +17,7 @@ public class JdbcUsers implements Users {
 
     @Override
     public User add(User user) {
-        return table.insert(user.username(), user.password().toString());
+        return table.insert(user.username().value(), user.password().toString());
     }
 
     @Override

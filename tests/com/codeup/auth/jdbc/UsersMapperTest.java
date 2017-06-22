@@ -22,7 +22,7 @@ public class UsersMapperTest {
         User user = mapper.mapRow(values);
 
         assertEquals(7L, user.id());
-        assertEquals("luis", user.username());
+        assertEquals("luis", user.username().value());
         assertTrue("changeme".equals(user.password().toString()));
     }
 }

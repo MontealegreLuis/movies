@@ -13,7 +13,7 @@ public class UserTest {
     @Test
     public void it_can_be_signed_up()
     {
-        assertThat(user.username(), is(username));
+        assertThat(user.username().value(), is(username));
         assertThat(user.password().toString().length(), is(60)); // password is hashed
         assertThat(user.id(), is(0L)); // No ID yet
     }
@@ -34,7 +34,7 @@ public class UserTest {
         User registeredUser = User.registeredWith(id, username, password.toString());
 
         assertThat(registeredUser.id(), is(id));
-        assertThat(registeredUser.username(), is(username));
+        assertThat(registeredUser.username().value(), is(username));
         assertThat(registeredUser.passwordMatch(plainTextPassword), is(true));
     }
 
