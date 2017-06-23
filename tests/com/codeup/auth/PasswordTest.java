@@ -37,6 +37,23 @@ public class PasswordTest {
         assertThat(password.equals(anotherPassword), is(true)); // hashes should be the same
     }
 
+    @Test(expected = InvalidPassword.class)
+    public void it_cannot_be_null()
+    {
+        Password.fromPlainText(null);
+    }
+
+    @Test(expected = InvalidPassword.class)
+    public void it_cannot_be_empty()
+    {
+        Password.fromPlainText("   ");
+    }
+
+    @Test(expected = InvalidPassword.class)
+    public void it_cannot_be_shorter_than_eight_characters()
+    {
+        Password.fromPlainText("secure");
+    }
 
     private final String plainTextPassword = "iL0veMyJob";
     private final Password password = Password.fromPlainText(plainTextPassword);

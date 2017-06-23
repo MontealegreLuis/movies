@@ -7,15 +7,6 @@ public class Password {
     private String hash;
     private HashingAlgorithm hashingAlgorithm;
 
-    private Password(String plainTextPassword) {
-        this(plainTextPassword, new Bcrypt());
-    }
-
-    private Password(String password, HashingAlgorithm algorithm) {
-        hash =  null != algorithm ? algorithm.hash(password): password;
-        hashingAlgorithm = null != algorithm ? algorithm : new Bcrypt();
-    }
-
     public static Password fromPlainText(String plainTextPassword) {
         return new Password(plainTextPassword);
     }
@@ -26,6 +17,31 @@ public class Password {
 
     public boolean verify(String plainTextPassword) {
         return hashingAlgorithm.verify(plainTextPassword, hash);
+    }
+
+    private Password(String plainTextPassword) {
+        this(plainTextPassword, new Bcrypt());
+    }
+
+    private Password(String password, HashingAlgorithm algorithm) {
+        hash =  null != algorithm ? hashPassword(password, algorithm) : password;
+        hashingAlgorithm = null != algorithm ? algorithm : new Bcrypt();
+    }
+
+    private String hashPassword(String plainTextPassword, HashingAlgorithm algorithm) {
+        assertNotEmpty(plainTextPassword);
+        assertLength(plainTextPassword);
+        return algorithm.hash(plainTextPassword);
+    }
+
+    private void assertLength(String plainTextPassword) {
+        if (plainTextPassword.trim().length() < 8)
+            throw InvalidPassword.tooShort(8, plainTextPassword);
+    }
+
+    private void assertNotEmpty(String plainTextPassword) {
+        if (plainTextPassword == null || plainTextPassword.trim().isEmpty())
+            throw InvalidPassword.empty(plainTextPassword);
     }
 
     @Override
