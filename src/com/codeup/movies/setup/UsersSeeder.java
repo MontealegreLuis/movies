@@ -3,8 +3,8 @@
  */
 package com.codeup.movies.setup;
 
-import com.codeup.auth.jdbc.JdbcUsers;
-import com.codeup.auth.User;
+import com.codeup.auth.infrastructure.jdbc.JdbcUsers;
+import com.codeup.auth.domain.identity.User;
 
 import java.sql.Connection;
 

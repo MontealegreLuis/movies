@@ -3,7 +3,7 @@
  */
 package com.codeup.db.tests;
 
-import com.codeup.auth.jdbc.JdbcUsersTest;
+import com.codeup.auth.infrastructure.jdbc.JdbcUsersTest;
 import com.codeup.db.ConfigurableDataSource;
 import com.codeup.movies.jdbc.JdbcCategoriesTest;
 import com.codeup.movies.jdbc.JdbcMoviesTest;
