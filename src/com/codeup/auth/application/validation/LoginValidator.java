@@ -1,4 +1,4 @@
-/**
+/*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 package com.codeup.auth.application.validation;
@@ -12,45 +12,39 @@ import java.util.List;
 import java.util.Map;
 
 public class LoginValidator implements Validator {
-    private final String username;
-    private final String password;
+    private Map<String, String> input;
     private Map<String, List<String>> messages;
 
-    private LoginValidator(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public LoginValidator() {
         messages = new LinkedHashMap<>();
     }
 
-    public static LoginValidator from(String username, String password) {
-        return new LoginValidator(username, password);
+    public void populateWith(Map<String, String> input) {
+        this.input = input;
     }
 
     @Override
     public boolean isValid() {
-        validateUsername();
-        validatePassword();
+        validateUsername(input.get("username"));
+        validatePassword(input.get("password"));
 
         return messages.size() == 0;
     }
 
-    private void validatePassword() {
+    private void validatePassword(String password) {
         ArrayList<String> messages = new ArrayList<>();
-        if (GenericValidator.isBlankOrNull(password)) {
-            messages.add("Enter your password");
-        }
+
+        if (GenericValidator.isBlankOrNull(password)) messages.add("Enter your password");
+
         if (messages.size() > 0) this.messages.put("password", messages);
     }
 
-    private void validateUsername() {
+    private void validateUsername(String username) {
         ArrayList<String> messages = new ArrayList<>();
 
-        if (GenericValidator.isBlankOrNull(username)) {
-            messages.add("Enter your username");
-        }
-        if (username != null && !GenericValidator.matchRegexp(username, "[A-Za-z0-9._-]+")) {
+        if (GenericValidator.isBlankOrNull(username)) messages.add("Enter your username");
+        if (username != null && !GenericValidator.matchRegexp(username, "[A-Za-z0-9._-]+"))
             messages.add("Your username does not have a valid format");
-        }
 
         if (messages.size() > 0) this.messages.put("username", messages);
     }

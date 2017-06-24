@@ -1,8 +1,9 @@
-/**
+/*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 package com.codeup.auth.infrastructure.web.servlets;
 
+import com.codeup.auth.application.LoginInput;
 import com.codeup.auth.domain.authentication.AuthenticateUser;
 import com.codeup.auth.infrastructure.di.AuthContainer;
 import com.codeup.auth.application.validation.LoginValidator;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 public class LoginServlet extends HttpServlet {
     private AuthenticateUser action;
+    private LoginInput input;
     private String homePage;
 
     @Override
@@ -24,6 +26,7 @@ public class LoginServlet extends HttpServlet {
         homePage = config.getInitParameter("homePage");
         try {
             action = AuthContainer.authenticateUser();
+            input = new LoginInput(new LoginValidator());
         } catch (Exception e) {
             throw new RuntimeException("Cannot initialize AuthenticateUser action", e);
         }
@@ -36,9 +39,9 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        LoginValidator validator = LoginValidator.from(username, password);
-        if (!validator.isValid()) {
-            invalidInput(validator, request, response);
+        input.populateWith(username, password);
+        if (!input.isValid()) {
+            invalidInput(input, request, response);
             return;
         }
 
@@ -52,11 +55,11 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void invalidInput(
-        LoginValidator validator,
+        LoginInput input,
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        request.setAttribute("errors", validator.messages());
+        request.setAttribute("errors", input.messages());
         doGet(request, response);
     }
 
