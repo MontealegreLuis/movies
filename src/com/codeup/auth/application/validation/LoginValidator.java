@@ -35,6 +35,7 @@ public class LoginValidator implements Validator {
         ArrayList<String> messages = new ArrayList<>();
 
         if (GenericValidator.isBlankOrNull(password)) messages.add("Enter your password");
+        if (password != null && password.length() < 8) messages.add("Password must be at least 8 characters long");
 
         if (messages.size() > 0) this.messages.put("password", messages);
     }
