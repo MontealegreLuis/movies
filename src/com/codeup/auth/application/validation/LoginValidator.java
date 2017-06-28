@@ -3,30 +3,25 @@
  */
 package com.codeup.auth.application.validation;
 
-import com.codeup.validation.Validator;
 import org.apache.commons.validator.GenericValidator;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class LoginValidator implements Validator {
-    private Map<String, String> input;
+public class LoginValidator {
     private Map<String, List<String>> messages;
+    private Map<String, String> values;
 
     public LoginValidator() {
         messages = new LinkedHashMap<>();
+        values = new HashMap<>();
     }
 
-    public void populateWith(Map<String, String> input) {
-        this.input = input;
-    }
+    public boolean isValid(String username, String password) {
+        values.put("username", username);
+        values.put("password", password);
 
-    @Override
-    public boolean isValid() {
-        validateUsername(input.get("username"));
-        validatePassword(input.get("password"));
+        validateUsername(username);
+        validatePassword(password);
 
         return messages.size() == 0;
     }
@@ -50,8 +45,11 @@ public class LoginValidator implements Validator {
         if (messages.size() > 0) this.messages.put("username", messages);
     }
 
-    @Override
     public Map<String, List<String>> messages() {
         return messages;
+    }
+
+    public Map<String, String> values() {
+        return values;
     }
 }

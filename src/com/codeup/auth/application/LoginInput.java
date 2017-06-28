@@ -21,7 +21,6 @@ public class LoginInput {
         input = new HashMap<>();
         input.put("username", username);
         input.put("password", password);
-        validator.populateWith(input);
     }
 
     public Map<String, String> values() {
@@ -29,7 +28,7 @@ public class LoginInput {
     }
 
     public boolean isValid() {
-        return validator.isValid();
+        return validator.isValid(input.get("username"), input.get("password"));
     }
 
     public Map<String, List<String>> messages() {

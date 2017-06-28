@@ -10,8 +10,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
@@ -21,9 +19,7 @@ import static org.junit.Assert.*;
 public class LoginValidationWithInvalidCredentials {
     @Test
     public void it_fails_validation_with_invalid_credentials() {
-        validator.populateWith(input);
-
-        assertThat(validator.isValid(), is(false));
+        assertThat(validator.isValid(username, password), is(false));
         assertThat(validator.messages().size(), is(greaterThan(0)));
     }
 
@@ -42,11 +38,11 @@ public class LoginValidationWithInvalidCredentials {
     }
 
     public LoginValidationWithInvalidCredentials(String username, String password) {
-        input = new HashMap<>();
-        input.put("username", username);
-        input.put("password", password);
+        this.username = username;
+        this.password = password;
     }
 
-    private Map<String, String> input;
+    private String username;
+    private String password;
     private LoginValidator validator = new LoginValidator();
 }

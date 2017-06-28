@@ -3,7 +3,6 @@
  */
 package com.codeup.auth.infrastructure.web.servlets;
 
-import com.codeup.auth.application.LoginInput;
 import com.codeup.auth.application.ServletLoginResponder;
 import com.codeup.auth.domain.authentication.AuthenticateUser;
 import com.codeup.auth.domain.authentication.CanAuthenticateUsers;
@@ -21,14 +20,14 @@ import java.io.IOException;
 
 public class LoginServlet extends HttpServlet implements CanAuthenticateUsers {
     private AuthenticateUser action;
-    private LoginInput input;
+    private LoginValidator input;
     private ServletLoginResponder responder;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         responder = new ServletLoginResponder(config.getInitParameter("homePage"));
-        input = new LoginInput(new LoginValidator());
+        input = new LoginValidator();
         try {
             action = AuthContainer.authenticateUser();
             action.attach(this);
@@ -50,9 +49,8 @@ public class LoginServlet extends HttpServlet implements CanAuthenticateUsers {
         HttpServletResponse response
     ) throws ServletException, IOException {
         responder.use(request, response);
-        input.populateWith(request.getParameter("username"), request.getParameter("password"));
 
-        if (input.isValid())
+        if (input.isValid(request.getParameter("username"), request.getParameter("password")))
             action.attemptLogin(Credentials.from(input.values()));
         else
             responder.respondToInvalidLoginInput(input);

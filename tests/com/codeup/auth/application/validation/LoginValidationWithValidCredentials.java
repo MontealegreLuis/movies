@@ -20,9 +20,7 @@ import static org.junit.Assert.assertThat;
 public class LoginValidationWithValidCredentials {
     @Test
     public void it_passes_validation_if_valid_credentials_are_provided() {
-        validator.populateWith(input);
-
-        assertThat(validator.isValid(), is(true));
+        assertThat(validator.isValid(username, password), is(true));
         assertThat(validator.messages().size(), is(0));
     }
 
@@ -38,11 +36,11 @@ public class LoginValidationWithValidCredentials {
     }
 
     public LoginValidationWithValidCredentials(String username, String password) {
-        input = new HashMap<>();
-        input.put("username", username);
-        input.put("password", password);
+        this.username = username;
+        this.password = password;
     }
 
-    private Map<String, String> input;
+    private String username;
+    private String password;
     private LoginValidator validator = new LoginValidator();
 }

@@ -41,8 +41,7 @@ public class ServletLoginResponderTest {
     public void it_responds_to_invalid_login_input() throws Exception {
         RequestDispatcher dispatcher = mock(RequestDispatcher.class);
         when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-        LoginInput input = new LoginInput(new LoginValidator());
-        input.populateWith(null, null);
+        LoginValidator input = new LoginValidator();
 
         responder.respondToInvalidLoginInput(input);
 
