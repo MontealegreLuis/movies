@@ -3,13 +3,13 @@
  */
 package com.codeup.auth.infrastructure.web.servlets;
 
-import com.codeup.auth.application.ServletLoginResponder;
+import com.codeup.auth.application.authentication.ServletLoginResponder;
 import com.codeup.auth.domain.authentication.AuthenticateUser;
 import com.codeup.auth.domain.authentication.CanAuthenticateUsers;
 import com.codeup.auth.domain.authentication.Credentials;
 import com.codeup.auth.domain.identity.User;
 import com.codeup.auth.infrastructure.di.AuthContainer;
-import com.codeup.auth.application.LoginInput;
+import com.codeup.auth.application.authentication.LoginInput;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
