@@ -3,35 +3,53 @@
  */
 package com.codeup.auth.application;
 
-import com.codeup.auth.application.validation.LoginValidator;
+import org.apache.commons.validator.GenericValidator;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LoginInput {
-    private LoginValidator validator;
-    private Map<String, String> input;
+    private Map<String, List<String>> messages;
+    private Map<String, String> values;
 
-    public LoginInput(LoginValidator validator) {
-        this.validator = validator;
-    }
-
-    public void populateWith(String username, String password) {
-        input = new HashMap<>();
-        input.put("username", username);
-        input.put("password", password);
-    }
-
-    public Map<String, String> values() {
-        return input;
-    }
-
-    public boolean isValid() {
-        return validator.isValid(input.get("username"), input.get("password"));
+    public LoginInput() {
+        messages = new LinkedHashMap<>();
+        values = new HashMap<>();
     }
 
     public Map<String, List<String>> messages() {
-        return validator.messages();
+        return messages;
+    }
+
+    public Map<String, String> values() {
+        return values;
+    }
+
+    public boolean isValid(String username, String password) {
+        values.put("username", username);
+        values.put("password", password);
+
+        validateUsername(username);
+        validatePassword(password);
+
+        return messages.size() == 0;
+    }
+
+    private void validatePassword(String password) {
+        ArrayList<String> messages = new ArrayList<>();
+
+        if (GenericValidator.isBlankOrNull(password)) messages.add("Enter your password");
+        if (password != null && password.length() < 8) messages.add("Password must be at least 8 characters long");
+
+        if (messages.size() > 0) this.messages.put("password", messages);
+    }
+
+    private void validateUsername(String username) {
+        ArrayList<String> messages = new ArrayList<>();
+
+        if (GenericValidator.isBlankOrNull(username)) messages.add("Enter your username");
+        if (username != null && !GenericValidator.matchRegexp(username, "[A-Za-z0-9._-]+"))
+            messages.add("Your username does not have a valid format");
+
+        if (messages.size() > 0) this.messages.put("username", messages);
     }
 }

@@ -3,7 +3,6 @@
  */
 package com.codeup.auth.application;
 
-import com.codeup.auth.application.validation.LoginValidator;
 import com.codeup.auth.domain.authentication.Credentials;
 import com.codeup.auth.domain.identity.User;
 import org.junit.Before;
@@ -41,7 +40,7 @@ public class ServletLoginResponderTest {
     public void it_responds_to_invalid_login_input() throws Exception {
         RequestDispatcher dispatcher = mock(RequestDispatcher.class);
         when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-        LoginValidator input = new LoginValidator();
+        LoginInput input = new LoginInput();
 
         responder.respondToInvalidLoginInput(input);
 
@@ -91,7 +90,6 @@ public class ServletLoginResponderTest {
         response = mock(HttpServletResponse.class);
         responder.use(request, response);
     }
-
 
     private ServletLoginResponder responder;
     private HttpServletRequest request;

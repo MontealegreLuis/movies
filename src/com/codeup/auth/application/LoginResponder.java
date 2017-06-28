@@ -3,13 +3,12 @@
  */
 package com.codeup.auth.application;
 
-import com.codeup.auth.application.validation.LoginValidator;
 import com.codeup.auth.domain.authentication.Credentials;
 import com.codeup.auth.domain.identity.User;
 
 public interface LoginResponder {
     void respondToInputLoginCredentials();
-    void respondToInvalidLoginInput(LoginValidator input);
+    void respondToInvalidLoginInput(LoginInput input);
     void respondToASuccessfulAuthenticationOf(User user);
     void respondToInvalidLoginAttemptWith(Credentials credentials);
 }

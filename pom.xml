@@ -72,7 +72,6 @@
                 <version>2.19.1</version>
                 <configuration>
                     <includes>
-                        <include>com.codeup.auth.application.validation.*</include>
                         <include>com.codeup.auth.application.*</include>
                         <include>com.codeup.auth.domain.authentication.*</include>
                         <include>com.codeup.auth.domain.identity.*</include>

@@ -1,7 +1,7 @@
 /*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
-package com.codeup.auth.application.validation;
+package com.codeup.auth.application;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,5 +44,5 @@ public class LoginValidationWithInvalidCredentials {
 
     private String username;
     private String password;
-    private LoginValidator validator = new LoginValidator();
+    private LoginInput validator = new LoginInput();
 }

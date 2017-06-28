@@ -3,7 +3,6 @@
  */
 package com.codeup.auth.application;
 
-import com.codeup.auth.application.validation.LoginValidator;
 import com.codeup.auth.domain.authentication.Credentials;
 import com.codeup.auth.domain.identity.User;
 
@@ -37,7 +36,7 @@ public class ServletLoginResponder implements LoginResponder {
     }
 
     @Override
-    public void respondToInvalidLoginInput(LoginValidator input) {
+    public void respondToInvalidLoginInput(LoginInput input) {
         request.setAttribute("username", input.values().get("username"));
         request.setAttribute("errors", input.messages());
         respondToInputLoginCredentials();
