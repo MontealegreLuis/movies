@@ -5,8 +5,11 @@ package com.codeup.auth.domain.authentication;
 
 import com.codeup.auth.domain.identity.User;
 import com.codeup.auth.domain.identity.Users;
+import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -23,24 +26,29 @@ public class SignUpUserTest {
         verify(users).add(any(User.class));
     }
 
-    @Test(expected = DuplicateUser.class)
+    @Test
     public void it_prevents_the_creation_of_a_user_with_a_duplicate_name()
     {
-        when(users.identifiedBy("luis"))
-            .thenReturn(User.signUp("luis", "anything"))
+        String username = "luis";
+        when(users.identifiedBy(username))
+            .thenReturn(User.signUp(username, "anything"))
         ;
+        exception.expect(DuplicateUser.class);
+        exception.expectMessage(Matchers.containsString(username));
 
-        action.signUp("luis", "iL0veMyJob");
+        action.signUp(username, "iL0veMyJob");
 
         verify(users, never()).add(any(User.class));
     }
-
 
     @Before
     public void configureAction() {
         users = mock(Users.class);
         action = new SignUpUser(users);
     }
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     private SignUpUser action;
     private Users users;

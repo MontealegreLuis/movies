@@ -3,27 +3,33 @@
  */
 package com.codeup.auth.domain.identity;
 
-import com.codeup.auth.domain.identity.InvalidUsername;
-import com.codeup.auth.domain.identity.Username;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 public class UsernameTest {
-    @Test(expected = InvalidUsername.class)
+    @Test
     public void it_cannot_be_empty() {
+        exception.expect(InvalidUsername.class);
+
         Username.from("    ");
     }
 
-    @Test(expected = InvalidUsername.class)
+    @Test
     public void it_cannot_be_null() {
+        exception.expect(InvalidUsername.class);
+
         Username.from(null);
     }
 
-    @Test(expected = InvalidUsername.class)
+    @Test
     public void it_can_only_contain_alphanumeric_characters_dots_dashes_and_underscores()
     {
+        exception.expect(InvalidUsername.class);
+
         Username.from("montealegre luis");
     }
 
@@ -44,5 +50,7 @@ public class UsernameTest {
 
         assertThat(username.value().equals(validHandle), is(true));
     }
-    
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 }

@@ -3,9 +3,9 @@
  */
 package com.codeup.auth.domain.identity;
 
-import com.codeup.auth.domain.identity.InvalidPassword;
-import com.codeup.auth.domain.identity.Password;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -39,23 +39,32 @@ public class PasswordTest {
         assertThat(password.equals(anotherPassword), is(true)); // hashes should be the same
     }
 
-    @Test(expected = InvalidPassword.class)
+    @Test
     public void it_cannot_be_null()
     {
+        exception.expect(InvalidPassword.class);
+
         Password.fromPlainText(null);
     }
 
-    @Test(expected = InvalidPassword.class)
+    @Test
     public void it_cannot_be_empty()
     {
+        exception.expect(InvalidPassword.class);
+
         Password.fromPlainText("   ");
     }
 
-    @Test(expected = InvalidPassword.class)
+    @Test
     public void it_cannot_be_shorter_than_eight_characters()
     {
+        exception.expect(InvalidPassword.class);
+
         Password.fromPlainText("secure");
     }
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     private final String plainTextPassword = "iL0veMyJob";
     private final Password password = Password.fromPlainText(plainTextPassword);
