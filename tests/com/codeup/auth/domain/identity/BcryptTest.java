@@ -3,7 +3,6 @@
  */
 package com.codeup.auth.domain.identity;
 
-import com.codeup.auth.domain.identity.Bcrypt;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;

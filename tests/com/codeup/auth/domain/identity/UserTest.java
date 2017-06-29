@@ -3,8 +3,6 @@
  */
 package com.codeup.auth.domain.identity;
 
-import com.codeup.auth.domain.identity.Password;
-import com.codeup.auth.domain.identity.User;
 import org.junit.Before;
 import org.junit.Test;
 

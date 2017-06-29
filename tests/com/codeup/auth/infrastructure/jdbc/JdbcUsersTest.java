@@ -13,17 +13,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class JdbcUsersTest {
-    private JdbcUsers users;
-
-    @Before
-    public void loadFixtures() throws Exception {
-        MysqlDataSource source = ConfigurableDataSource.using(MySQLSetup.configuration());
-        MySQLSetup.truncate(source, "users");
-        MySQLSetup.loadDataSet(source, "tests/resources/users.xml");
-
-        users = new JdbcUsers(source.getConnection());
-    }
-
     @Test
     public void it_finds_a_user_by_its_username() {
         assertNotNull(users.identifiedBy("admin"));
@@ -42,4 +31,15 @@ public class JdbcUsersTest {
 
         assertNotNull(users.identifiedBy("luis"));
     }
+
+    @Before
+    public void loadFixtures() throws Exception {
+        MysqlDataSource source = ConfigurableDataSource.using(MySQLSetup.configuration());
+        MySQLSetup.truncate(source, "users");
+        MySQLSetup.loadDataSet(source, "tests/resources/users.xml");
+
+        users = new JdbcUsers(source.getConnection());
+    }
+
+    private JdbcUsers users;
 }
