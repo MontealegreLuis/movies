@@ -4,7 +4,7 @@
 package com.codeup.auth.infrastructure.web.servlets;
 
 import com.codeup.auth.application.authentication.LoginAction;
-import com.codeup.auth.application.authentication.ServletLoginResponder;
+import com.codeup.auth.infrastructure.web.authentication.ServletLoginResponder;
 import com.codeup.auth.infrastructure.di.AuthContainer;
 import com.codeup.auth.application.authentication.LoginInput;
 

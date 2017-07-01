@@ -1,8 +1,10 @@
 /*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
-package com.codeup.auth.application.authentication;
+package com.codeup.auth.infrastructure.web.authentication;
 
+import com.codeup.auth.application.authentication.LoginInput;
+import com.codeup.auth.application.authentication.LoginResponder;
 import com.codeup.auth.domain.authentication.Credentials;
 import com.codeup.auth.domain.identity.User;
 
