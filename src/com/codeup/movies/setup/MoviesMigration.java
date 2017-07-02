@@ -1,8 +1,12 @@
+/*
+ * This source file is subject to the license that is bundled with this package in the file LICENSE.
+ */
 package com.codeup.movies.setup;
 
-import com.codeup.db.builders.schema.IntColumn;
-import com.codeup.db.builders.schema.SchemaBuilder;
-import com.codeup.db.builders.schema.Table;
+
+import com.dbal.jdbc.builders.schema.IntColumn;
+import com.dbal.jdbc.builders.schema.SchemaBuilder;
+import com.dbal.jdbc.builders.schema.Table;
 
 import java.sql.Connection;
 import java.sql.SQLException;

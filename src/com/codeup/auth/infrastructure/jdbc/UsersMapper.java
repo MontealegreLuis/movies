@@ -4,7 +4,7 @@
 package com.codeup.auth.infrastructure.jdbc;
 
 import com.codeup.auth.domain.identity.User;
-import com.codeup.db.RowMapper;
+import com.dbal.jdbc.RowMapper;
 
 import java.util.List;
 

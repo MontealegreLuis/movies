@@ -1,8 +1,9 @@
-/**
+/*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 package com.codeup.db;
 
+import com.dbal.jdbc.QueryParameters;
 import org.junit.Test;
 
 import java.sql.PreparedStatement;

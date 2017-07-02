@@ -8,6 +8,14 @@
     <artifactId>jsp-app</artifactId>
     <version>1.0.0</version>
     <packaging>war</packaging>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>mysql</groupId>
@@ -33,6 +41,11 @@
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
             <version>1.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.MontealegreLuis</groupId>
+            <artifactId>dbal-jdbc</artifactId>
+            <version>master-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

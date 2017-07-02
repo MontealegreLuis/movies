@@ -1,9 +1,9 @@
-/**
+/*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 package com.codeup.pagination;
 
-import com.codeup.db.statements.SelectStatement;
+import com.dbal.jdbc.statements.SelectStatement;
 
 import java.util.List;
 

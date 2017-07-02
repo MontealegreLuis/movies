@@ -1,17 +1,17 @@
-/**
+/*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 package com.codeup.movies.jdbc;
 
-import com.codeup.db.RowMapper;
-import com.codeup.db.Table;
-import com.codeup.db.builders.queries.Insert;
-import com.codeup.db.statements.SelectStatement;
 import com.codeup.movies.Category;
 import com.codeup.movies.Movie;
 import com.codeup.movies.MoviesCriteria;
 import com.codeup.pagination.Pagination;
 import com.codeup.pagination.QueryPagination;
+import com.dbal.jdbc.RowMapper;
+import com.dbal.jdbc.Table;
+import com.dbal.jdbc.builders.queries.Insert;
+import com.dbal.jdbc.statements.SelectStatement;
 
 import java.sql.Connection;
 import java.util.List;

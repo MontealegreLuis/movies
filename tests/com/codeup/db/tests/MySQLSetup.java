@@ -1,9 +1,9 @@
-/**
+/*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 package com.codeup.db.tests;
 
-import com.codeup.db.Database;
+import com.dbal.jdbc.Database;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.DefaultDatabaseTester;

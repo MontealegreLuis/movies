@@ -1,10 +1,10 @@
-/**
+/*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 package com.codeup.movies;
 
-import com.codeup.db.builders.queries.Select;
 import com.codeup.movies.jdbc.MoviesInCategoryCriteria;
+import com.dbal.jdbc.builders.queries.Select;
 import org.junit.Test;
 
 import java.util.Collections;
