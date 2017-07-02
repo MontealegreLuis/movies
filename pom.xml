@@ -90,9 +90,6 @@
                         <include>com.codeup.auth.domain.identity.*</include>
                         <include>com.codeup.auth.infrastructure.jdbc.*</include>
                         <include>com.codeup.auth.infrastructure.web.authentication.*</include>
-                        <include>com.codeup.db.*</include>
-                        <include>com.codeup.db.builders.queries.*</include>
-                        <include>com.codeup.db.builders.schema.*</include>
                         <include>com.codeup.movies.jdbc.*</include>
                         <include>com.codeup.movies.servlets.*</include>
                         <include>com.codeup.movies.validation.*</include>
