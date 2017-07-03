@@ -88,9 +88,10 @@
                         <include>com.codeup.auth.application.authentication.*</include>
                         <include>com.codeup.auth.domain.authentication.*</include>
                         <include>com.codeup.auth.domain.identity.*</include>
-                        <include>com.codeup.auth.infrastructure.jdbc.*</include>
+                        <include>com.codeup.auth.infrastructure.jdbc.UsersMapperTest</include>
                         <include>com.codeup.auth.infrastructure.web.authentication.*</include>
-                        <include>com.codeup.movies.jdbc.*</include>
+                        <include>com.codeup.movies.jdbc.CategoriesMapperTest</include>
+                        <include>com.codeup.movies.jdbc.MoviesMapperTest</include>
                         <include>com.codeup.movies.servlets.*</include>
                         <include>com.codeup.movies.validation.*</include>
                         <include>com.codeup.movies.*</include>

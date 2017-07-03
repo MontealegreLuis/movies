@@ -1,4 +1,4 @@
-/**
+/*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 package com.codeup.db.tests;
@@ -24,10 +24,9 @@ import java.util.Properties;
 })
 public class DatabaseSuite {
     @ClassRule
-    public static ExternalResource testRule = new ExternalResource() {
+    public static ExternalResource connection = new ExternalResource() {
         @Override
         protected void before() throws Throwable {
-
             Properties configuration = MySQLSetup.configuration();
             try (
                 Connection connection = ConfigurableDataSource
