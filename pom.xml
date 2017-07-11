@@ -45,7 +45,7 @@
         <dependency>
             <groupId>com.github.MontealegreLuis</groupId>
             <artifactId>dbal-jdbc</artifactId>
-            <version>master-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
