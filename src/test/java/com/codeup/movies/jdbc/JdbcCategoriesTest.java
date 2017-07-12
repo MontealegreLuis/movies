@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -26,7 +28,8 @@ public class JdbcCategoriesTest {
     public void loadFixtures() throws Exception {
         source = ConfigurableDataSource.using(MySQLSetup.configuration());
         MySQLSetup.truncate(source, "movies_categories", "categories", "movies");
-        MySQLSetup.loadDataSet(source, "tests/resources/categories.xml");
+        Path path = Paths.get("src/test/resources/categories.xml");
+        MySQLSetup.loadDataSet(source, path.toAbsolutePath().toString());
 
         categories = new JdbcCategories(source.getConnection());
     }

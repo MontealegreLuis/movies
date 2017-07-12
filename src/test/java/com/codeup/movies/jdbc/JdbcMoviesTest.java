@@ -12,6 +12,8 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +28,8 @@ public class JdbcMoviesTest {
     public void loadFixtures() throws Exception {
         MysqlDataSource source = ConfigurableDataSource.using(MySQLSetup.configuration());
         MySQLSetup.truncate(source, "movies_categories", "categories", "movies");
-        MySQLSetup.loadDataSet(source, "tests/resources/movies.xml");
+        Path path = Paths.get("src/test/resources/movies.xml");
+        MySQLSetup.loadDataSet(source, path.toAbsolutePath().toString());
 
         movies = new JdbcMovies(source.getConnection());
     }

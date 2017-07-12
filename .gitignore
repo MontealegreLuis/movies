@@ -1,3 +1,3 @@
 *.iml
 config.properties
-config.test.properties
+src/test/resources/config.test.properties

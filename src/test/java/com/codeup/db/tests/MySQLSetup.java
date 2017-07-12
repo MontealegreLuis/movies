@@ -18,6 +18,8 @@ import org.dbunit.operation.DatabaseOperation;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -90,10 +92,12 @@ public class MySQLSetup {
     }
 
     public static Properties configuration() throws IOException {
-        if (config == null) {
-            config = new Properties();
-            config.load(new FileInputStream("config.test.properties"));
-        }
+        if (config != null) return config;
+
+        config = new Properties();
+        Path path = Paths.get("src/test/resources/config.test.properties");
+        config.load(new FileInputStream(path.toAbsolutePath().toString()));
+
         return config;
     }
 }

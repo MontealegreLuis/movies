@@ -10,6 +10,9 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import static org.junit.Assert.*;
 
 public class JdbcUsersTest {
@@ -36,7 +39,8 @@ public class JdbcUsersTest {
     public void loadFixtures() throws Exception {
         MysqlDataSource source = ConfigurableDataSource.using(MySQLSetup.configuration());
         MySQLSetup.truncate(source, "users");
-        MySQLSetup.loadDataSet(source, "tests/resources/users.xml");
+        Path path = Paths.get("src/test/resources/users.xml");
+        MySQLSetup.loadDataSet(source, path.toAbsolutePath().toString());
 
         users = new JdbcUsers(source.getConnection());
     }
