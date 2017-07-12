@@ -43,7 +43,7 @@ The tests use a different MySQL database, so you'll need a different `properties
 file.
 
 ```bash
-$ cp config.dist.test.properties config.test.properties
+$ cp src/test/resources/example.properties src/test/resources/tests.properties
 ```
 
 To run the tests execute.

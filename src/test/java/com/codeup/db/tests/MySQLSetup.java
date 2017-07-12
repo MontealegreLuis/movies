@@ -95,7 +95,7 @@ public class MySQLSetup {
         if (config != null) return config;
 
         config = new Properties();
-        Path path = Paths.get("src/test/resources/config.test.properties");
+        Path path = Paths.get("src/test/resources/tests.properties");
         config.load(new FileInputStream(path.toAbsolutePath().toString()));
 
         return config;
