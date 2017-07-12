@@ -26,20 +26,16 @@ application. To setup the application you'll need to customize an
 $ cp src/main/resources/example.properties src/main/resources/application.properties
 ```
 
-Once you're done, run the `main` method in the class 
-`com.codeup.movies.setup.MoviesSetupApplication` it will, create, migrate and
-seed your database.
-
-Once you set your database credentials, create a `context.xml` file for Tomcat
-with the same database information.
-
-```bash
-$ cp context.dist.xml web/META-INF/context.xml
-```
-
 Now you're ready to run the command line application in the class 
 `com.codeup.movies.setup.MoviesSetupApplication`. It will
 create and seed the database.
+
+To run the application with Tomcat, create a `context.xml` file for Tomcat
+with the same database information.
+
+```bash
+$ cp src/main/webapp/META-INF/context.dist.xml src/main/webapp/META-INF/context.xml
+```
 
 ## Tests
 
