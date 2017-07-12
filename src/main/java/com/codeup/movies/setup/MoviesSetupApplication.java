@@ -4,6 +4,8 @@ import com.codeup.db.ConfigurableDataSource;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.Properties;
 
@@ -32,7 +34,8 @@ public class MoviesSetupApplication {
 
     private static Properties properties() throws IOException {
         config = new Properties();
-        config.load(new FileInputStream("config.properties"));
+        Path path = Paths.get("src/main/resources/application.properties");
+        config.load(new FileInputStream(path.toAbsolutePath().toString()));
         return config;
     }
 }

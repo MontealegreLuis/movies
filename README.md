@@ -19,12 +19,16 @@ Registered users have the ability to.
 ## Setup
 
 You need to have both Tomcat and MySQL up and running to use this 
-application. To setup the application you'll need to customize a 
-`config.properties` file.
+application. To setup the application you'll need to customize an 
+`application.properties` file.
 
 ```bash
-$ cp config.dist.properties config.properties
+$ cp src/main/resources/example.properties src/main/resources/application.properties
 ```
+
+Once you're done, run the `main` method in the class 
+`com.codeup.movies.setup.MoviesSetupApplication` it will, create, migrate and
+seed your database.
 
 Once you set your database credentials, create a `context.xml` file for Tomcat
 with the same database information.

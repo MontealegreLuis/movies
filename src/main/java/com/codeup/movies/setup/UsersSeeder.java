@@ -17,6 +17,6 @@ class UsersSeeder {
 
     void seed() {
         JdbcUsers users = new JdbcUsers(connection);
-        users.add(User.signUp("admin", "admin"));
+        users.add(User.signUp("admin", "password"));
     }
 }
