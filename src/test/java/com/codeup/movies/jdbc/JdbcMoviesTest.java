@@ -1,4 +1,4 @@
-/**
+/*
  * This source file is subject to the license that is bundled with this package in the file LICENSE.
  */
 package com.codeup.movies.jdbc;
@@ -22,18 +22,6 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class JdbcMoviesTest {
-    private JdbcMovies movies;
-
-    @Before
-    public void loadFixtures() throws Exception {
-        MysqlDataSource source = ConfigurableDataSource.using(MySQLSetup.configuration());
-        MySQLSetup.truncate(source, "movies_categories", "categories", "movies");
-        Path path = Paths.get("src/test/resources/movies.xml");
-        MySQLSetup.loadDataSet(source, path.toAbsolutePath().toString());
-
-        movies = new JdbcMovies(source.getConnection());
-    }
-
     @Test
     public void it_can_find_an_existing_movie_by_its_id() {
         int existingId = 2;
@@ -91,4 +79,16 @@ public class JdbcMoviesTest {
         assertEquals(shrek.rating(), savedMovie.rating());
         assertEquals(shrek.thumbnail(), savedMovie.thumbnail());
     }
+
+    @Before
+    public void loadFixtures() throws Exception {
+        MysqlDataSource source = ConfigurableDataSource.using(MySQLSetup.configuration());
+        MySQLSetup.truncate(source, "movies_categories", "categories", "movies");
+        Path path = Paths.get("src/test/resources/movies.xml");
+        MySQLSetup.loadDataSet(source, path.toAbsolutePath().toString());
+
+        movies = new JdbcMovies(source.getConnection());
+    }
+
+    private JdbcMovies movies;
 }

@@ -14,14 +14,6 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class MoviesMapperTest {
-
-    private MoviesMapper mapper;
-
-    @Before
-    public void initMapper() {
-        mapper = new MoviesMapper();
-    }
-
     @Test
     public void it_maps_correctly_a_movie() {
         List<Object> values = new ArrayList();
@@ -36,7 +28,7 @@ public class MoviesMapperTest {
     }
 
     @Test
-    public void it_maps_correctly_a_movie_withaout_a_thumbnail() {
+    public void it_maps_correctly_a_movie_without_a_thumbnail() {
         List<Object> values = new ArrayList();
         values.addAll(Arrays.asList(5L, "Shrek", 3, null));
 
@@ -47,4 +39,11 @@ public class MoviesMapperTest {
         assertEquals(3, movie.rating());
         assertNull(movie.thumbnail());
     }
+
+    @Before
+    public void initMapper() {
+        mapper = new MoviesMapper();
+    }
+
+    private MoviesMapper mapper;
 }
