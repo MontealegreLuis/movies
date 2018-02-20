@@ -5,7 +5,7 @@
 
 ## Movies catalog
 
-This is a demo application using Servlets/JSPs and JDBC. It is a small 
+This is a demo application using Servlets/JSPs and JDBC. It is a small
 catalog of movies with the following features for guest users.
 
 * Filter movies by category.
@@ -18,17 +18,22 @@ Registered users have the ability to.
 
 ## Setup
 
-You need to have both Tomcat and MySQL up and running to use this 
-application. To setup the application you'll need to customize an 
+You need to have both Tomcat and MySQL up and running to use this
+application. To setup the application you'll need to customize an
 `application.properties` file.
 
 ```bash
 $ cp src/main/resources/example.properties src/main/resources/application.properties
 ```
 
-Now you're ready to run the command line application in the class 
+Now you're ready to run the command line application in the class
 `com.codeup.movies.setup.MoviesSetupApplication`. It will
 create and seed the database.
+
+```bash
+$ mvn compile
+$ java -cp "$(mvn -q exec:exec -Dexec.executable=echo -Dexec.args='%classpath')" com.codeup.movies.setup.MoviesSetupApplication
+```
 
 To run the application with Tomcat, create a `context.xml` file for Tomcat
 with the same database information.

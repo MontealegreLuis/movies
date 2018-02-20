@@ -1,3 +1,4 @@
 src/main/webapp/META-INF/context.xml
 src/main/resources/application.properties
 src/test/resources/tests.properties
+target
